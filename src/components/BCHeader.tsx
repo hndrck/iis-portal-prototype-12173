@@ -20,7 +20,7 @@ const BCHeader = () => {
               </div>
               <div>
                 <h1 className="text-xl font-semibold">Government of British Columbia</h1>
-                <p className="text-blue-100 text-sm">Integrated Identity Services Broker</p>
+                <p className="text-blue-100 text-sm">Common Hosted Credential Service</p>
               </div>
             </div>
           </div>
@@ -41,6 +41,12 @@ const BCHeader = () => {
                   onClick={() => navigate('/admin')}
                 >
                   Administration
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="text-white hover:bg-white/10"
+                >
+                  Support
                 </Button>
               </>
             )}

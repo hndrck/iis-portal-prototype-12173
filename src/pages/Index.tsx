@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Shield, Zap, Users, Layers, CheckCircle } from "lucide-react";
+import { ArrowRight, Shield, Zap, Settings, TrendingUp, CheckCircle, ExternalLink } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -18,32 +18,39 @@ const Index = () => {
     {
       icon: Zap,
       title: "Intelligent Routing",
-      description: "System automatically determines the right identity solution for your needs"
+      description: "Answer questions about your needs and get the right solution automatically"
     },
     {
-      icon: Users,
+      icon: Settings,
+      title: "Self-Service Setup",
+      description: "Complete configuration and receive development credentials instantly"
+    },
+    {
+      icon: TrendingUp,
       title: "Future-Proof",
-      description: "Identity providers can be updated without affecting your integration"
-    },
-    {
-      icon: Layers,
-      title: "Self-Service",
-      description: "Complete setup and configuration through our developer portal"
+      description: "Built to evolve with new identity providers and authentication standards"
     }
   ];
 
-  const currentState = [
-    "Direct integration with multiple identity providers",
-    "Complex provider-specific configurations",
-    "Tight coupling between applications and identity services",
-    "Manual coordination for changes and updates"
+  const processSteps = [
+    {
+      title: "Describe Your Needs",
+      description: "Answer questions about your service requirements and user base"
+    },
+    {
+      title: "Get Your Solution", 
+      description: "Receive recommended identity configuration with clear rationale"
+    },
+    {
+      title: "Start Building",
+      description: "Receive development credentials and documentation immediately"
+    }
   ];
 
-  const futureState = [
-    "Single integration with the IIS Broker",
-    "Requirement-driven configuration",
-    "Abstracted identity complexity",
-    "Automated updates and provider management"
+  const requirements = [
+    "IDIR account for BC government employees",
+    "Basic project information (service name, team contacts)",
+    "Understanding of your user base and security requirements"
   ];
 
   return (
@@ -56,29 +63,53 @@ const Index = () => {
           <Badge className="mb-4 bg-accent text-primary" variant="secondary">
             Prototype - Future State Vision
           </Badge>
-          <h1 className="text-5xl font-bold text-primary mb-6">
-            Integrated Identity Services Broker
+          <h1 className="text-5xl font-bold text-primary mb-4">
+            Common Hosted Credential Service
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            A revolutionary self-service platform that transforms how developers integrate identity services. 
-            One door to all BC Government identity solutions.
+          <p className="text-lg text-muted-foreground mb-8">
+            Connect to BC government identity solutions
+          </p>
+          <p className="text-lg text-foreground max-w-3xl mx-auto mb-8">
+            A single service for BC government teams to integrate with identity providers and authentication services. 
+            Get the right identity solution for your project automatically.
           </p>
           
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 mb-8">
             <Button 
               size="lg" 
               className="bg-primary hover:bg-primary/90"
               onClick={() => navigate('/client')}
             >
-              Developer Portal <ArrowRight className="ml-2 h-5 w-5" />
+              Get started
             </Button>
             <Button 
               size="lg" 
               variant="outline"
-              onClick={() => navigate('/admin')}
             >
-              Administration
+              Learn more about identity services <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
+          </div>
+
+          {/* IDIR Authentication */}
+          <div className="max-w-md mx-auto p-6 bg-white rounded-lg border border-border">
+            <p className="text-sm text-muted-foreground mb-4">
+              This service requires IDIR authentication for BC government employees and authorized partners
+            </p>
+            <div className="space-y-3">
+              <Button 
+                className="w-full bg-primary hover:bg-primary/90"
+                size="lg"
+              >
+                Sign in with IDIR
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                size="sm"
+              >
+                Request IDIR access
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -99,80 +130,47 @@ const Index = () => {
           ))}
         </div>
 
-        {/* Transformation Comparison */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
-          <Card className="bc-card">
-            <CardHeader>
-              <CardTitle className="text-xl text-center">Current State</CardTitle>
-              <CardDescription className="text-center">
-                Fragmented Direct Integration Model
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {currentState.map((item, index) => (
-                <div key={index} className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0" />
-                  <span className="text-muted-foreground">{item}</span>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          <Card className="bc-card border-2 border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-xl text-center text-primary">Future State</CardTitle>
-              <CardDescription className="text-center">
-                Unified Broker Integration Model
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {futureState.map((item, index) => (
-                <div key={index} className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span className="text-foreground">{item}</span>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Architecture Overview */}
+        {/* Process Overview */}
         <Card className="bc-card mb-16">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">How It Works</CardTitle>
             <CardDescription>
-              The IIS Broker acts as an intelligent intermediary between your application and BC's identity ecosystem
+              Simple process to get the right identity solution for your project
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-8 text-center">
-              <div className="space-y-4">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-primary font-bold text-xl">1</span>
+              {processSteps.map((step, index) => (
+                <div key={index} className="space-y-4">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                    <span className="text-primary font-bold text-xl">{index + 1}</span>
+                  </div>
+                  <h3 className="font-semibold">{step.title}</h3>
+                  <p className="text-muted-foreground">
+                    {step.description}
+                  </p>
                 </div>
-                <h3 className="font-semibold">Describe Your Needs</h3>
-                <p className="text-muted-foreground">
-                  Answer questions about your service requirements, user base, and security needs
-                </p>
-              </div>
-              <div className="space-y-4">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-primary font-bold text-xl">2</span>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* What You'll Need */}
+        <Card className="bc-card mb-16">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">What You'll Need</CardTitle>
+            <CardDescription>
+              Requirements to get started with the Common Hosted Credential Service
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="max-w-2xl mx-auto space-y-4">
+              {requirements.map((requirement, index) => (
+                <div key={index} className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span className="text-foreground">{requirement}</span>
                 </div>
-                <h3 className="font-semibold">Get Your Solution</h3>
-                <p className="text-muted-foreground">
-                  The broker automatically determines the optimal identity configuration for your use case
-                </p>
-              </div>
-              <div className="space-y-4">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-primary font-bold text-xl">3</span>
-                </div>
-                <h3 className="font-semibold">Integrate & Deploy</h3>
-                <p className="text-muted-foreground">
-                  Receive configuration details, sample code, and go live with confidence
-                </p>
-              </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -181,9 +179,9 @@ const Index = () => {
         <div className="text-center">
           <Card className="bc-card max-w-2xl mx-auto bc-gradient text-white">
             <CardContent className="p-8">
-              <h2 className="text-2xl font-bold mb-4">Ready to Experience the Future?</h2>
+              <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>
               <p className="mb-6 opacity-90">
-                Explore the prototype and see how the IIS Broker will transform identity integration for BC Government services.
+                Explore the prototype and see how CHCS will streamline identity integration for BC Government services.
               </p>
               <div className="flex justify-center gap-4">
                 <Button 
@@ -191,7 +189,7 @@ const Index = () => {
                   variant="secondary"
                   onClick={() => navigate('/client')}
                 >
-                  Start Developer Journey
+                  Developer Portal
                 </Button>
                 <Button 
                   size="lg" 
@@ -199,13 +197,57 @@ const Index = () => {
                   className="border-white text-white hover:bg-white hover:text-primary"
                   onClick={() => navigate('/admin')}
                 >
-                  View Admin Console
+                  Administration
                 </Button>
               </div>
             </CardContent>
           </Card>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-primary text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="font-semibold mb-4">About the Service</h3>
+              <p className="text-sm text-blue-100">
+                CHCS provides a single integration point for BC government identity services, 
+                managed by Cybersecurity and Digital Trust, CITZ.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Resources</h3>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="text-blue-100 hover:text-white">Technical Documentation</a></li>
+                <li><a href="#" className="text-blue-100 hover:text-white">API Reference</a></li>
+                <li><a href="#" className="text-blue-100 hover:text-white">Integration Guide</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Support</h3>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="text-blue-100 hover:text-white">Contact Support</a></li>
+                <li><a href="#" className="text-blue-100 hover:text-white">Service Status</a></li>
+                <li><a href="#" className="text-blue-100 hover:text-white">Known Issues</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Government</h3>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="text-blue-100 hover:text-white">Privacy Policy</a></li>
+                <li><a href="#" className="text-blue-100 hover:text-white">Accessibility</a></li>
+                <li><a href="#" className="text-blue-100 hover:text-white">Terms of Service</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-blue-700 mt-8 pt-8 text-center">
+            <p className="text-sm text-blue-100">
+              © 2024 Government of British Columbia - Cybersecurity and Digital Trust, CITZ
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
