@@ -59,28 +59,24 @@ const Index = () => {
       
       <main className="container mx-auto px-4 py-12">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <Badge className="mb-4 bg-accent text-primary" variant="secondary">
+        <div className="max-w-4xl mb-16">
+          <Badge className="mb-6 bg-accent text-primary" variant="secondary">
             Prototype - Future State Vision
           </Badge>
-          <h1 className="text-5xl font-bold text-primary mb-4">
-            Common Hosted Credential Service
+          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6 leading-tight">
+            Let BC government teams integrate with identity services quickly and securely
           </h1>
-          <p className="text-lg text-muted-foreground mb-8">
-            Connect to BC government identity solutions
-          </p>
-          <p className="text-lg text-foreground max-w-3xl mx-auto mb-8">
-            A single service for BC government teams to integrate with identity providers and authentication services. 
-            Get the right identity solution for your project automatically.
+          <p className="text-xl text-foreground mb-8 max-w-2xl">
+            Try the Common Hosted Credential Service if you work on a central government service and need to integrate with identity providers.
           </p>
           
-          <div className="flex justify-center gap-4 mb-8">
+          <div className="flex gap-4 mb-8">
             <Button 
               size="lg" 
               className="bg-primary hover:bg-primary/90"
               onClick={() => navigate('/client')}
             >
-              Get started
+              Get started <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button 
               size="lg" 
@@ -89,119 +85,81 @@ const Index = () => {
               Learn more about identity services <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
           </div>
-
-          {/* IDIR Authentication */}
-          <div className="max-w-md mx-auto p-6 bg-white rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground mb-4">
-              This service requires IDIR authentication for BC government employees and authorized partners
-            </p>
-            <div className="space-y-3">
-              <Button 
-                className="w-full bg-primary hover:bg-primary/90"
-                size="lg"
-              >
-                Sign in with IDIR
-              </Button>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                size="sm"
-              >
-                Request IDIR access
-              </Button>
-            </div>
-          </div>
         </div>
 
-        {/* Benefits Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        {/* Benefits Sections */}
+        <div className="space-y-16 mb-16">
           {benefits.map((benefit, index) => (
-            <Card key={index} className="bc-card hover:shadow-md transition-shadow">
-              <CardHeader className="text-center pb-4">
-                <benefit.icon className="h-12 w-12 text-primary mx-auto mb-3" />
-                <CardTitle className="text-lg">{benefit.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  {benefit.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
+            <div key={index} className="max-w-4xl">
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                  <div className="flex items-center mb-4">
+                    <benefit.icon className="h-8 w-8 text-primary mr-3" />
+                    <h2 className="text-2xl font-bold text-foreground">{benefit.title}</h2>
+                  </div>
+                  <p className="text-lg text-muted-foreground">
+                    {benefit.description}
+                  </p>
+                </div>
+                <div className="bg-slate-100 rounded-lg p-8 h-48 flex items-center justify-center">
+                  <span className="text-muted-foreground">Service illustration</span>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
 
         {/* Process Overview */}
-        <Card className="bc-card mb-16">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">How It Works</CardTitle>
-            <CardDescription>
-              Simple process to get the right identity solution for your project
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-3 gap-8 text-center">
-              {processSteps.map((step, index) => (
-                <div key={index} className="space-y-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                    <span className="text-primary font-bold text-xl">{index + 1}</span>
-                  </div>
-                  <h3 className="font-semibold">{step.title}</h3>
+        <div className="max-w-4xl mb-16">
+          <h2 className="text-3xl font-bold text-foreground mb-6">How it works</h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Simple process to get the right identity solution for your project
+          </p>
+          <div className="space-y-8">
+            {processSteps.map((step, index) => (
+              <div key={index} className="flex gap-4">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-white font-bold text-sm">{index + 1}</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">{step.title}</h3>
                   <p className="text-muted-foreground">
                     {step.description}
                   </p>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* What You'll Need */}
-        <Card className="bc-card mb-16">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">What You'll Need</CardTitle>
-            <CardDescription>
-              Requirements to get started with the Common Hosted Credential Service
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="max-w-2xl mx-auto space-y-4">
-              {requirements.map((requirement, index) => (
-                <div key={index} className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span className="text-foreground">{requirement}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="max-w-4xl mb-16">
+          <h2 className="text-3xl font-bold text-foreground mb-6">What you'll need to get started</h2>
+          <div className="space-y-4">
+            {requirements.map((requirement, index) => (
+              <div key={index} className="flex items-start space-x-3">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <span className="text-foreground text-lg">{requirement}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Call to Action */}
-        <div className="text-center">
-          <Card className="bc-card max-w-2xl mx-auto bc-gradient text-white">
-            <CardContent className="p-8">
-              <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>
-              <p className="mb-6 opacity-90">
-                Explore the prototype and see how CHCS will streamline identity integration for BC Government services.
-              </p>
-              <div className="flex justify-center gap-4">
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  onClick={() => navigate('/client')}
-                >
-                  Developer Portal
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="border-white text-white hover:bg-white hover:text-primary"
-                  onClick={() => navigate('/admin')}
-                >
-                  Administration
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="max-w-4xl mb-16">
+          <div className="bg-primary text-white p-8 rounded-lg">
+            <h2 className="text-2xl font-bold mb-4">Try the Common Hosted Credential Service</h2>
+            <p className="mb-6 text-blue-100 text-lg">
+              You can try out the service if you're a central government service and need to sign in your users or check their identities.
+            </p>
+            <Button 
+              size="lg" 
+              variant="secondary"
+              onClick={() => navigate('/client')}
+            >
+              Get started <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </main>
 
