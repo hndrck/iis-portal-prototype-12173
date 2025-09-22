@@ -57,17 +57,17 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <BCHeader />
       
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-6 py-16">
         {/* Hero Section */}
-        <div className="max-w-4xl mb-16">
+        <div className="max-w-4xl mb-20">
           <Badge className="mb-6 bg-accent text-primary" variant="secondary">
             Prototype - Future State Vision
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6 leading-tight">
-            Let BC government teams integrate with identity services quickly and securely
+            Connect to BC government identity solutions
           </h1>
           <p className="text-xl text-foreground mb-8 max-w-2xl">
-            Try the Common Hosted Credential Service if you work on a central government service and need to integrate with identity providers.
+            A single service for BC government teams to integrate with identity providers. Answer questions about your needs and get the right authentication solution automatically.
           </p>
           
           <div className="flex gap-4 mb-8">
@@ -87,30 +87,9 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Benefits Sections */}
-        <div className="space-y-16 mb-16">
-          {benefits.map((benefit, index) => (
-            <div key={index} className="max-w-4xl">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                  <div className="flex items-center mb-4">
-                    <benefit.icon className="h-8 w-8 text-primary mr-3" />
-                    <h2 className="text-2xl font-bold text-foreground">{benefit.title}</h2>
-                  </div>
-                  <p className="text-lg text-muted-foreground">
-                    {benefit.description}
-                  </p>
-                </div>
-                <div className="bg-slate-100 rounded-lg p-8 h-48 flex items-center justify-center">
-                  <span className="text-muted-foreground">Service illustration</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
 
         {/* Process Overview */}
-        <div className="max-w-4xl mb-16">
+        <div className="max-w-4xl mb-20">
           <h2 className="text-3xl font-bold text-foreground mb-6">How it works</h2>
           <p className="text-lg text-muted-foreground mb-8">
             Simple process to get the right identity solution for your project
@@ -133,7 +112,7 @@ const Index = () => {
         </div>
 
         {/* What You'll Need */}
-        <div className="max-w-4xl mb-16">
+        <div className="max-w-4xl mb-20">
           <h2 className="text-3xl font-bold text-foreground mb-6">What you'll need to get started</h2>
           <div className="space-y-4">
             {requirements.map((requirement, index) => (
@@ -146,7 +125,7 @@ const Index = () => {
         </div>
 
         {/* Call to Action */}
-        <div className="max-w-4xl mb-16">
+        <div className="max-w-4xl mb-20">
           <div className="bg-primary text-white p-8 rounded-lg">
             <h2 className="text-2xl font-bold mb-4">Try the Common Hosted Credential Service</h2>
             <p className="mb-6 text-blue-100 text-lg">
