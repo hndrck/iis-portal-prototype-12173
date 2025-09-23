@@ -11,8 +11,8 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Check, Save, ArrowLeft } from "lucide-react";
 
 interface TechnicalRequirementsData {
-  applicationType: string;
-  applicationTypeOther: string;
+  useCase: string;
+  
   assuranceLevel: string;
   requiredAttributes: string[];
   customAttributes: string;
@@ -44,31 +44,21 @@ const TechnicalRequirementsForm = ({
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isAutoSaving, setIsAutoSaving] = useState(false);
 
-  const applicationTypeOptions = [
+  const useCaseOptions = [
     {
-      value: "web-app",
-      label: "Web Application",
-      description: "Browser-based application that can securely store credentials on the server"
+      value: "browser-login",
+      label: "Browser Login",
+      description: "Users sign in to your web application or website to access their account and use your service"
     },
     {
-      value: "spa",
-      label: "Single Page Application (SPA)",
-      description: "JavaScript application running entirely in the browser"
+      value: "service-account",
+      label: "Service Account",
+      description: "Your application needs to access government data or services automatically in the background, without requiring individual user login each time"
     },
     {
-      value: "mobile",
-      label: "Mobile Application",
-      description: "Native iOS or Android application"
-    },
-    {
-      value: "service-api",
-      label: "Service/API",
-      description: "Backend service or API that needs to authenticate on behalf of users"
-    },
-    {
-      value: "other",
-      label: "Other",
-      description: ""
+      value: "browser-and-service",
+      label: "Browser Login and Service Account",
+      description: "Users sign in to access your service, and your application also needs to automatically access government data or services on their behalf"
     }
   ];
 
@@ -126,7 +116,7 @@ const TechnicalRequirementsForm = ({
   // Auto-save functionality
   useEffect(() => {
     const timer = setInterval(() => {
-      if (data.applicationType || data.assuranceLevel) {
+      if (data.useCase || data.assuranceLevel) {
         setIsAutoSaving(true);
         setTimeout(() => {
           setLastSaved(new Date());
@@ -155,7 +145,7 @@ const TechnicalRequirementsForm = ({
   };
 
   const isFormValid = () => {
-    return data.applicationType && data.assuranceLevel && data.requiredAttributes.length > 0 && data.environments.length > 0;
+    return data.useCase && data.assuranceLevel && data.requiredAttributes.length > 0 && data.environments.length > 0;
   };
 
   return (
@@ -190,21 +180,21 @@ const TechnicalRequirementsForm = ({
 
       <Card>
         <CardContent className="p-8 space-y-8">
-          {/* Section 1: Application Type */}
+          {/* Section 1: Use Case */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-semibold mb-2">Application Type</h2>
-              <p className="text-sm text-muted-foreground">This determines how your application will securely communicate with the identity service</p>
+              <h2 className="text-lg font-semibold mb-2">Select Use Case</h2>
+              <p className="text-sm text-muted-foreground">Choose the authentication pattern that best describes how users will interact with your service</p>
             </div>
             
             <div className="space-y-4">
-              <Label>What type of application are you building? *</Label>
+              <Label>Select Use Case *</Label>
               <RadioGroup
-                value={data.applicationType}
-                onValueChange={(value) => onUpdate({ applicationType: value })}
+                value={data.useCase}
+                onValueChange={(value) => onUpdate({ useCase: value })}
                 className="space-y-4"
               >
-                {applicationTypeOptions.map((option) => (
+                {useCaseOptions.map((option) => (
                   <div key={option.value} className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value={option.value} id={option.value} />
@@ -212,16 +202,6 @@ const TechnicalRequirementsForm = ({
                     </div>
                     {option.description && (
                       <p className="text-sm text-muted-foreground ml-6">{option.description}</p>
-                    )}
-                    {option.value === "other" && data.applicationType === "other" && (
-                      <div className="ml-6">
-                        <Input
-                          value={data.applicationTypeOther}
-                          onChange={(e) => onUpdate({ applicationTypeOther: e.target.value })}
-                          placeholder="Please describe your application type"
-                          className="mt-2"
-                        />
-                      </div>
                     )}
                   </div>
                 ))}

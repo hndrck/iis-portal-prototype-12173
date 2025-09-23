@@ -32,8 +32,7 @@ export interface WizardData {
     environments: string[];
   };
   requirements: {
-    applicationType: string;
-    applicationTypeOther: string;
+    useCase: string;
     assuranceLevel: string;
     requiredAttributes: string[];
     customAttributes: string;
@@ -82,8 +81,7 @@ const IntegrationWizard = () => {
       environments: []
     },
     requirements: {
-      applicationType: "",
-      applicationTypeOther: "",
+      useCase: "",
       assuranceLevel: "",
       requiredAttributes: [],
       customAttributes: "",
@@ -170,7 +168,7 @@ const IntegrationWizard = () => {
         }
         return requiredFields;
       case 1:
-        return data.requirements.applicationType && data.requirements.assuranceLevel && data.requirements.requiredAttributes.length > 0 && data.requirements.environments.length > 0;
+        return data.requirements.useCase && data.requirements.assuranceLevel && data.requirements.requiredAttributes.length > 0 && data.requirements.environments.length > 0;
       case 2:
         return data.solution.recommended;
       case 3:
