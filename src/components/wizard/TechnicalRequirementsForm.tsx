@@ -29,6 +29,7 @@ interface TechnicalRequirementsFormProps {
   currentStep?: number;
   totalSteps?: number;
   progressValue?: number;
+  steps?: Array<{ title: string; description: string }>;
 }
 
 const TechnicalRequirementsForm = ({ 
@@ -39,7 +40,8 @@ const TechnicalRequirementsForm = ({
   onSaveAndClose,
   currentStep = 2,
   totalSteps = 5,
-  progressValue = 25
+  progressValue = 25,
+  steps = []
 }: TechnicalRequirementsFormProps) => {
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isAutoSaving, setIsAutoSaving] = useState(false);
@@ -176,6 +178,32 @@ const TechnicalRequirementsForm = ({
           <span className="text-sm text-muted-foreground">Step {currentStep} of {totalSteps}</span>
         </div>
         <Progress value={progressValue} className="w-full" />
+        {steps.length > 0 && (
+          <div className="flex justify-between mt-4">
+            {steps.map((step, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium mb-2 ${
+                    index < (currentStep - 1)
+                      ? 'bg-primary text-primary-foreground'
+                      : index === (currentStep - 1)
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-muted-foreground'
+                  }`}
+                >
+                  {index + 1}
+                </div>
+                <div
+                  className={`text-xs text-center max-w-20 ${
+                    index <= (currentStep - 1) ? 'text-primary font-medium' : 'text-muted-foreground'
+                  }`}
+                >
+                  {step.title}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <Card>

@@ -31,6 +31,7 @@ interface ProjectInfoIntakeFormProps {
   currentStep?: number;
   totalSteps?: number;
   progressValue?: number;
+  steps?: Array<{ title: string; description: string }>;
 }
 
 const ProjectInfoIntakeForm = ({ 
@@ -40,7 +41,8 @@ const ProjectInfoIntakeForm = ({
   onSaveAndClose,
   currentStep = 1,
   totalSteps = 5,
-  progressValue = 0
+  progressValue = 0,
+  steps = []
 }: ProjectInfoIntakeFormProps) => {
   const navigate = useNavigate();
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
@@ -155,6 +157,32 @@ const ProjectInfoIntakeForm = ({
           <span className="text-sm text-muted-foreground">Step {currentStep} of {totalSteps}</span>
         </div>
         <Progress value={progressValue} className="w-full" />
+        {steps.length > 0 && (
+          <div className="flex justify-between mt-4">
+            {steps.map((step, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium mb-2 ${
+                    index < (currentStep - 1)
+                      ? 'bg-primary text-primary-foreground'
+                      : index === (currentStep - 1)
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-muted-foreground'
+                  }`}
+                >
+                  {index + 1}
+                </div>
+                <div
+                  className={`text-xs text-center max-w-20 ${
+                    index <= (currentStep - 1) ? 'text-primary font-medium' : 'text-muted-foreground'
+                  }`}
+                >
+                  {step.title}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <Card>

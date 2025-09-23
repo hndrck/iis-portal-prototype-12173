@@ -119,6 +119,10 @@ const IntegrationWizard = () => {
     }
   ];
 
+  const getProgressValue = () => {
+    return (currentStep / (steps.length - 1)) * 100;
+  };
+
   const updateData = (section: keyof WizardData, updates: any) => {
     setData(prev => ({
       ...prev,
@@ -188,7 +192,8 @@ const IntegrationWizard = () => {
             onSaveAndClose={() => navigate('/client')}
             currentStep={currentStep + 1}
             totalSteps={steps.length}
-            progressValue={(currentStep / (steps.length - 1)) * 100}
+            progressValue={getProgressValue()}
+            steps={steps}
           />
         );
       case 1:
@@ -201,7 +206,8 @@ const IntegrationWizard = () => {
             onSaveAndClose={() => navigate('/client')}
             currentStep={currentStep + 1}
             totalSteps={steps.length}
-            progressValue={(currentStep / (steps.length - 1)) * 100}
+            progressValue={getProgressValue()}
+            steps={steps}
           />
         );
       case 2:
@@ -248,16 +254,28 @@ const IntegrationWizard = () => {
             </Button>
           </div>
           <div className="mt-6">
-            <Progress value={(currentStep / (steps.length - 1)) * 100} className="w-full" />
-            <div className="flex justify-between mt-2">
+            <Progress value={getProgressValue()} className="w-full" />
+            <div className="flex justify-between mt-4">
               {steps.map((step, index) => (
-                <div
-                  key={index}
-                  className={`text-xs ${
-                    index <= currentStep ? 'text-primary font-medium' : 'text-muted-foreground'
-                  }`}
-                >
-                  {step.title}
+                <div key={index} className="flex flex-col items-center">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium mb-2 ${
+                      index < currentStep
+                        ? 'bg-primary text-primary-foreground'
+                        : index === currentStep
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground'
+                    }`}
+                  >
+                    {index + 1}
+                  </div>
+                  <div
+                    className={`text-xs text-center max-w-20 ${
+                      index <= currentStep ? 'text-primary font-medium' : 'text-muted-foreground'
+                    }`}
+                  >
+                    {step.title}
+                  </div>
                 </div>
               ))}
             </div>
