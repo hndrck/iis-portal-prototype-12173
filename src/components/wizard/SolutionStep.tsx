@@ -1,8 +1,14 @@
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, Shield, Users, Globe } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CheckCircle, Shield, Users, Globe, AlertCircle } from "lucide-react";
 import { WizardData } from "../IntegrationWizard";
 
 interface SolutionStepProps {
@@ -11,129 +17,254 @@ interface SolutionStepProps {
 }
 
 const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
-  // Memoize the generated solution to prevent infinite loops
-  const generatedSolution = useMemo(() => {
+  const [showAppealModal, setShowAppealModal] = useState(false);
+  const [appealData, setAppealData] = useState({
+    explanation: "",
+    contactMethod: "",
+    bestTime: ""
+  });
+
+  // Decision logic based on user types and Level of Assurance
+  const recommendedSolutions = useMemo(() => {
+    const solutions: Array<{
+      userType: string;
+      provider: string;
+      description: string;
+      userExperience: string;
+      icon?: string;
+    }> = [];
+
+    const userTypes = data.projectInfo.userTypes || [];
+    const loa = data.requirements.assuranceLevel || "";
+
+    userTypes.forEach(userType => {
+      switch (userType) {
+        case "BC Residents":
+        case "Canadian Residents":
+        case "International Residents":
+          if (loa === "low") {
+            solutions.push({
+              userType,
+              provider: "BCeID Basic",
+              description: "Basic identity verification for general access",
+              userExperience: "Users create a simple account with email verification"
+            });
+          } else {
+            solutions.push({
+              userType,
+              provider: "BC Services Card",
+              description: "Verified identity for BC residents",
+              userExperience: "Users sign in with BC Services Card app or website"
+            });
+          }
+          break;
+        case "Individual representing business/organization":
+          solutions.push({
+            userType,
+            provider: "BCeID Business",
+            description: "Secure authentication for business representatives",
+            userExperience: "Users sign in with their organization credentials"
+          });
+          break;
+        case "Government Employee":
+        case "Government Contractor":
+          solutions.push({
+            userType,
+            provider: "IDIR",
+            description: "Secure authentication for government staff",
+            userExperience: "Users sign in with their government credentials"
+          });
+          break;
+        case "Business entities":
+        case "Broader Public Service":
+          solutions.push({
+            userType,
+            provider: "Entra Guest",
+            description: "Enterprise authentication for external organizations",
+            userExperience: "Users sign in with their organization's Microsoft credentials"
+          });
+          break;
+      }
+    });
+
+    // Remove duplicates
+    const uniqueSolutions = solutions.filter((solution, index, self) => 
+      index === self.findIndex(s => s.provider === solution.provider)
+    );
+
+    return uniqueSolutions;
+  }, [data.projectInfo.userTypes, data.requirements.assuranceLevel]);
+
+  const solutionSummary = useMemo(() => {
+    const providers = recommendedSolutions.map(s => s.provider);
     let recommended = "";
     let components: string[] = [];
     let reasoning = "";
 
-    // Logic to determine solution based on requirements
-    if (data.requirements.primaryPurpose === "public" || data.requirements.primaryPurpose === "both") {
-      if (data.requirements.userBase.includes("BC Residents")) {
-        recommended = "BC Services Card + BCeID";
-        components = ["BC Services Card", "BCeID Business", "OAuth 2.0 / OpenID Connect"];
-      }
+    if (providers.length === 1) {
+      recommended = providers[0];
+      components = [providers[0]];
+    } else if (providers.length > 1) {
+      recommended = providers.join(" + ");
+      components = providers;
+    } else {
+      recommended = "BC Services Card";
+      components = ["BC Services Card"];
     }
 
-    if (data.requirements.primaryPurpose === "internal") {
-      recommended = "IDIR Integration";
-      components = ["IDIR", "Active Directory", "SAML 2.0"];
-    }
-
-    if (data.requirements.dataSensitivity === "protected-c" || data.requirements.assuranceLevel === "verified") {
-      if (!components.includes("BC Services Card")) {
-        components.unshift("BC Services Card");
-      }
-    }
-
-    // Fallback solution
-    if (!recommended) {
-      recommended = "BC Services Card + BCeID";
-      components = ["BC Services Card", "BCeID Business", "OAuth 2.0 / OpenID Connect"];
-    }
-
-    reasoning = `Based on your requirements for ${data.requirements.primaryPurpose} service with ${data.requirements.dataSensitivity} data sensitivity, this solution provides the appropriate level of identity assurance while maintaining ease of integration.`;
+    reasoning = `Based on your selected user types (${data.projectInfo.userTypes?.join(", ")}) and ${data.requirements.assuranceLevel} level of assurance, this solution provides the appropriate identity verification.`;
 
     return { recommended, components, reasoning };
-  }, [data.requirements.primaryPurpose, data.requirements.userBase, data.requirements.dataSensitivity, data.requirements.assuranceLevel]);
+  }, [recommendedSolutions, data.projectInfo.userTypes, data.requirements.assuranceLevel]);
 
   useEffect(() => {
     // Only update if the current solution data doesn't match the generated solution
     if (
-      data.solution.recommended !== generatedSolution.recommended ||
-      JSON.stringify(data.solution.components) !== JSON.stringify(generatedSolution.components) ||
-      data.solution.reasoning !== generatedSolution.reasoning
+      data.solution.recommended !== solutionSummary.recommended ||
+      JSON.stringify(data.solution.components) !== JSON.stringify(solutionSummary.components) ||
+      data.solution.reasoning !== solutionSummary.reasoning
     ) {
-      onUpdate(generatedSolution);
+      onUpdate(solutionSummary);
     }
-  }, [generatedSolution, data.solution, onUpdate]);
+  }, [solutionSummary, data.solution, onUpdate]);
+
+  const handleAppealSubmit = () => {
+    console.log("Appeal submitted:", appealData);
+    setShowAppealModal(false);
+    // Here you would typically send the appeal to your backend
+    alert("Your request has been submitted. Our identity team will contact you within 2 business days.");
+  };
 
   return (
     <div className="space-y-6">
+      {/* Summary Section */}
       <Card className="border-primary/20">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <CheckCircle className="h-5 w-5 text-green-600" />
-            <span>Recommended Solution</span>
-          </CardTitle>
+          <CardTitle className="text-xl">Based on your requirements:</CardTitle>
           <CardDescription>
-            Automatically selected based on your service requirements
+            User types: {data.projectInfo.userTypes?.join(", ")} | Level of Assurance: {data.requirements.assuranceLevel}
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <h3 className="text-lg font-semibold mb-4">We recommend the following identity solution(s):</h3>
+          
+          {/* Solution Cards */}
           <div className="space-y-4">
-            <div>
-              <h4 className="font-semibold text-lg text-primary">{data.solution.recommended}</h4>
-              <p className="text-muted-foreground mt-2">{data.solution.reasoning}</p>
-            </div>
-
-            <div className="space-y-2">
-              <h5 className="font-medium">Included Components:</h5>
-              <div className="flex flex-wrap gap-2">
-                {data.solution.components.map((component) => (
-                  <Badge key={component} variant="secondary" className="bg-accent text-primary">
-                    {component}
-                  </Badge>
-                ))}
-              </div>
-            </div>
+            {recommendedSolutions.map((solution, index) => (
+              <Card key={index} className="border-l-4 border-l-primary">
+                <CardContent className="pt-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Shield className="h-6 w-6 text-primary" />
+                      </div>
+                    </div>
+                    <div className="flex-grow">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <h4 className="font-semibold text-lg">{solution.userType} will use:</h4>
+                        <Badge variant="secondary" className="bg-primary text-primary-foreground">
+                          {solution.provider}
+                        </Badge>
+                      </div>
+                      <p className="text-muted-foreground mb-2">{solution.description}</p>
+                      <p className="text-sm text-muted-foreground italic">{solution.userExperience}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-2">
-              <Shield className="h-5 w-5 text-primary" />
-              <CardTitle className="text-sm">Security</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Meets {data.requirements.dataSensitivity} data classification requirements
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-primary" />
-              <CardTitle className="text-sm">User Experience</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Optimized for {data.requirements.userBase.join(", ")}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-2">
-              <Globe className="h-5 w-5 text-primary" />
-              <CardTitle className="text-sm">Standards</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              OAuth 2.0 / OpenID Connect compliant
-            </p>
-          </CardContent>
-        </Card>
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <Button className="flex-1 bg-primary hover:bg-primary/90">
+          <CheckCircle className="mr-2 h-4 w-4" />
+          Accept This Solution
+        </Button>
+        <Button 
+          variant="outline" 
+          className="flex-1"
+          onClick={() => setShowAppealModal(true)}
+        >
+          <AlertCircle className="mr-2 h-4 w-4" />
+          Request Different Solution
+        </Button>
       </div>
+
+      {/* Appeal Modal */}
+      <Dialog open={showAppealModal} onOpenChange={setShowAppealModal}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Request Different Solution</DialogTitle>
+            <DialogDescription>
+              Tell us why the recommended solution doesn't work for your service
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="explanation">Explanation *</Label>
+              <Textarea
+                id="explanation"
+                placeholder="Please explain why you need a different solution..."
+                value={appealData.explanation}
+                onChange={(e) => setAppealData({...appealData, explanation: e.target.value})}
+                className="min-h-[100px]"
+                required
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="contactMethod">Preferred contact method</Label>
+              <Select 
+                value={appealData.contactMethod} 
+                onValueChange={(value) => setAppealData({...appealData, contactMethod: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select contact method" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="email">Email</SelectItem>
+                  <SelectItem value="phone">Phone</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div>
+              <Label htmlFor="bestTime">Best time to reach you</Label>
+              <Input
+                id="bestTime"
+                placeholder="e.g., Weekdays 9-5 PST"
+                value={appealData.bestTime}
+                onChange={(e) => setAppealData({...appealData, bestTime: e.target.value})}
+              />
+            </div>
+            
+            <p className="text-sm text-muted-foreground">
+              Our identity team will review your request and contact you within 2 business days.
+            </p>
+          </div>
+          
+          <div className="flex gap-3 mt-6">
+            <Button 
+              onClick={handleAppealSubmit}
+              disabled={!appealData.explanation.trim()}
+              className="flex-1"
+            >
+              Submit Request
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowAppealModal(false)}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
