@@ -39,9 +39,9 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
 
     userTypes.forEach(userType => {
       switch (userType) {
-        case "BC Residents":
-        case "Canadian Residents":
-        case "International Residents":
+        case "BC residents":
+        case "Canadian residents (outside BC)":
+        case "International users":
           if (loa === "low") {
             solutions.push({
               userType,
@@ -58,7 +58,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
             });
           }
           break;
-        case "Individual representing business/organization":
+        case "People representing businesses or organizations":
           solutions.push({
             userType,
             provider: "BCeID Business",
@@ -66,8 +66,8 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
             userExperience: "Users sign in with their organization credentials"
           });
           break;
-        case "Government Employee":
-        case "Government Contractor":
+        case "BC government employees":
+        case "Government contractors":
           solutions.push({
             userType,
             provider: "IDIR",
@@ -75,8 +75,8 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
             userExperience: "Users sign in with their government credentials"
           });
           break;
-        case "Business entities":
-        case "Broader Public Service":
+        case "Broader public service employees":
+        case "Other organizations with government relationships (RCMP, consulates, etc.)":
           solutions.push({
             userType,
             provider: "Entra Guest",
