@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ProjectInfoIntakeForm from "./wizard/ProjectInfoIntakeForm";
-import RequirementsStep from "./wizard/RequirementsStep";
+import TechnicalRequirementsForm from "./wizard/TechnicalRequirementsForm";
 import SolutionStep from "./wizard/SolutionStep";
 import ConfigurationStep from "./wizard/ConfigurationStep";
 import ReviewStep from "./wizard/ReviewStep";
@@ -32,10 +32,17 @@ export interface WizardData {
     environments: string[];
   };
   requirements: {
+    applicationType: string;
+    applicationTypeOther: string;
+    assuranceLevel: string;
+    requiredAttributes: string[];
+    customAttributes: string;
+    environments: string[];
+    additionalRequirements: string;
+    // Legacy fields for compatibility with other steps
     primaryPurpose: string;
     userBase: string[];
     dataSensitivity: string;
-    assuranceLevel: string;
     specialRequirements: string[];
   };
   solution: {
@@ -75,10 +82,17 @@ const IntegrationWizard = () => {
       environments: []
     },
     requirements: {
+      applicationType: "",
+      applicationTypeOther: "",
+      assuranceLevel: "",
+      requiredAttributes: [],
+      customAttributes: "",
+      environments: [],
+      additionalRequirements: "",
+      // Legacy fields for compatibility
       primaryPurpose: "",
       userBase: [],
       dataSensitivity: "",
-      assuranceLevel: "",
       specialRequirements: []
     },
     solution: {
@@ -156,7 +170,7 @@ const IntegrationWizard = () => {
         }
         return requiredFields;
       case 1:
-        return data.requirements.primaryPurpose && data.requirements.userBase.length > 0;
+        return data.requirements.applicationType && data.requirements.assuranceLevel && data.requirements.requiredAttributes.length > 0 && data.requirements.environments.length > 0;
       case 2:
         return data.solution.recommended;
       case 3:
@@ -190,9 +204,15 @@ const IntegrationWizard = () => {
         );
       case 1:
         return (
-          <RequirementsStep
+          <TechnicalRequirementsForm
             data={data.requirements}
             onUpdate={(updates) => updateData('requirements', updates)}
+            onNext={nextStep}
+            onBack={prevStep}
+            onSaveAndClose={() => navigate('/client')}
+            currentStep={currentStep + 1}
+            totalSteps={steps.length}
+            progressValue={(currentStep / (steps.length - 1)) * 100}
           />
         );
       case 2:
@@ -218,8 +238,8 @@ const IntegrationWizard = () => {
     }
   };
 
-  // For step 0, render the intake form directly without the card wrapper
-  if (currentStep === 0) {
+  // For steps 0 and 1, render the forms directly without the card wrapper
+  if (currentStep === 0 || currentStep === 1) {
     return renderStep();
   }
 
