@@ -74,7 +74,7 @@ const Index = () => {
             <Button 
               size="lg" 
               className="bg-primary hover:bg-primary/90"
-              onClick={() => navigate('/client')}
+              onClick={() => navigate('/login')}
             >
               Get started <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -134,7 +134,7 @@ const Index = () => {
             <Button 
               size="lg" 
               variant="secondary"
-              onClick={() => navigate('/client')}
+              onClick={() => navigate('/login')}
             >
               Get started <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
