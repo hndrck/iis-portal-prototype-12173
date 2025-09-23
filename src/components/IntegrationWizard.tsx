@@ -183,6 +183,9 @@ const IntegrationWizard = () => {
             onUpdate={(updates) => updateData('projectInfo', updates)}
             onNext={nextStep}
             onSaveAndClose={() => navigate('/client')}
+            currentStep={currentStep + 1}
+            totalSteps={steps.length}
+            progressValue={(currentStep / (steps.length - 1)) * 100}
           />
         );
       case 1:

@@ -31,9 +31,20 @@ interface ProjectInfoIntakeFormProps {
   onUpdate: (data: Partial<ProjectInfoIntakeData>) => void;
   onNext: () => void;
   onSaveAndClose: () => void;
+  currentStep?: number;
+  totalSteps?: number;
+  progressValue?: number;
 }
 
-const ProjectInfoIntakeForm = ({ data, onUpdate, onNext, onSaveAndClose }: ProjectInfoIntakeFormProps) => {
+const ProjectInfoIntakeForm = ({ 
+  data, 
+  onUpdate, 
+  onNext, 
+  onSaveAndClose,
+  currentStep = 1,
+  totalSteps = 5,
+  progressValue = 0
+}: ProjectInfoIntakeFormProps) => {
   const navigate = useNavigate();
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isAutoSaving, setIsAutoSaving] = useState(false);
@@ -127,9 +138,9 @@ const ProjectInfoIntakeForm = ({ data, onUpdate, onNext, onSaveAndClose }: Proje
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
           <h1 className="text-2xl font-bold">New Integration Request</h1>
-          <span className="text-sm text-muted-foreground">Step 1 of 2</span>
+          <span className="text-sm text-muted-foreground">Step {currentStep} of {totalSteps}</span>
         </div>
-        <Progress value={50} className="w-full" />
+        <Progress value={progressValue} className="w-full" />
       </div>
 
       <Card>
