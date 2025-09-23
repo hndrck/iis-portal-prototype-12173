@@ -117,11 +117,11 @@ const ClientDashboard = () => {
           </div>
           <Button 
             size="lg" 
-            className="bg-primary hover:bg-primary/90"
+            className="bg-primary hover:bg-primary/90 shadow-lg font-semibold"
             onClick={() => navigate('/client/new-integration')}
           >
             <Plus className="mr-2 h-5 w-5" />
-            New Integration
+            Request New Integration
           </Button>
         </div>
 
