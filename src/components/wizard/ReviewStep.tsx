@@ -84,31 +84,37 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
           </CardHeader>
           <CardContent className="space-y-3">
             {data.projectInfo.userTypes.map((userType) => {
-              const userTypeSolutions = data.solution.components.filter(component => 
-                component.toLowerCase().includes(userType.toLowerCase()) ||
-                (userType === 'Public' && (component.includes('BC Services Card') || component.includes('BCeID'))) ||
-                (userType === 'Government' && component.includes('IDIR')) ||
-                (userType === 'Business' && component.includes('BCeID'))
-              );
+              // Use the same logic as SolutionStep to determine the correct provider
+              const loa = data.requirements.assuranceLevel || "";
+              let provider = "";
+              
+              switch (userType) {
+                case "BC residents":
+                case "Canadian residents (outside BC)":
+                case "International users":
+                  provider = loa === "low" ? "BCeID Basic" : "BC Services Card";
+                  break;
+                case "People representing businesses or organizations":
+                  provider = "BCeID Business";
+                  break;
+                case "BC government employees":
+                case "Government contractors":
+                  provider = "IDIR";
+                  break;
+                case "Broader public service employees":
+                case "Other organizations with government relationships (RCMP, consulates, etc.)":
+                  provider = "Entra Guest";
+                  break;
+                default:
+                  provider = "To be determined";
+              }
               
               return (
                 <div key={userType} className="border rounded-lg p-3">
-                  <div className="font-medium mb-2">{userType} Users</div>
-                  <div className="flex flex-wrap gap-1">
-                    {userTypeSolutions.length > 0 ? (
-                      userTypeSolutions.map((solution) => (
-                        <Badge key={solution} variant="secondary" className="bg-accent text-primary">
-                          {solution}
-                        </Badge>
-                      ))
-                    ) : (
-                      data.solution.components.map((component) => (
-                        <Badge key={component} variant="secondary" className="bg-accent text-primary">
-                          {component}
-                        </Badge>
-                      ))
-                    )}
-                  </div>
+                  <div className="font-medium mb-2">{userType}</div>
+                  <Badge variant="secondary" className="bg-accent text-primary">
+                    {provider}
+                  </Badge>
                 </div>
               );
             })}
