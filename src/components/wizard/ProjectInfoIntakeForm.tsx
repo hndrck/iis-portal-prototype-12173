@@ -15,15 +15,12 @@ import { useNavigate } from "react-router-dom";
 interface ProjectInfoIntakeData {
   serviceName: string;
   serviceDescription: string;
+  ministry: string;
   userTypes: string[];
   accountability: string;
-  delegateProductOwnerName: string;
-  delegateProductOwnerEmail: string;
-  delegateTechnicalContactName: string;
-  delegateTechnicalContactEmail: string;
-  contactName: string;
-  contactEmail: string;
-  ministry: string;
+  delegateContactType: string;
+  delegateContactName: string;
+  delegateContactEmail: string;
 }
 
 interface ProjectInfoIntakeFormProps {
@@ -61,11 +58,29 @@ const ProjectInfoIntakeForm = ({
   ];
 
   const ministryOptions = [
-    "Ministry of Citizens' Services",
-    "Ministry of Health",
-    "Ministry of Education and Child Care",
-    "Ministry of Transportation and Infrastructure",
-    "Ministry of Social Development and Poverty Reduction",
+    "Agriculture and Food",
+    "Attorney General",
+    "Children and Family Development",
+    "Citizens' Services",
+    "Education and Child Care",
+    "Emergency Management and Climate Readiness",
+    "Energy and Climate Solutions",
+    "Environment and Parks",
+    "Finance",
+    "Forests",
+    "Health",
+    "Housing and Municipal Affairs",
+    "Indigenous Relations and Reconciliation",
+    "Infrastructure",
+    "Jobs and Economic Growth",
+    "Labour",
+    "Mining and Critical Minerals",
+    "Post-Secondary Education and Future Skills",
+    "Public Safety and Solicitor General",
+    "Social Development and Poverty Reduction",
+    "Tourism, Arts, Culture and Sport",
+    "Transportation and Transit",
+    "Water, Land and Resource Stewardship",
     "Other"
   ];
 
@@ -94,14 +109,13 @@ const ProjectInfoIntakeForm = ({
   };
 
   const isFormValid = () => {
-    const requiredFields = data.serviceName && data.serviceDescription && data.userTypes.length > 0 && data.accountability;
+    const requiredFields = data.serviceName && data.serviceDescription && data.ministry && data.userTypes.length > 0 && data.accountability;
     
     if (data.accountability === "no") {
       return requiredFields && 
-        data.delegateProductOwnerName && 
-        data.delegateProductOwnerEmail && 
-        data.delegateTechnicalContactName && 
-        data.delegateTechnicalContactEmail;
+        data.delegateContactType && 
+        data.delegateContactName && 
+        data.delegateContactEmail;
     }
     
     return requiredFields;
@@ -175,6 +189,22 @@ const ProjectInfoIntakeForm = ({
                 required
               />
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="ministry">Ministry/Organization *</Label>
+              <Select value={data.ministry} onValueChange={(value) => onUpdate({ ministry: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your ministry" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ministryOptions.map((ministry) => (
+                    <SelectItem key={ministry} value={ministry}>
+                      {ministry}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Section 2: Users & Access */}
@@ -236,102 +266,56 @@ const ProjectInfoIntakeForm = ({
                   <p className="text-sm text-muted-foreground">We'll send them a link to continue this request. Only the accountable person should submit integration requests.</p>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="delegateProductOwnerName">Product owner name *</Label>
-                    <Input
-                      id="delegateProductOwnerName"
-                      value={data.delegateProductOwnerName}
-                      onChange={(e) => onUpdate({ delegateProductOwnerName: e.target.value })}
-                      placeholder="Full name"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="delegateProductOwnerEmail">Product owner email *</Label>
-                    <Input
-                      id="delegateProductOwnerEmail"
-                      type="email"
-                      value={data.delegateProductOwnerEmail}
-                      onChange={(e) => onUpdate({ delegateProductOwnerEmail: e.target.value })}
-                      placeholder="email@gov.bc.ca"
-                      required
-                    />
-                  </div>
+                <div className="space-y-4">
+                  <Label>Select contact type *</Label>
+                  <RadioGroup
+                    value={data.delegateContactType}
+                    onValueChange={(value) => onUpdate({ delegateContactType: value })}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="product-owner" id="delegate-product-owner" />
+                      <Label htmlFor="delegate-product-owner" className="font-normal">Product Owner</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="technical-contact" id="delegate-technical-contact" />
+                      <Label htmlFor="delegate-technical-contact" className="font-normal">Technical Contact</Label>
+                    </div>
+                  </RadioGroup>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="delegateTechnicalContactName">Technical contact name *</Label>
-                    <Input
-                      id="delegateTechnicalContactName"
-                      value={data.delegateTechnicalContactName}
-                      onChange={(e) => onUpdate({ delegateTechnicalContactName: e.target.value })}
-                      placeholder="Full name"
-                      required
-                    />
+                {data.delegateContactType && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="delegateContactName">
+                        {data.delegateContactType === "product-owner" ? "Product owner name" : "Technical contact name"} *
+                      </Label>
+                      <Input
+                        id="delegateContactName"
+                        value={data.delegateContactName}
+                        onChange={(e) => onUpdate({ delegateContactName: e.target.value })}
+                        placeholder="Full name"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="delegateContactEmail">
+                        {data.delegateContactType === "product-owner" ? "Product owner email" : "Technical contact email"} *
+                      </Label>
+                      <Input
+                        id="delegateContactEmail"
+                        type="email"
+                        value={data.delegateContactEmail}
+                        onChange={(e) => onUpdate({ delegateContactEmail: e.target.value })}
+                        placeholder="email@gov.bc.ca"
+                        required
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="delegateTechnicalContactEmail">Technical contact email *</Label>
-                    <Input
-                      id="delegateTechnicalContactEmail"
-                      type="email"
-                      value={data.delegateTechnicalContactEmail}
-                      onChange={(e) => onUpdate({ delegateTechnicalContactEmail: e.target.value })}
-                      placeholder="email@gov.bc.ca"
-                      required
-                    />
-                  </div>
-                </div>
+                )}
               </div>
             )}
           </div>
 
-          {/* Section 4: Your Contact Information */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold mb-4">Your Contact Information</h2>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="contactName">Name</Label>
-                <Input
-                  id="contactName"
-                  value={data.contactName || "John Doe"}
-                  readOnly
-                  className="bg-muted"
-                />
-                <p className="text-xs text-muted-foreground">Pre-filled from IDIR session</p>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="contactEmail">Email</Label>
-                <Input
-                  id="contactEmail"
-                  value={data.contactEmail || "john.doe@gov.bc.ca"}
-                  readOnly
-                  className="bg-muted"
-                />
-                <p className="text-xs text-muted-foreground">Pre-filled from IDIR session</p>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="ministry">Ministry/Organization</Label>
-              <Select value={data.ministry} onValueChange={(value) => onUpdate({ ministry: value })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your ministry" />
-                </SelectTrigger>
-                <SelectContent>
-                  {ministryOptions.map((ministry) => (
-                    <SelectItem key={ministry} value={ministry}>
-                      {ministry}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
         </CardContent>
 
         {/* Footer Actions */}

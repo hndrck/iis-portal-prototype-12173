@@ -15,15 +15,12 @@ export interface WizardData {
   projectInfo: {
     serviceName: string;
     serviceDescription: string;
+    ministry: string;
     userTypes: string[];
     accountability: string;
-    delegateProductOwnerName: string;
-    delegateProductOwnerEmail: string;
-    delegateTechnicalContactName: string;
-    delegateTechnicalContactEmail: string;
-    contactName: string;
-    contactEmail: string;
-    ministry: string;
+    delegateContactType: string;
+    delegateContactName: string;
+    delegateContactEmail: string;
     // Legacy fields for compatibility with other steps
     description: string;
     sponsor: string;
@@ -64,15 +61,12 @@ const IntegrationWizard = () => {
     projectInfo: {
       serviceName: "",
       serviceDescription: "",
+      ministry: "",
       userTypes: [],
       accountability: "",
-      delegateProductOwnerName: "",
-      delegateProductOwnerEmail: "",
-      delegateTechnicalContactName: "",
-      delegateTechnicalContactEmail: "",
-      contactName: "John Doe", // Pre-filled from IDIR
-      contactEmail: "john.doe@gov.bc.ca", // Pre-filled from IDIR
-      ministry: "",
+      delegateContactType: "",
+      delegateContactName: "",
+      delegateContactEmail: "",
       // Legacy fields for compatibility
       description: "",
       sponsor: "",
@@ -158,13 +152,12 @@ const IntegrationWizard = () => {
   const canProceed = () => {
     switch (currentStep) {
       case 0:
-        const requiredFields = data.projectInfo.serviceName && data.projectInfo.serviceDescription && data.projectInfo.userTypes.length > 0 && data.projectInfo.accountability;
+        const requiredFields = data.projectInfo.serviceName && data.projectInfo.serviceDescription && data.projectInfo.ministry && data.projectInfo.userTypes.length > 0 && data.projectInfo.accountability;
         if (data.projectInfo.accountability === "no") {
           return requiredFields && 
-            data.projectInfo.delegateProductOwnerName && 
-            data.projectInfo.delegateProductOwnerEmail && 
-            data.projectInfo.delegateTechnicalContactName && 
-            data.projectInfo.delegateTechnicalContactEmail;
+            data.projectInfo.delegateContactType && 
+            data.projectInfo.delegateContactName && 
+            data.projectInfo.delegateContactEmail;
         }
         return requiredFields;
       case 1:
