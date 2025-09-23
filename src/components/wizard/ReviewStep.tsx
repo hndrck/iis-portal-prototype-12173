@@ -99,19 +99,40 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
               <span>Configuration</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div>
-              <span className="font-medium">Client ID:</span> {data.configuration.clientId}
-            </div>
-            <div>
-              <span className="font-medium">Environment:</span> {data.configuration.environment}
-            </div>
-            <div>
-              <span className="font-medium">Redirect URLs:</span> {data.configuration.redirectUrls.length}
-            </div>
-            <div>
-              <span className="font-medium">Scopes:</span> {data.configuration.scopes.length}
-            </div>
+          <CardContent className="space-y-4">
+            {Object.entries(data.configuration.providers).map(([provider, config]: [string, any]) => (
+              <div key={provider} className="border rounded-lg p-3">
+                <h4 className="font-medium mb-2">{provider}</h4>
+                <div className="space-y-1 text-sm">
+                  <div>
+                    <span className="font-medium">Environments:</span>{' '}
+                    {[
+                      config.development && 'Development',
+                      config.test && 'Test', 
+                      config.production && 'Production'
+                    ].filter(Boolean).join(', ')}
+                  </div>
+                  {config.development && (
+                    <div>
+                      <span className="font-medium">Dev App:</span> {config.developmentConfig?.applicationName}
+                    </div>
+                  )}
+                  {config.test && (
+                    <div>
+                      <span className="font-medium">Test App:</span> {config.testConfig?.applicationName}
+                    </div>
+                  )}
+                  {config.production && (
+                    <div>
+                      <span className="font-medium">Prod App:</span> {config.productionConfig?.applicationName}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+            {Object.keys(data.configuration.providers).length === 0 && (
+              <p className="text-muted-foreground">No environments configured yet.</p>
+            )}
           </CardContent>
         </Card>
       </div>

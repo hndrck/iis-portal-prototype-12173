@@ -47,10 +47,8 @@ export interface WizardData {
     reasoning: string;
   };
   configuration: {
-    redirectUrls: string[];
-    scopes: string[];
-    clientId: string;
-    environment: string;
+    providers: Record<string, any>;
+    lastSaved?: Date;
   };
 }
 
@@ -93,10 +91,8 @@ const IntegrationWizard = () => {
       reasoning: ""
     },
     configuration: {
-      redirectUrls: [],
-      scopes: ["openid", "profile"],
-      clientId: "",
-      environment: "development"
+      providers: {},
+      lastSaved: undefined
     }
   });
 
@@ -165,8 +161,10 @@ const IntegrationWizard = () => {
       case 2:
         return data.solution.recommended;
       case 3:
-        // For configuration step, we need at least one redirect URL and a client ID
-        return data.configuration.redirectUrls.length > 0 && data.configuration.clientId;
+        // For configuration step, we need at least one environment selected
+        return Object.values(data.configuration.providers).some((provider: any) => 
+          provider.development || provider.test || provider.production
+        );
       case 4:
         return true;
       default:
@@ -216,7 +214,7 @@ const IntegrationWizard = () => {
       case 3:
         return (
           <ConfigurationStep
-            data={data.configuration}
+            data={data}
             onUpdate={(updates) => updateData('configuration', updates)}
           />
         );
