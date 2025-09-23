@@ -108,21 +108,21 @@ const ClientDashboard = () => {
       
       <main className="container mx-auto px-4 py-8">
         {/* Header Section */}
-        <div className="flex justify-between items-start mb-8">
+        <div className="mb-8">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">Developer Dashboard</h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mb-4">
               Manage your identity integrations and monitor service performance
             </p>
+            <Button 
+              size="lg" 
+              className="bg-primary hover:bg-primary/90 shadow-lg font-semibold"
+              onClick={() => navigate('/client/new-integration')}
+            >
+              <Plus className="mr-2 h-5 w-5" />
+              Request New Integration
+            </Button>
           </div>
-          <Button 
-            size="lg" 
-            className="bg-primary hover:bg-primary/90 shadow-lg font-semibold"
-            onClick={() => navigate('/client/new-integration')}
-          >
-            <Plus className="mr-2 h-5 w-5" />
-            Request New Integration
-          </Button>
         </div>
 
         {/* Status Banner */}
