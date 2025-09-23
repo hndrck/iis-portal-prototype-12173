@@ -30,18 +30,18 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
           </CardHeader>
           <CardContent className="space-y-2">
             <div>
-              <span className="font-medium">Service:</span> {data.projectInfo.serviceName}
+              <span className="font-medium">Service Name:</span> {data.projectInfo.serviceName}
             </div>
             <div>
-              <span className="font-medium">Contact:</span> {data.projectInfo.technicalContact}
+              <span className="font-medium">Ministry:</span> {data.projectInfo.ministry}
             </div>
             <div>
-              <span className="font-medium">Timeline:</span> {data.projectInfo.timeline}
-            </div>
-            <div className="flex flex-wrap gap-1 mt-2">
-              {data.projectInfo.environments.map((env) => (
-                <Badge key={env} variant="outline">{env}</Badge>
-              ))}
+              <span className="font-medium">User Types:</span>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {data.projectInfo.userTypes.map((userType) => (
+                  <Badge key={userType} variant="outline">{userType}</Badge>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -55,18 +55,22 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
           </CardHeader>
           <CardContent className="space-y-2">
             <div>
-              <span className="font-medium">Purpose:</span> {data.requirements.primaryPurpose}
-            </div>
-            <div>
-              <span className="font-medium">Data Level:</span> {data.requirements.dataSensitivity}
+              <span className="font-medium">Use Case:</span> {data.requirements.primaryPurpose}
             </div>
             <div>
               <span className="font-medium">Assurance:</span> {data.requirements.assuranceLevel}
             </div>
-            <div className="flex flex-wrap gap-1 mt-2">
-              {data.requirements.userBase.map((user) => (
-                <Badge key={user} variant="outline">{user}</Badge>
-              ))}
+            <div>
+              <span className="font-medium">Attributes:</span>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {data.requirements.requiredAttributes?.length > 0 ? (
+                  data.requirements.requiredAttributes.map((attr) => (
+                    <Badge key={attr} variant="outline">{attr}</Badge>
+                  ))
+                ) : (
+                  <span className="text-muted-foreground">None specified</span>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -75,20 +79,39 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center space-x-2 text-base">
               <Globe className="h-5 w-5 text-primary" />
-              <span>Recommended Solution</span>
+              <span>Recommended Solutions</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div>
-              <span className="font-medium">Identity Solution:</span> {data.solution.recommended}
-            </div>
-            <div className="flex flex-wrap gap-1 mt-2">
-              {data.solution.components.map((component) => (
-                <Badge key={component} variant="secondary" className="bg-accent text-primary">
-                  {component}
-                </Badge>
-              ))}
-            </div>
+          <CardContent className="space-y-3">
+            {data.projectInfo.userTypes.map((userType) => {
+              const userTypeSolutions = data.solution.components.filter(component => 
+                component.toLowerCase().includes(userType.toLowerCase()) ||
+                (userType === 'Public' && (component.includes('BC Services Card') || component.includes('BCeID'))) ||
+                (userType === 'Government' && component.includes('IDIR')) ||
+                (userType === 'Business' && component.includes('BCeID'))
+              );
+              
+              return (
+                <div key={userType} className="border rounded-lg p-3">
+                  <div className="font-medium mb-2">{userType} Users</div>
+                  <div className="flex flex-wrap gap-1">
+                    {userTypeSolutions.length > 0 ? (
+                      userTypeSolutions.map((solution) => (
+                        <Badge key={solution} variant="secondary" className="bg-accent text-primary">
+                          {solution}
+                        </Badge>
+                      ))
+                    ) : (
+                      data.solution.components.map((component) => (
+                        <Badge key={component} variant="secondary" className="bg-accent text-primary">
+                          {component}
+                        </Badge>
+                      ))
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </CardContent>
         </Card>
 
