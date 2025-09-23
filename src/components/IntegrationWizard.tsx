@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import ProjectInfoStep from "./wizard/ProjectInfoStep";
+import ProjectInfoIntakeForm from "./wizard/ProjectInfoIntakeForm";
 import RequirementsStep from "./wizard/RequirementsStep";
 import SolutionStep from "./wizard/SolutionStep";
 import ConfigurationStep from "./wizard/ConfigurationStep";
@@ -14,6 +14,17 @@ import ReviewStep from "./wizard/ReviewStep";
 export interface WizardData {
   projectInfo: {
     serviceName: string;
+    serviceDescription: string;
+    userTypes: string[];
+    accountability: string;
+    delegateProductOwnerName: string;
+    delegateProductOwnerEmail: string;
+    delegateTechnicalContactName: string;
+    delegateTechnicalContactEmail: string;
+    contactName: string;
+    contactEmail: string;
+    ministry: string;
+    // Legacy fields for compatibility with other steps
     description: string;
     sponsor: string;
     technicalContact: string;
@@ -46,6 +57,17 @@ const IntegrationWizard = () => {
   const [data, setData] = useState<WizardData>({
     projectInfo: {
       serviceName: "",
+      serviceDescription: "",
+      userTypes: [],
+      accountability: "",
+      delegateProductOwnerName: "",
+      delegateProductOwnerEmail: "",
+      delegateTechnicalContactName: "",
+      delegateTechnicalContactEmail: "",
+      contactName: "John Doe", // Pre-filled from IDIR
+      contactEmail: "john.doe@gov.bc.ca", // Pre-filled from IDIR
+      ministry: "",
+      // Legacy fields for compatibility
       description: "",
       sponsor: "",
       technicalContact: "",
@@ -75,7 +97,7 @@ const IntegrationWizard = () => {
   const steps = [
     {
       title: "Project Information",
-      description: "Tell us about your service"
+      description: "Service details and team information"
     },
     {
       title: "Requirements",
@@ -103,6 +125,13 @@ const IntegrationWizard = () => {
   };
 
   const nextStep = () => {
+    if (data.projectInfo.accountability === "no" && currentStep === 0) {
+      // Show success message and return to dashboard for delegation
+      alert("Request delegation email sent successfully!");
+      navigate('/client');
+      return;
+    }
+    
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
@@ -117,7 +146,15 @@ const IntegrationWizard = () => {
   const canProceed = () => {
     switch (currentStep) {
       case 0:
-        return data.projectInfo.serviceName && data.projectInfo.description;
+        const requiredFields = data.projectInfo.serviceName && data.projectInfo.serviceDescription && data.projectInfo.userTypes.length > 0 && data.projectInfo.accountability;
+        if (data.projectInfo.accountability === "no") {
+          return requiredFields && 
+            data.projectInfo.delegateProductOwnerName && 
+            data.projectInfo.delegateProductOwnerEmail && 
+            data.projectInfo.delegateTechnicalContactName && 
+            data.projectInfo.delegateTechnicalContactEmail;
+        }
+        return requiredFields;
       case 1:
         return data.requirements.primaryPurpose && data.requirements.userBase.length > 0;
       case 2:
@@ -141,9 +178,11 @@ const IntegrationWizard = () => {
     switch (currentStep) {
       case 0:
         return (
-          <ProjectInfoStep
+          <ProjectInfoIntakeForm
             data={data.projectInfo}
             onUpdate={(updates) => updateData('projectInfo', updates)}
+            onNext={nextStep}
+            onSaveAndClose={() => navigate('/client')}
           />
         );
       case 1:
@@ -175,6 +214,11 @@ const IntegrationWizard = () => {
         return null;
     }
   };
+
+  // For step 0, render the intake form directly without the card wrapper
+  if (currentStep === 0) {
+    return renderStep();
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
