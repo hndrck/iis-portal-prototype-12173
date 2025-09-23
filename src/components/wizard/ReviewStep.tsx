@@ -83,41 +83,54 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {data.projectInfo.userTypes.map((userType) => {
-              // Use the same logic as SolutionStep to determine the correct provider
+            {(() => {
+              // Group user types by their identity provider
+              const providerGroups: Record<string, string[]> = {};
               const loa = data.requirements.assuranceLevel || "";
-              let provider = "";
               
-              switch (userType) {
-                case "BC residents":
-                case "Canadian residents (outside BC)":
-                case "International users":
-                  provider = loa === "low" ? "BCeID Basic" : "BC Services Card";
-                  break;
-                case "People representing businesses or organizations":
-                  provider = "BCeID Business";
-                  break;
-                case "BC government employees":
-                case "Government contractors":
-                  provider = "IDIR";
-                  break;
-                case "Broader public service employees":
-                case "Other organizations with government relationships (RCMP, consulates, etc.)":
-                  provider = "Entra Guest";
-                  break;
-                default:
-                  provider = "To be determined";
-              }
+              data.projectInfo.userTypes.forEach((userType) => {
+                let provider = "";
+                
+                switch (userType) {
+                  case "BC residents":
+                  case "Canadian residents (outside BC)":
+                  case "International users":
+                    provider = loa === "low" ? "BCeID Basic" : "BC Services Card";
+                    break;
+                  case "People representing businesses or organizations":
+                    provider = "BCeID Business";
+                    break;
+                  case "BC government employees":
+                  case "Government contractors":
+                    provider = "IDIR";
+                    break;
+                  case "Broader public service employees":
+                  case "Other organizations with government relationships (RCMP, consulates, etc.)":
+                    provider = "Entra Guest";
+                    break;
+                  default:
+                    provider = "To be determined";
+                }
+                
+                if (!providerGroups[provider]) {
+                  providerGroups[provider] = [];
+                }
+                providerGroups[provider].push(userType);
+              });
               
-              return (
-                <div key={userType} className="border rounded-lg p-3">
-                  <div className="font-medium mb-2">{userType}</div>
-                  <Badge variant="secondary" className="bg-accent text-primary">
-                    {provider}
-                  </Badge>
+              return Object.entries(providerGroups).map(([provider, userTypes]) => (
+                <div key={provider} className="border rounded-lg p-3">
+                  <div className="font-medium mb-2">{provider}</div>
+                  <div className="flex flex-wrap gap-1">
+                    {userTypes.map((userType) => (
+                      <Badge key={userType} variant="outline">
+                        {userType}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              );
-            })}
+              ));
+            })()}
           </CardContent>
         </Card>
 
