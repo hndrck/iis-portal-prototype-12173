@@ -55,7 +55,7 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
           </CardHeader>
           <CardContent className="space-y-2">
             <div>
-              <span className="font-medium">Use Case:</span> {data.requirements.primaryPurpose}
+              <span className="font-medium">Use Case:</span> {data.requirements.useCase}
             </div>
             <div>
               <span className="font-medium">Assurance:</span> {data.requirements.assuranceLevel}
