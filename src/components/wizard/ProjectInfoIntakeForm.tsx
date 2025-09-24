@@ -74,14 +74,7 @@ const ProjectInfoIntakeForm = ({
       value: "both",
       label: "Both",
       description: "My product serves both citizens and government employees (e.g., public portal with admin functions)",
-      userTypes: [
-        "BC residents/Canadian residents/International users",
-        "Individuals representing businesses or organizations",
-        "Government employees",
-        "Government contractors", 
-        "Broader public service employees",
-        "Business entities with government relationships"
-      ]
+      userTypes: []
     }
   ];
 
@@ -284,7 +277,47 @@ const ProjectInfoIntakeForm = ({
             </div>
 
             {/* Conditional User Groups */}
-            {data.userCategory && (
+            {data.userCategory === "both" ? (
+              <div className="space-y-6">
+                {/* External User Groups */}
+                <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
+                  <Label>Select specific external user groups: *</Label>
+                  <div className="grid grid-cols-1 gap-3">
+                    {userCategoryOptions
+                      .find(cat => cat.value === "external")
+                      ?.userTypes.map((userType) => (
+                        <div key={userType} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`external-${userType}`}
+                            checked={data.userTypes.includes(userType)}
+                            onCheckedChange={(checked) => handleUserTypeChange(userType, !!checked)}
+                          />
+                          <Label htmlFor={`external-${userType}`} className="text-sm font-normal">{userType}</Label>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                {/* Internal User Groups */}
+                <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
+                  <Label>Select specific internal user groups: *</Label>
+                  <div className="grid grid-cols-1 gap-3">
+                    {userCategoryOptions
+                      .find(cat => cat.value === "internal")
+                      ?.userTypes.map((userType) => (
+                        <div key={userType} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`internal-${userType}`}
+                            checked={data.userTypes.includes(userType)}
+                            onCheckedChange={(checked) => handleUserTypeChange(userType, !!checked)}
+                          />
+                          <Label htmlFor={`internal-${userType}`} className="text-sm font-normal">{userType}</Label>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              </div>
+            ) : data.userCategory && (
               <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
                 <Label>Select specific user groups: *</Label>
                 <div className="grid grid-cols-1 gap-3">
