@@ -120,16 +120,16 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
   const environments = [
     { key: 'development', label: 'Development', description: 'For initial integration and testing' },
     { key: 'test', label: 'Test', description: 'For user acceptance testing and staging' },
-    { key: 'production', label: 'Production', description: 'For live service delivery (requires approval)' }
+    { key: 'production', label: 'Production', description: 'For live service delivery (requires additional approval)' }
   ] as const;
 
   return (
     <div className="space-y-6">
       {/* Summary Section */}
       <div className="space-y-3">
-        <h3 className="text-lg font-semibold">Environment Configuration</h3>
+        <h3 className="text-lg font-semibold">Which of your product environments require access to identity services?</h3>
         <p className="text-muted-foreground">
-          Configure your environments for each identity provider
+          Configure access for each environment where users will authenticate
         </p>
         <div className="flex flex-wrap gap-2">
           {data.solution.components.map((provider) => (
