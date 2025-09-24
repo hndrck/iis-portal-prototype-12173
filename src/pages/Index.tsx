@@ -64,10 +64,10 @@ const Index = () => {
             Prototype - Future State Vision
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6 leading-tight">
-            Connect to BC government identity service(s)
+            Connect to BC government identity services
           </h1>
           <p className="text-xl text-foreground mb-8 max-w-2xl">
-            A single service for BC government teams to integrate with identity providers. Answer questions about your needs and get the right authentication solution automatically.
+            A single platform for BC government teams to integrate with identity providers. Answer questions about your needs and get the right authentication solution automatically.
           </p>
           
           <div className="flex gap-4 mb-8">
