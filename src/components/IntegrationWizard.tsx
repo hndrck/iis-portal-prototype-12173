@@ -10,6 +10,7 @@ import TechnicalRequirementsForm from "./wizard/TechnicalRequirementsForm";
 import SolutionStep from "./wizard/SolutionStep";
 import ConfigurationStep from "./wizard/ConfigurationStep";
 import ReviewStep from "./wizard/ReviewStep";
+import InternalOnlyOffRamp from "./wizard/InternalOnlyOffRamp";
 
 export interface WizardData {
   projectInfo: {
@@ -133,6 +134,12 @@ const IntegrationWizard = () => {
   };
 
   const nextStep = () => {
+    // Check if user selected "Internal Only" and redirect to off-ramp
+    if (currentStep === 0 && data.projectInfo.userCategory === "internal") {
+      setCurrentStep(5); // Jump to off-ramp step
+      return;
+    }
+    
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
@@ -224,13 +231,24 @@ const IntegrationWizard = () => {
         return (
           <ReviewStep data={data} />
         );
+      case 5:
+        return (
+          <InternalOnlyOffRamp
+            data={data.projectInfo}
+            onBack={() => setCurrentStep(0)}
+            onSubmit={handleSubmit}
+            progressValue={100}
+            currentStep={5}
+            totalSteps={5}
+          />
+        );
       default:
         return null;
     }
   };
 
-  // For steps 0 and 1, render the forms directly without the card wrapper
-  if (currentStep === 0 || currentStep === 1) {
+  // For steps 0, 1, and 5 (off-ramp), render the forms directly without the card wrapper
+  if (currentStep === 0 || currentStep === 1 || currentStep === 5) {
     return renderStep();
   }
 
