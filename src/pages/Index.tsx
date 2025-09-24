@@ -35,7 +35,7 @@ const Index = () => {
   const processSteps = [
     {
       title: "Describe Your Needs",
-      description: "Answer questions about your service requirements and user base"
+      description: "Answer questions about your product requirements and user base"
     },
     {
       title: "Get Your Solution", 
@@ -124,22 +124,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Call to Action */}
-        <div className="max-w-4xl mb-20">
-          <div className="bg-primary text-white p-8 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">Try the Common Hosted Credential Service</h2>
-            <p className="mb-6 text-blue-100 text-lg">
-              You can try out the service if you're a central government service and need to sign in your users or check their identities.
-            </p>
-            <Button 
-              size="lg" 
-              variant="secondary"
-              onClick={() => navigate('/login')}
-            >
-              Get started <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </div>
       </main>
 
       {/* Footer */}
@@ -149,7 +133,7 @@ const Index = () => {
             <div>
               <h3 className="font-semibold mb-4">About the Service</h3>
               <p className="text-sm text-blue-100">
-                CHCS provides a single integration point for BC government identity services, 
+                Identity Services BC provides a single integration point for BC government identity services, 
                 managed by Cybersecurity and Digital Trust, CITZ.
               </p>
             </div>

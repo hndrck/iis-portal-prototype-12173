@@ -20,7 +20,7 @@ const BCHeader = () => {
               </div>
               <div>
                 <h1 className="text-xl font-semibold">Government of British Columbia</h1>
-                <p className="text-blue-100 text-sm">Common Hosted Credential Service</p>
+                <p className="text-blue-100 text-sm">Connect to BC government identity services</p>
               </div>
             </div>
           </div>

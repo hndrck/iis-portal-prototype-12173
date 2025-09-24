@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -15,14 +16,13 @@ const Login = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     organization: "",
     phone: "",
-    projectName: "",
-    description: "",
-    managerName: "",
-    managerEmail: ""
+    productName: "",
+    productDescription: "",
+    contactPreference: "email"
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -31,19 +31,18 @@ const Login = () => {
 
   const handleSubmitRequest = () => {
     toast({
-      title: "Request Submitted",
-      description: "Your IDIR access request has been submitted. You will receive a response within 2-3 business days. Please check your email for further instructions.",
+      title: "Support Request Submitted",
+      description: "Our team will contact you within 2 business days to help set up your integration",
     });
     setIsModalOpen(false);
     setFormData({
-      fullName: "",
+      name: "",
       email: "",
       organization: "",
       phone: "",
-      projectName: "",
-      description: "",
-      managerName: "",
-      managerEmail: ""
+      productName: "",
+      productDescription: "",
+      contactPreference: "email"
     });
   };
 
@@ -65,7 +64,7 @@ const Login = () => {
           {/* Page Title */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary mb-2">
-              Sign in to Common Hosted Credential Service
+              Sign in to Identity Services BC
             </h1>
             <p className="text-muted-foreground">
               Use your IDIR credentials to access the service
@@ -76,7 +75,7 @@ const Login = () => {
           <Alert className="mb-6">
             <Info className="h-4 w-4" />
             <AlertDescription>
-              IDIR (Integrated Directory) is the secure authentication system for BC government employees and authorized partners.
+              IDIR is the secure authentication system for BC government employees and authorized partners
             </AlertDescription>
           </Alert>
 
@@ -124,39 +123,39 @@ const Login = () => {
           {/* Alternative Access */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Need IDIR Access?</CardTitle>
+              <CardTitle className="text-lg">Don't have IDIR access?</CardTitle>
               <CardDescription>
-                If you do not have an IDIR but are building a service within a BC government organization or authorized public sector agency, you can request access.
+                If you do not have an IDIR but are building a service within a BC government organization or authorized public sector agency, you can request support
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
                 <DialogTrigger asChild>
                   <Button variant="outline" className="w-full">
-                    Request IDIR Access
+                    Contact Support
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle>Request IDIR Access</DialogTitle>
+                    <DialogTitle>Contact Support</DialogTitle>
                     <DialogDescription>
-                      Complete this form to request IDIR access for your project
+                      Complete this form and our team will contact you to help set up your integration
                     </DialogDescription>
                   </DialogHeader>
                   
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="fullName">Full Name *</Label>
+                      <Label htmlFor="name">Name *</Label>
                       <Input 
-                        id="fullName"
-                        value={formData.fullName}
-                        onChange={(e) => handleInputChange('fullName', e.target.value)}
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
                         required
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email Address *</Label>
+                      <Label htmlFor="email">Email *</Label>
                       <Input 
                         id="email"
                         type="email"
@@ -167,7 +166,7 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="organization">Organization/Ministry *</Label>
+                      <Label htmlFor="organization">Organization *</Label>
                       <Input 
                         id="organization"
                         value={formData.organization}
@@ -177,7 +176,7 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
+                      <Label htmlFor="phone">Phone number (optional)</Label>
                       <Input 
                         id="phone"
                         type="tel"
@@ -187,45 +186,38 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="projectName">Project/Service Name *</Label>
+                      <Label htmlFor="productName">Product name / description *</Label>
                       <Input 
-                        id="projectName"
-                        value={formData.projectName}
-                        onChange={(e) => handleInputChange('projectName', e.target.value)}
+                        id="productName"
+                        value={formData.productName}
+                        onChange={(e) => handleInputChange('productName', e.target.value)}
                         required
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="description">Brief description of your project *</Label>
+                      <Label htmlFor="productDescription">Product description *</Label>
                       <Textarea 
-                        id="description"
-                        placeholder="Describe your project and why you need IDIR access..."
-                        value={formData.description}
-                        onChange={(e) => handleInputChange('description', e.target.value)}
+                        id="productDescription"
+                        placeholder="Describe your product and integration needs..."
+                        value={formData.productDescription}
+                        onChange={(e) => handleInputChange('productDescription', e.target.value)}
                         required
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="managerName">Manager/Supervisor Name *</Label>
-                      <Input 
-                        id="managerName"
-                        value={formData.managerName}
-                        onChange={(e) => handleInputChange('managerName', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="managerEmail">Manager/Supervisor Email *</Label>
-                      <Input 
-                        id="managerEmail"
-                        type="email"
-                        value={formData.managerEmail}
-                        onChange={(e) => handleInputChange('managerEmail', e.target.value)}
-                        required
-                      />
+                      <Label htmlFor="contactPreference">Contact preference *</Label>
+                      <Select value={formData.contactPreference} onValueChange={(value) => handleInputChange('contactPreference', value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select contact preference" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="email">Email</SelectItem>
+                          <SelectItem value="phone">Phone</SelectItem>
+                          <SelectItem value="either">Either</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div className="flex gap-2 pt-4">
