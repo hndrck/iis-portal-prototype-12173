@@ -13,14 +13,15 @@ import { Check, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface ProjectInfoIntakeData {
-  serviceName: string;
-  serviceDescription: string;
+  productName: string;
+  productDescription: string;
   ministry: string;
+  userCategory: string;
   userTypes: string[];
-  accountability: string;
-  delegateContactType: string;
-  delegateContactName: string;
-  delegateContactEmail: string;
+  productOwnerName: string;
+  productOwnerEmail: string;
+  technicalLeadName: string;
+  technicalLeadEmail: string;
 }
 
 interface ProjectInfoIntakeFormProps {
@@ -48,15 +49,40 @@ const ProjectInfoIntakeForm = ({
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isAutoSaving, setIsAutoSaving] = useState(false);
 
-  const userTypeOptions = [
-    "BC residents",
-    "Canadian residents (outside BC)",
-    "International users",
-    "BC government employees",
-    "Government contractors",
-    "Broader public service employees",
-    "People representing businesses or organizations",
-    "Other organizations with government relationships (RCMP, consulates, etc.)"
+  const userCategoryOptions = [
+    {
+      value: "external",
+      label: "External Only",
+      description: "My product serves citizens, residents, or businesses accessing government services",
+      userTypes: [
+        "BC residents/Canadian residents/International users",
+        "Individuals representing businesses or organizations"
+      ]
+    },
+    {
+      value: "internal",
+      label: "Internal Only", 
+      description: "My product is only used by government employees, contractors, or authorized partners",
+      userTypes: [
+        "Government employees",
+        "Government contractors",
+        "Broader public service employees",
+        "Business entities with government relationships"
+      ]
+    },
+    {
+      value: "both",
+      label: "Both",
+      description: "My product serves both citizens and government employees (e.g., public portal with admin functions)",
+      userTypes: [
+        "BC residents/Canadian residents/International users",
+        "Individuals representing businesses or organizations",
+        "Government employees",
+        "Government contractors", 
+        "Broader public service employees",
+        "Business entities with government relationships"
+      ]
+    }
   ];
 
   const ministryOptions = [
@@ -89,7 +115,7 @@ const ProjectInfoIntakeForm = ({
   // Auto-save functionality
   useEffect(() => {
     const timer = setInterval(() => {
-      if (data.serviceName || data.serviceDescription) {
+      if (data.productName || data.productDescription) {
         setIsAutoSaving(true);
         // Simulate auto-save
         setTimeout(() => {
@@ -111,26 +137,19 @@ const ProjectInfoIntakeForm = ({
   };
 
   const isFormValid = () => {
-    const requiredFields = data.serviceName && data.serviceDescription && data.ministry && data.userTypes.length > 0 && data.accountability;
-    
-    if (data.accountability === "no") {
-      return requiredFields && 
-        data.delegateContactType && 
-        data.delegateContactName && 
-        data.delegateContactEmail;
-    }
-    
-    return requiredFields;
+    return data.productName && 
+           data.productDescription && 
+           data.ministry && 
+           data.userCategory &&
+           data.userTypes.length > 0 && 
+           data.productOwnerName && 
+           data.productOwnerEmail && 
+           data.technicalLeadName && 
+           data.technicalLeadEmail;
   };
 
   const handleSubmit = () => {
-    if (data.accountability === "no") {
-      // Show success message and return to dashboard
-      alert("Request delegation email sent successfully!");
-      navigate('/client');
-    } else {
-      onNext();
-    }
+    onNext();
   };
 
   return (
@@ -187,32 +206,32 @@ const ProjectInfoIntakeForm = ({
 
       <Card>
         <CardContent className="p-8 space-y-8">
-          {/* Section 1: Service Details */}
+          {/* Section 1: Product Details */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-semibold mb-4">Service Details</h2>
+              <h2 className="text-lg font-semibold mb-4">Product Details</h2>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="serviceName">What is the name of your service or application? *</Label>
-              <p className="text-sm text-muted-foreground">This is what users will see (e.g., 'BC Health Gateway', 'Internal HR Portal')</p>
+              <Label htmlFor="productName">What is the name of your product or application? *</Label>
+              <p className="text-sm text-muted-foreground">This is what users will see (e.g., 'BC Health Gateway', 'Internal HR Portal'). Please avoid using abbreviations in your product name.</p>
               <Input
-                id="serviceName"
-                value={data.serviceName}
-                onChange={(e) => onUpdate({ serviceName: e.target.value })}
-                placeholder="Enter service name"
+                id="productName"
+                value={data.productName}
+                onChange={(e) => onUpdate({ productName: e.target.value })}
+                placeholder="Enter product name"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="serviceDescription">Briefly describe what your service does *</Label>
-              <p className="text-sm text-muted-foreground">In 1-2 sentences, explain the main purpose of your service</p>
+              <Label htmlFor="productDescription">Briefly describe what your product does *</Label>
+              <p className="text-sm text-muted-foreground">In 1-2 sentences, explain the main purpose of your product</p>
               <Textarea
-                id="serviceDescription"
-                value={data.serviceDescription}
-                onChange={(e) => onUpdate({ serviceDescription: e.target.value })}
-                placeholder="Describe your service..."
+                id="productDescription"
+                value={data.productDescription}
+                onChange={(e) => onUpdate({ productDescription: e.target.value })}
+                placeholder="Describe your product..."
                 rows={3}
                 required
               />
@@ -239,109 +258,121 @@ const ProjectInfoIntakeForm = ({
           <div className="space-y-6">
             <div>
               <h2 className="text-lg font-semibold mb-2">Users & Access</h2>
-              <p className="text-sm text-muted-foreground">Select all that apply</p>
             </div>
             
             <div className="space-y-4">
-              <Label>Who will use this service? *</Label>
-              <div className="grid grid-cols-1 gap-3">
-                {userTypeOptions.map((userType) => (
-                  <div key={userType} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={userType}
-                      checked={data.userTypes.includes(userType)}
-                      onCheckedChange={(checked) => handleUserTypeChange(userType, !!checked)}
-                    />
-                    <Label htmlFor={userType} className="text-sm font-normal">{userType}</Label>
+              <Label>Who will use this product? *</Label>
+              <RadioGroup
+                value={data.userCategory}
+                onValueChange={(value) => {
+                  onUpdate({ userCategory: value, userTypes: [] });
+                }}
+                className="space-y-4"
+              >
+                {userCategoryOptions.map((category) => (
+                  <div key={category.value} className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <RadioGroupItem value={category.value} id={category.value} className="mt-1" />
+                      <div className="space-y-1">
+                        <Label htmlFor={category.value} className="font-medium">{category.label}</Label>
+                        <p className="text-sm text-muted-foreground">{category.description}</p>
+                      </div>
+                    </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Section 3: Project Team */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold mb-4">Project Team</h2>
-            </div>
-            
-            <div className="space-y-4">
-              <Label>Are you the product owner or technical contact for this project? *</Label>
-              <RadioGroup
-                value={data.accountability}
-                onValueChange={(value) => onUpdate({ accountability: value })}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="product-owner" id="product-owner" />
-                  <Label htmlFor="product-owner" className="font-normal">Yes, I'm the product owner</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="technical-contact" id="technical-contact" />
-                  <Label htmlFor="technical-contact" className="font-normal">Yes, I'm the technical contact</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="no" id="delegate" />
-                  <Label htmlFor="delegate" className="font-normal">No, I'm submitting this on behalf of someone else</Label>
-                </div>
               </RadioGroup>
             </div>
 
-            {/* Conditional Delegation Fields */}
-            {data.accountability === "no" && (
-              <div className="space-y-6 p-4 bg-muted/50 rounded-lg">
-                <div>
-                  <h3 className="font-medium mb-2">Who should we send this request to?</h3>
-                  <p className="text-sm text-muted-foreground">We'll send them a link to continue this request. Only the accountable person should submit integration requests.</p>
+            {/* Conditional User Groups */}
+            {data.userCategory && (
+              <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
+                <Label>Select specific user groups: *</Label>
+                <div className="grid grid-cols-1 gap-3">
+                  {userCategoryOptions
+                    .find(cat => cat.value === data.userCategory)
+                    ?.userTypes.map((userType) => (
+                      <div key={userType} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={userType}
+                          checked={data.userTypes.includes(userType)}
+                          onCheckedChange={(checked) => handleUserTypeChange(userType, !!checked)}
+                        />
+                        <Label htmlFor={userType} className="text-sm font-normal">{userType}</Label>
+                      </div>
+                    ))}
                 </div>
-                
-                <div className="space-y-4">
-                  <Label>Select contact type *</Label>
-                  <RadioGroup
-                    value={data.delegateContactType}
-                    onValueChange={(value) => onUpdate({ delegateContactType: value })}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="product-owner" id="delegate-product-owner" />
-                      <Label htmlFor="delegate-product-owner" className="font-normal">Product Owner</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="technical-contact" id="delegate-technical-contact" />
-                      <Label htmlFor="delegate-technical-contact" className="font-normal">Technical Contact</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-                
-                {data.delegateContactType && (
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="delegateContactName">
-                        {data.delegateContactType === "product-owner" ? "Product owner name" : "Technical contact name"} *
-                      </Label>
-                      <Input
-                        id="delegateContactName"
-                        value={data.delegateContactName}
-                        onChange={(e) => onUpdate({ delegateContactName: e.target.value })}
-                        placeholder="Full name"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="delegateContactEmail">
-                        {data.delegateContactType === "product-owner" ? "Product owner email" : "Technical contact email"} *
-                      </Label>
-                      <Input
-                        id="delegateContactEmail"
-                        type="email"
-                        value={data.delegateContactEmail}
-                        onChange={(e) => onUpdate({ delegateContactEmail: e.target.value })}
-                        placeholder="email@gov.bc.ca"
-                        required
-                      />
-                    </div>
-                  </div>
-                )}
               </div>
             )}
+          </div>
+
+          {/* Section 3: Product Team */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Product Team</h2>
+              <p className="text-sm text-muted-foreground">All specified contacts will receive updates about this integration request</p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="productOwnerName">Product Owner Name *</Label>
+                  <Input
+                    id="productOwnerName"
+                    value={data.productOwnerName}
+                    onChange={(e) => onUpdate({ productOwnerName: e.target.value })}
+                    placeholder="Full name"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="productOwnerEmail">Product Owner Email *</Label>
+                  <Input
+                    id="productOwnerEmail"
+                    type="email"
+                    value={data.productOwnerEmail}
+                    onChange={(e) => onUpdate({ productOwnerEmail: e.target.value })}
+                    placeholder="email@gov.bc.ca"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="technicalLeadName">Technical Lead Name *</Label>
+                  <Input
+                    id="technicalLeadName"
+                    value={data.technicalLeadName}
+                    onChange={(e) => onUpdate({ technicalLeadName: e.target.value })}
+                    placeholder="Full name"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="technicalLeadEmail">Technical Lead Email *</Label>
+                  <Input
+                    id="technicalLeadEmail"
+                    type="email"
+                    value={data.technicalLeadEmail}
+                    onChange={(e) => onUpdate({ technicalLeadEmail: e.target.value })}
+                    placeholder="email@gov.bc.ca"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-sm text-blue-800 font-medium">Note: These contacts must be the individuals accountable for this product</p>
+            </div>
+          </div>
+
+          {/* Section 4: Your Information */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Your Information</h2>
+              <p className="text-sm text-muted-foreground">You are submitting this request on behalf of the product team above</p>
+            </div>
           </div>
 
         </CardContent>
@@ -375,7 +406,7 @@ const ProjectInfoIntakeForm = ({
               disabled={!isFormValid()}
               className="bg-primary hover:bg-primary/90"
             >
-              {data.accountability === "no" ? "Send Delegation Email" : "Next"}
+              Next
             </Button>
           </div>
         </div>

@@ -13,14 +13,15 @@ import ReviewStep from "./wizard/ReviewStep";
 
 export interface WizardData {
   projectInfo: {
-    serviceName: string;
-    serviceDescription: string;
+    productName: string;
+    productDescription: string;
     ministry: string;
+    userCategory: string;
     userTypes: string[];
-    accountability: string;
-    delegateContactType: string;
-    delegateContactName: string;
-    delegateContactEmail: string;
+    productOwnerName: string;
+    productOwnerEmail: string;
+    technicalLeadName: string;
+    technicalLeadEmail: string;
     // Legacy fields for compatibility with other steps
     description: string;
     sponsor: string;
@@ -57,14 +58,15 @@ const IntegrationWizard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState<WizardData>({
     projectInfo: {
-      serviceName: "",
-      serviceDescription: "",
+      productName: "",
+      productDescription: "",
       ministry: "",
+      userCategory: "",
       userTypes: [],
-      accountability: "",
-      delegateContactType: "",
-      delegateContactName: "",
-      delegateContactEmail: "",
+      productOwnerName: "",
+      productOwnerEmail: "",
+      technicalLeadName: "",
+      technicalLeadEmail: "",
       // Legacy fields for compatibility
       description: "",
       sponsor: "",
@@ -131,13 +133,6 @@ const IntegrationWizard = () => {
   };
 
   const nextStep = () => {
-    if (data.projectInfo.accountability === "no" && currentStep === 0) {
-      // Show success message and return to dashboard for delegation
-      alert("Request delegation email sent successfully!");
-      navigate('/client');
-      return;
-    }
-    
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
@@ -152,14 +147,15 @@ const IntegrationWizard = () => {
   const canProceed = () => {
     switch (currentStep) {
       case 0:
-        const requiredFields = data.projectInfo.serviceName && data.projectInfo.serviceDescription && data.projectInfo.ministry && data.projectInfo.userTypes.length > 0 && data.projectInfo.accountability;
-        if (data.projectInfo.accountability === "no") {
-          return requiredFields && 
-            data.projectInfo.delegateContactType && 
-            data.projectInfo.delegateContactName && 
-            data.projectInfo.delegateContactEmail;
-        }
-        return requiredFields;
+        return data.projectInfo.productName && 
+               data.projectInfo.productDescription && 
+               data.projectInfo.ministry && 
+               data.projectInfo.userCategory &&
+               data.projectInfo.userTypes.length > 0 && 
+               data.projectInfo.productOwnerName && 
+               data.projectInfo.productOwnerEmail && 
+               data.projectInfo.technicalLeadName && 
+               data.projectInfo.technicalLeadEmail;
       case 1:
         return data.requirements.useCase && data.requirements.assuranceLevel && data.requirements.requiredAttributes.length > 0 && data.requirements.environments.length > 0;
       case 2:

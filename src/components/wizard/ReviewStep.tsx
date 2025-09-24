@@ -30,7 +30,7 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
           </CardHeader>
           <CardContent className="space-y-2">
             <div>
-              <span className="font-medium">Service Name:</span> {data.projectInfo.serviceName}
+              <span className="font-medium">Product Name:</span> {data.projectInfo.productName}
             </div>
             <div>
               <span className="font-medium">Ministry:</span> {data.projectInfo.ministry}

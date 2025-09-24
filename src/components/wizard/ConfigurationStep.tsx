@@ -53,17 +53,17 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
           test: false,
           production: false,
           developmentConfig: {
-            applicationName: `${data.projectInfo.serviceName || 'Service'} - Dev`,
+            applicationName: `${data.projectInfo.productName || 'Product'} - Dev`,
             redirectUris: 'http://localhost:3000/auth/callback\nhttp://localhost:8080/auth/callback',
             additionalNotes: ''
           },
           testConfig: {
-            applicationName: `${data.projectInfo.serviceName || 'Service'} - Test`,
+            applicationName: `${data.projectInfo.productName || 'Product'} - Test`,
             redirectUris: 'https://test.example.com/auth/callback',
             additionalNotes: ''
           },
           productionConfig: {
-            applicationName: data.projectInfo.serviceName || 'Service',
+            applicationName: data.projectInfo.productName || 'Product',
             redirectUris: 'https://example.com/auth/callback',
             additionalNotes: '',
             businessApprovalContact: ''
@@ -209,7 +209,7 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
                         <Input
                           value={config?.applicationName || ''}
                           onChange={(e) => updateEnvironmentConfig(provider, key, 'applicationName', e.target.value)}
-                          placeholder={`${data.projectInfo.serviceName || 'Service'} - ${label}`}
+                          placeholder={`${data.projectInfo.productName || 'Product'} - ${label}`}
                         />
                       </div>
 
