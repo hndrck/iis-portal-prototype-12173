@@ -176,8 +176,8 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone number (optional)</Label>
-                      <Input 
+                      <Label htmlFor="phone">Phone number</Label>
+                      <Input
                         id="phone"
                         type="tel"
                         value={formData.phone}
@@ -186,8 +186,8 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="productName">Product name / description *</Label>
-                      <Input 
+                      <Label htmlFor="productName">Product name *</Label>
+                      <Input
                         id="productName"
                         value={formData.productName}
                         onChange={(e) => handleInputChange('productName', e.target.value)}
