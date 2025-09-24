@@ -91,42 +91,54 @@ const TechnicalRequirementsForm = ({
   ];
 
   // Generate attribute options based on selected user types
-  const getAttributeOptionsByUserType = () => {
-    const attributeOptions = new Set<string>();
+  const getAttributeOptionsByUserType = (userType: string) => {
+    const attributeOptions = ["Basic Identity (Name, unique identifier)", "Contact Information (Email address, phone number)"];
     
-    userTypes.forEach(userType => {
-      // Common attributes for all types
-      attributeOptions.add("Basic Identity (Name, unique identifier)");
-      attributeOptions.add("Contact Information (Email address, phone number)");
-      
-      if (userType === "BC residents/Canadian residents/International users") {
-        attributeOptions.add("Demographics (Date of birth, gender)");
-        attributeOptions.add("Address Information (Mailing address, postal code)");
-        attributeOptions.add("BC Services Card verification status");
-      }
-      
-      if (userType === "Individuals representing businesses or organizations") {
-        attributeOptions.add("Business Information (Business name, registration number)");
-        attributeOptions.add("Business Address");
-        attributeOptions.add("Authorized representative status");
-      }
-      
-      if (userType === "Government employees") {
-        attributeOptions.add("Government Employee Status (Ministry, role, employee ID)");
-        attributeOptions.add("Security clearance level");
-        attributeOptions.add("Organizational unit");
-      }
-      
-      if (userType === "Government contractors" || userType === "Broader public service employees") {
-        attributeOptions.add("Contractor/Partner Status (Organization, contract details)");
-        attributeOptions.add("Access authorization level");
-      }
-    });
+    if (userType === "BC residents/Canadian residents/International users") {
+      attributeOptions.push(
+        "Demographics (Date of birth, gender)",
+        "Address Information (Mailing address, postal code)",
+        "BC Services Card verification status"
+      );
+    }
     
-    return Array.from(attributeOptions);
+    if (userType === "Individuals representing businesses or organizations") {
+      attributeOptions.push(
+        "Business Information (Business name, registration number)",
+        "Business Address",
+        "Authorized representative status"
+      );
+    }
+    
+    if (userType === "Government employees") {
+      attributeOptions.push(
+        "Government Employee Status (Ministry, role, employee ID)",
+        "Security clearance level",
+        "Organizational unit"
+      );
+    }
+    
+    if (userType === "Government contractors" || userType === "Broader public service employees") {
+      attributeOptions.push(
+        "Contractor/Partner Status (Organization, contract details)",
+        "Access authorization level"
+      );
+    }
+    
+    return attributeOptions;
   };
 
-  const attributeOptions = getAttributeOptionsByUserType();
+  // Get external and internal user types
+  const externalUserTypes = userTypes.filter(type => 
+    type === "BC residents/Canadian residents/International users" || 
+    type === "Individuals representing businesses or organizations"
+  );
+  
+  const internalUserTypes = userTypes.filter(type => 
+    type === "Government employees" || 
+    type === "Government contractors" || 
+    type === "Broader public service employees"
+  );
 
   const environmentOptions = [
     {
@@ -303,37 +315,87 @@ const TechnicalRequirementsForm = ({
               <p className="text-sm text-muted-foreground">Only request information that's essential for your service to function</p>
             </div>
             
-            <div className="space-y-4">
-              <Label>What information do you need about users? *</Label>
-              <p className="text-sm text-muted-foreground">Select all that apply - attributes shown are based on your selected user types</p>
-              <div className="space-y-3">
-                {attributeOptions.map((attribute) => (
-                  <div key={attribute} className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={attribute}
-                        checked={data.requiredAttributes.includes(attribute)}
-                        onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
-                      />
-                      <Label htmlFor={attribute} className="text-sm font-normal">{attribute}</Label>
+            {/* External Users (Citizens) */}
+            {externalUserTypes.includes("BC residents/Canadian residents/International users") && (
+              <div className="space-y-4">
+                <Label>What information do you need about external users (citizens)? *</Label>
+                <div className="space-y-3">
+                  {getAttributeOptionsByUserType("BC residents/Canadian residents/International users").map((attribute) => (
+                    <div key={attribute} className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`citizen-${attribute}`}
+                          checked={data.requiredAttributes.includes(attribute)}
+                          onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
+                        />
+                        <Label htmlFor={`citizen-${attribute}`} className="text-sm font-normal">{attribute}</Label>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label>Custom attributes</Label>
-                <Textarea
-                  value={data.customAttributes}
-                  onChange={(e) => onUpdate({ customAttributes: e.target.value })}
-                  placeholder="Don't see an attribute you need? Describe custom attributes here..."
-                  rows={2}
-                />
+            )}
+
+            {/* External Users (Business Representatives) */}
+            {externalUserTypes.includes("Individuals representing businesses or organizations") && (
+              <div className="space-y-4">
+                <Label>What information do you need about external users (business representatives)? *</Label>
+                <div className="space-y-3">
+                  {getAttributeOptionsByUserType("Individuals representing businesses or organizations").map((attribute) => (
+                    <div key={attribute} className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`business-${attribute}`}
+                          checked={data.requiredAttributes.includes(attribute)}
+                          onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
+                        />
+                        <Label htmlFor={`business-${attribute}`} className="text-sm font-normal">{attribute}</Label>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="p-3 bg-muted/30 rounded-lg">
-                <p className="text-sm text-muted-foreground">
-                  Don't see an attribute you need? <Button variant="link" className="p-0 h-auto text-sm" onClick={onBack}>Go back to modify your user types</Button> or contact support for assistance.
-                </p>
+            )}
+
+            {/* Internal Users */}
+            {internalUserTypes.length > 0 && (
+              <div className="space-y-4">
+                <Label>What information do you need about internal users? *</Label>
+                <div className="space-y-3">
+                  {internalUserTypes.map(userType => (
+                    <div key={userType} className="space-y-2">
+                      <h4 className="text-sm font-medium text-muted-foreground">{userType}:</h4>
+                      {getAttributeOptionsByUserType(userType).map((attribute) => (
+                        <div key={`${userType}-${attribute}`} className="ml-4 space-y-2">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`${userType}-${attribute}`}
+                              checked={data.requiredAttributes.includes(attribute)}
+                              onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
+                            />
+                            <Label htmlFor={`${userType}-${attribute}`} className="text-sm font-normal">{attribute}</Label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
               </div>
+            )}
+
+            <div className="space-y-2">
+              <Label>Custom attributes</Label>
+              <Textarea
+                value={data.customAttributes}
+                onChange={(e) => onUpdate({ customAttributes: e.target.value })}
+                placeholder="Don't see an attribute you need? Describe custom attributes here..."
+                rows={2}
+              />
+            </div>
+            <div className="p-3 bg-muted/30 rounded-lg">
+              <p className="text-sm text-muted-foreground">
+                Don't see an attribute you need? <Button variant="link" className="p-0 h-auto text-sm" onClick={onBack}>Go back to modify your user types</Button> or contact support for assistance.
+              </p>
             </div>
           </div>
 
