@@ -130,7 +130,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
     console.log("Appeal submitted:", appealData);
     setShowAppealModal(false);
     // Here you would typically send the appeal to your backend
-    alert("Your request has been submitted. Our identity team will contact you within 2 business days.");
+    alert("Your request has been submitted. Our identity services team will contact you within 2 business days.");
   };
 
   return (
@@ -144,7 +144,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <h3 className="text-lg font-semibold mb-4">We recommend the following identity solution(s):</h3>
+          <h3 className="text-lg font-semibold mb-4">Recommended Identity Services:</h3>
           
           {/* Solution Cards */}
           <div className="space-y-4">
@@ -179,7 +179,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
       <div className="flex flex-col sm:flex-row gap-3">
         <Button className="flex-1 bg-primary hover:bg-primary/90">
           <CheckCircle className="mr-2 h-4 w-4" />
-          Accept This Solution
+          Accept These Services
         </Button>
         <Button 
           variant="outline" 
@@ -187,7 +187,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
           onClick={() => setShowAppealModal(true)}
         >
           <AlertCircle className="mr-2 h-4 w-4" />
-          Request Different Solution
+          Request Different Identity Service(s)
         </Button>
       </div>
 
@@ -195,9 +195,9 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
       <Dialog open={showAppealModal} onOpenChange={setShowAppealModal}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Request Different Solution</DialogTitle>
+            <DialogTitle>Request Different Identity Services</DialogTitle>
             <DialogDescription>
-              Tell us why the recommended solution doesn't work for your service
+              Tell us why the recommended identity service(s) doesn't work for your product
             </DialogDescription>
           </DialogHeader>
           
@@ -206,7 +206,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
               <Label htmlFor="explanation">Explanation *</Label>
               <Textarea
                 id="explanation"
-                placeholder="Please explain why you need a different solution..."
+                placeholder="Please explain why you need a different identity service..."
                 value={appealData.explanation}
                 onChange={(e) => setAppealData({...appealData, explanation: e.target.value})}
                 className="min-h-[100px]"
@@ -241,7 +241,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
             </div>
             
             <p className="text-sm text-muted-foreground">
-              Our identity team will review your request and contact you within 2 business days.
+              Our identity services team will review your request and contact you within 2 business days.
             </p>
           </div>
           
