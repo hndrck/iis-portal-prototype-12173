@@ -32,7 +32,7 @@ export interface WizardData {
   };
   requirements: {
     useCase: string;
-    assuranceLevel: string;
+    dataClassification: string;
     requiredAttributes: string[];
     customAttributes: string;
     environments: string[];
@@ -42,6 +42,7 @@ export interface WizardData {
     userBase: string[];
     dataSensitivity: string;
     specialRequirements: string[];
+    assuranceLevel: string; // Keep for compatibility
   };
   solution: {
     recommended: string;
@@ -77,7 +78,7 @@ const IntegrationWizard = () => {
     },
     requirements: {
       useCase: "",
-      assuranceLevel: "",
+      dataClassification: "",
       requiredAttributes: [],
       customAttributes: "",
       environments: [],
@@ -86,7 +87,8 @@ const IntegrationWizard = () => {
       primaryPurpose: "",
       userBase: [],
       dataSensitivity: "",
-      specialRequirements: []
+      specialRequirements: [],
+      assuranceLevel: "" // Keep for compatibility
     },
     solution: {
       recommended: "",
@@ -211,6 +213,8 @@ const IntegrationWizard = () => {
             totalSteps={steps.length}
             progressValue={getProgressValue()}
             steps={steps}
+            userCategory={data.projectInfo.userCategory}
+            userTypes={data.projectInfo.userTypes}
           />
         );
       case 2:

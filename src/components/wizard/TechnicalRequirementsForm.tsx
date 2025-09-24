@@ -12,8 +12,7 @@ import { Check, Save, ArrowLeft } from "lucide-react";
 
 interface TechnicalRequirementsData {
   useCase: string;
-  
-  assuranceLevel: string;
+  dataClassification: string;
   requiredAttributes: string[];
   customAttributes: string;
   environments: string[];
@@ -30,6 +29,8 @@ interface TechnicalRequirementsFormProps {
   totalSteps?: number;
   progressValue?: number;
   steps?: Array<{ title: string; description: string }>;
+  userCategory?: string;
+  userTypes?: string[];
 }
 
 const TechnicalRequirementsForm = ({ 
@@ -41,12 +42,14 @@ const TechnicalRequirementsForm = ({
   currentStep = 2,
   totalSteps = 5,
   progressValue = 25,
-  steps = []
+  steps = [],
+  userCategory = "",
+  userTypes = []
 }: TechnicalRequirementsFormProps) => {
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isAutoSaving, setIsAutoSaving] = useState(false);
 
-  const useCaseOptions = [
+  const allUseCaseOptions = [
     {
       value: "browser-login",
       label: "Browser Login",
@@ -64,38 +67,66 @@ const TechnicalRequirementsForm = ({
     }
   ];
 
-  const assuranceLevelOptions = [
+  // Filter use case options based on user category
+  const useCaseOptions = userCategory === "external" 
+    ? allUseCaseOptions.filter(option => option.value !== "service-account")
+    : allUseCaseOptions;
+
+  const dataClassificationOptions = [
     {
       value: "low",
-      label: "Low",
-      description: "Self-declared identity is sufficient (e.g., newsletter signup, general information)"
+      label: "Low sensitivity",
+      description: "General information, no personal data (e.g., newsletters, public information)"
     },
     {
       value: "medium",
-      label: "Medium",
-      description: "Some identity verification required (e.g., service applications, personal information access)"
+      label: "Medium sensitivity",
+      description: "Some personal information (e.g., contact details, preferences, service applications)"
     },
     {
       value: "high",
-      label: "High",
-      description: "Strong identity verification required (e.g., financial services, health records, sensitive data)"
-    },
-    {
-      value: "very-high",
-      label: "Very High",
-      description: "In-person identity verification required (e.g., high-value transactions, classified information)"
+      label: "High sensitivity",
+      description: "Financial, health, or confidential data requiring strong identity verification"
     }
   ];
 
-  const attributeOptions = [
-    "Basic Identity (Name, unique identifier)",
-    "Contact Information (Email address, phone number)",
-    "Demographics (Date of birth, gender)",
-    "Address Information (Mailing address, postal code)",
-    "Government Employee Status (Ministry, role, employee ID)",
-    "Professional Credentials (License numbers, certifications)",
-    "Custom Attributes"
-  ];
+  // Generate attribute options based on selected user types
+  const getAttributeOptionsByUserType = () => {
+    const attributeOptions = new Set<string>();
+    
+    userTypes.forEach(userType => {
+      // Common attributes for all types
+      attributeOptions.add("Basic Identity (Name, unique identifier)");
+      attributeOptions.add("Contact Information (Email address, phone number)");
+      
+      if (userType === "BC residents/Canadian residents/International users") {
+        attributeOptions.add("Demographics (Date of birth, gender)");
+        attributeOptions.add("Address Information (Mailing address, postal code)");
+        attributeOptions.add("BC Services Card verification status");
+      }
+      
+      if (userType === "Individuals representing businesses or organizations") {
+        attributeOptions.add("Business Information (Business name, registration number)");
+        attributeOptions.add("Business Address");
+        attributeOptions.add("Authorized representative status");
+      }
+      
+      if (userType === "Government employees") {
+        attributeOptions.add("Government Employee Status (Ministry, role, employee ID)");
+        attributeOptions.add("Security clearance level");
+        attributeOptions.add("Organizational unit");
+      }
+      
+      if (userType === "Government contractors" || userType === "Broader public service employees") {
+        attributeOptions.add("Contractor/Partner Status (Organization, contract details)");
+        attributeOptions.add("Access authorization level");
+      }
+    });
+    
+    return Array.from(attributeOptions);
+  };
+
+  const attributeOptions = getAttributeOptionsByUserType();
 
   const environmentOptions = [
     {
@@ -118,7 +149,7 @@ const TechnicalRequirementsForm = ({
   // Auto-save functionality
   useEffect(() => {
     const timer = setInterval(() => {
-      if (data.useCase || data.assuranceLevel) {
+      if (data.useCase || data.dataClassification) {
         setIsAutoSaving(true);
         setTimeout(() => {
           setLastSaved(new Date());
@@ -147,7 +178,7 @@ const TechnicalRequirementsForm = ({
   };
 
   const isFormValid = () => {
-    return data.useCase && data.assuranceLevel && data.requiredAttributes.length > 0 && data.environments.length > 0;
+    return data.useCase && data.dataClassification && data.requiredAttributes.length > 0 && data.environments.length > 0;
   };
 
   return (
@@ -237,21 +268,22 @@ const TechnicalRequirementsForm = ({
             </div>
           </div>
 
-          {/* Section 2: Level of Assurance */}
+          {/* Section 2: Data Classification */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-semibold mb-2">Level of Assurance</h2>
-              <p className="text-sm text-muted-foreground">Higher levels require more rigorous identity verification and determine which identity providers can be used</p>
+              <h2 className="text-lg font-semibold mb-2">Data Classification</h2>
+              <p className="text-sm text-muted-foreground">This determines the level of identity verification required for individuals accessing your service</p>
             </div>
             
             <div className="space-y-4">
-              <Label>How certain do you need to be of user identities? *</Label>
+              <Label>What type of information does your product handle? *</Label>
+              <p className="text-sm text-muted-foreground">This question determines identity verification requirements for individual users only</p>
               <RadioGroup
-                value={data.assuranceLevel}
-                onValueChange={(value) => onUpdate({ assuranceLevel: value })}
+                value={data.dataClassification}
+                onValueChange={(value) => onUpdate({ dataClassification: value })}
                 className="space-y-4"
               >
-                {assuranceLevelOptions.map((option) => (
+                {dataClassificationOptions.map((option) => (
                   <div key={option.value} className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value={option.value} id={option.value} />
@@ -273,7 +305,7 @@ const TechnicalRequirementsForm = ({
             
             <div className="space-y-4">
               <Label>What information do you need about users? *</Label>
-              <p className="text-sm text-muted-foreground">Select all that apply</p>
+              <p className="text-sm text-muted-foreground">Select all that apply - attributes shown are based on your selected user types</p>
               <div className="space-y-3">
                 {attributeOptions.map((attribute) => (
                   <div key={attribute} className="space-y-2">
@@ -285,19 +317,22 @@ const TechnicalRequirementsForm = ({
                       />
                       <Label htmlFor={attribute} className="text-sm font-normal">{attribute}</Label>
                     </div>
-                    {attribute === "Custom Attributes" && data.requiredAttributes.includes(attribute) && (
-                      <div className="ml-6">
-                        <Textarea
-                          value={data.customAttributes}
-                          onChange={(e) => onUpdate({ customAttributes: e.target.value })}
-                          placeholder="Describe the custom attributes you need"
-                          rows={2}
-                          className="mt-2"
-                        />
-                      </div>
-                    )}
                   </div>
                 ))}
+              </div>
+              <div className="space-y-2">
+                <Label>Custom attributes</Label>
+                <Textarea
+                  value={data.customAttributes}
+                  onChange={(e) => onUpdate({ customAttributes: e.target.value })}
+                  placeholder="Don't see an attribute you need? Describe custom attributes here..."
+                  rows={2}
+                />
+              </div>
+              <div className="p-3 bg-muted/30 rounded-lg">
+                <p className="text-sm text-muted-foreground">
+                  Don't see an attribute you need? <Button variant="link" className="p-0 h-auto text-sm" onClick={onBack}>Go back to modify your user types</Button> or contact support for assistance.
+                </p>
               </div>
             </div>
           </div>

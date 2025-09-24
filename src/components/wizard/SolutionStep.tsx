@@ -35,12 +35,12 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
     }> = [];
 
     const userTypes = data.projectInfo.userTypes || [];
-    const loa = data.requirements.assuranceLevel || "";
+    const dataClassification = data.requirements.dataClassification || "";
 
     userTypes.forEach(userType => {
       switch (userType) {
         case "BC residents/Canadian residents/International users":
-          if (loa === "low") {
+          if (dataClassification === "low") {
             solutions.push({
               userType,
               provider: "BCeID Basic",

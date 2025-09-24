@@ -58,7 +58,7 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
               <span className="font-medium">Use Case:</span> {data.requirements.useCase}
             </div>
             <div>
-              <span className="font-medium">Assurance:</span> {data.requirements.assuranceLevel}
+              <span className="font-medium">Data Classification:</span> {data.requirements.dataClassification} sensitivity
             </div>
             <div>
               <span className="font-medium">Attributes:</span>
@@ -86,26 +86,24 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
             {(() => {
               // Group user types by their identity provider
               const providerGroups: Record<string, string[]> = {};
-              const loa = data.requirements.assuranceLevel || "";
+              const dataClassification = data.requirements.dataClassification || "";
               
               data.projectInfo.userTypes.forEach((userType) => {
                 let provider = "";
                 
                 switch (userType) {
-                  case "BC residents":
-                  case "Canadian residents (outside BC)":
-                  case "International users":
-                    provider = loa === "low" ? "BCeID Basic" : "BC Services Card";
+                  case "BC residents/Canadian residents/International users":
+                    provider = dataClassification === "low" ? "BCeID Basic" : "BC Services Card";
                     break;
-                  case "People representing businesses or organizations":
+                  case "Individuals representing businesses or organizations":
                     provider = "BCeID Business";
                     break;
-                  case "BC government employees":
+                  case "Government employees":
                   case "Government contractors":
                     provider = "IDIR";
                     break;
                   case "Broader public service employees":
-                  case "Other organizations with government relationships (RCMP, consulates, etc.)":
+                  case "Business entities with government relationships":
                     provider = "Entra Guest";
                     break;
                   default:
