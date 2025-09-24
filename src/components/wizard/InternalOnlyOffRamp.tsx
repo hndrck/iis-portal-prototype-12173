@@ -110,7 +110,7 @@ const InternalOnlyOffRamp = ({
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Users className="h-5 w-5 text-primary" />
-            <span>Internal Identity Services</span>
+            <span>Internal-only request</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -123,7 +123,7 @@ const InternalOnlyOffRamp = ({
           <Alert>
             <Shield className="h-4 w-4" />
             <AlertDescription>
-              Internal identity services are managed through a separate process to ensure proper security and compliance.
+              Internal-only identity services are managed through a separate process to ensure proper security and compliance.
             </AlertDescription>
           </Alert>
 
@@ -154,6 +154,9 @@ const InternalOnlyOffRamp = ({
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <span className="font-medium">Product Name:</span> {data.productName}
+              </div>
+              <div>
+                <span className="font-medium">Product Description:</span> {data.productDescription}
               </div>
               <div>
                 <span className="font-medium">Ministry:</span> {data.ministry}
