@@ -11,6 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Check, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ProductTeamSection from "./ProductTeamSection";
 
 interface ProjectInfoIntakeData {
   productName: string;
@@ -339,66 +340,15 @@ const ProjectInfoIntakeForm = ({
           </div>
 
           {/* Section 3: Product Team */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold mb-4">Product Team</h2>
-              <p className="text-sm text-muted-foreground">All specified contacts will receive updates about this integration request</p>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="productOwnerName">Product Owner Name</Label>
-                  <Input
-                    id="productOwnerName"
-                    value={data.productOwnerName}
-                    onChange={(e) => onUpdate({ productOwnerName: e.target.value })}
-                    placeholder="Full name"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="productOwnerEmail">Product Owner Email</Label>
-                  <Input
-                    id="productOwnerEmail"
-                    type="email"
-                    value={data.productOwnerEmail}
-                    onChange={(e) => onUpdate({ productOwnerEmail: e.target.value })}
-                    placeholder="email@gov.bc.ca"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="technicalLeadName">Technical Lead Name</Label>
-                  <Input
-                    id="technicalLeadName"
-                    value={data.technicalLeadName}
-                    onChange={(e) => onUpdate({ technicalLeadName: e.target.value })}
-                    placeholder="Full name"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="technicalLeadEmail">Technical Lead Email</Label>
-                  <Input
-                    id="technicalLeadEmail"
-                    type="email"
-                    value={data.technicalLeadEmail}
-                    onChange={(e) => onUpdate({ technicalLeadEmail: e.target.value })}
-                    placeholder="email@gov.bc.ca"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-            
-            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-sm text-blue-800 font-medium">Note: These contacts must be the individuals accountable for this product</p>
-            </div>
-          </div>
+          <ProductTeamSection 
+            data={{
+              productOwnerName: data.productOwnerName,
+              productOwnerEmail: data.productOwnerEmail,
+              technicalLeadName: data.technicalLeadName,
+              technicalLeadEmail: data.technicalLeadEmail
+            }}
+            onUpdate={onUpdate}
+          />
 
           {/* Section 4: Your Information */}
           <div className="space-y-6">

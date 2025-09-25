@@ -1,0 +1,94 @@
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Crown, Wrench, Info } from "lucide-react";
+import ContactCard from "./ContactCard";
+
+interface ProductTeamData {
+  productOwnerName: string;
+  productOwnerEmail: string;
+  technicalLeadName: string;
+  technicalLeadEmail: string;
+}
+
+interface ProductTeamSectionProps {
+  data: ProductTeamData;
+  onUpdate: (updates: Partial<ProductTeamData>) => void;
+}
+
+const ProductTeamSection = ({ data, onUpdate }: ProductTeamSectionProps) => {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold mb-4">Product Team</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          All specified contacts will receive updates about this integration request
+        </p>
+        
+        <Alert className="mb-6">
+          <Info className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Important:</strong> These contacts must be the individuals accountable for this product. 
+            Both roles are required for the integration process.
+          </AlertDescription>
+        </Alert>
+      </div>
+
+      <div className="space-y-6">
+        {/* Product Owner */}
+        <div className="space-y-3">
+          <div className="flex items-center space-x-2">
+            <Badge variant="secondary" className="bg-primary/10 text-primary">
+              Required
+            </Badge>
+            <span className="text-sm text-muted-foreground">Step 1 of 2</span>
+          </div>
+          
+          <ContactCard
+            title="Product Owner"
+            description="The person responsible for product strategy, requirements, and business decisions"
+            nameValue={data.productOwnerName}
+            emailValue={data.productOwnerEmail}
+            onNameChange={(value) => onUpdate({ productOwnerName: value })}
+            onEmailChange={(value) => onUpdate({ productOwnerEmail: value })}
+            nameFieldId="productOwnerName"
+            emailFieldId="productOwnerEmail"
+            icon={<Crown className="h-5 w-5 text-primary" />}
+          />
+        </div>
+
+        {/* Technical Lead */}
+        <div className="space-y-3">
+          <div className="flex items-center space-x-2">
+            <Badge variant="secondary" className="bg-primary/10 text-primary">
+              Required
+            </Badge>
+            <span className="text-sm text-muted-foreground">Step 2 of 2</span>
+          </div>
+          
+          <ContactCard
+            title="Technical Lead"
+            description="The person responsible for technical implementation, integration, and development oversight"
+            nameValue={data.technicalLeadName}
+            emailValue={data.technicalLeadEmail}
+            onNameChange={(value) => onUpdate({ technicalLeadName: value })}
+            onEmailChange={(value) => onUpdate({ technicalLeadEmail: value })}
+            nameFieldId="technicalLeadName"
+            emailFieldId="technicalLeadEmail"
+            icon={<Wrench className="h-5 w-5 text-primary" />}
+          />
+        </div>
+      </div>
+
+      <div className="p-4 bg-accent/20 rounded-lg border border-accent/30">
+        <h4 className="font-medium text-sm mb-2">What happens next?</h4>
+        <ul className="text-sm text-muted-foreground space-y-1">
+          <li>• Both contacts will receive integration documentation</li>
+          <li>• Technical lead will get development credentials and setup guides</li>
+          <li>• Product owner will receive project status updates</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default ProductTeamSection;
