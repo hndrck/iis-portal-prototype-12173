@@ -186,7 +186,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
       <div className="flex flex-col sm:flex-row gap-3">
         <Button className="flex-1 bg-primary hover:bg-primary/90">
           <CheckCircle className="mr-2 h-4 w-4" />
-          Accept These Services
+          Accept These Recommendations
         </Button>
         <Button 
           variant="outline" 
