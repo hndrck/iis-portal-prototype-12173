@@ -206,7 +206,7 @@ const ProjectInfoIntakeForm = ({
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="productName">What is the name of your product or application? *</Label>
+              <Label htmlFor="productName">What is the name of your product or application?</Label>
               <p className="text-sm text-muted-foreground">This is what users will see (e.g., 'BC Health Gateway', 'Internal HR Portal'). Please avoid using abbreviations in your product name.</p>
               <Input
                 id="productName"
@@ -218,7 +218,7 @@ const ProjectInfoIntakeForm = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="productDescription">Briefly describe what your product does *</Label>
+              <Label htmlFor="productDescription">Briefly describe what your product does</Label>
               <p className="text-sm text-muted-foreground">In 1-2 sentences, explain the main purpose of your product</p>
               <Textarea
                 id="productDescription"
@@ -231,7 +231,7 @@ const ProjectInfoIntakeForm = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="ministry">Ministry/Organization *</Label>
+              <Label htmlFor="ministry">Ministry/Organization</Label>
               <Select value={data.ministry} onValueChange={(value) => onUpdate({ ministry: value })}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select your ministry" />
@@ -254,7 +254,7 @@ const ProjectInfoIntakeForm = ({
             </div>
             
             <div className="space-y-4">
-              <Label>Who will use this product? *</Label>
+              <Label>Who will use this product?</Label>
               <RadioGroup
                 value={data.userCategory}
                 onValueChange={(value) => {
@@ -281,7 +281,7 @@ const ProjectInfoIntakeForm = ({
               <div className="space-y-6">
                 {/* External User Groups */}
                 <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
-                  <Label>Select specific external user groups: *</Label>
+                  <Label>Select specific external user groups:</Label>
                   <div className="grid grid-cols-1 gap-3">
                     {userCategoryOptions
                       .find(cat => cat.value === "external")
@@ -300,7 +300,7 @@ const ProjectInfoIntakeForm = ({
 
                 {/* Internal User Groups */}
                 <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
-                  <Label>Select specific internal user groups: *</Label>
+                  <Label>Select specific internal user groups:</Label>
                   <div className="grid grid-cols-1 gap-3">
                     {userCategoryOptions
                       .find(cat => cat.value === "internal")
@@ -319,7 +319,7 @@ const ProjectInfoIntakeForm = ({
               </div>
             ) : data.userCategory && (
               <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
-                <Label>Select specific user groups: *</Label>
+                <Label>Select specific user groups:</Label>
                 <div className="grid grid-cols-1 gap-3">
                   {userCategoryOptions
                     .find(cat => cat.value === data.userCategory)
@@ -348,7 +348,7 @@ const ProjectInfoIntakeForm = ({
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="productOwnerName">Product Owner Name *</Label>
+                  <Label htmlFor="productOwnerName">Product Owner Name</Label>
                   <Input
                     id="productOwnerName"
                     value={data.productOwnerName}
@@ -358,7 +358,7 @@ const ProjectInfoIntakeForm = ({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="productOwnerEmail">Product Owner Email *</Label>
+                  <Label htmlFor="productOwnerEmail">Product Owner Email</Label>
                   <Input
                     id="productOwnerEmail"
                     type="email"
@@ -372,7 +372,7 @@ const ProjectInfoIntakeForm = ({
               
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="technicalLeadName">Technical Lead Name *</Label>
+                  <Label htmlFor="technicalLeadName">Technical Lead Name</Label>
                   <Input
                     id="technicalLeadName"
                     value={data.technicalLeadName}
@@ -382,7 +382,7 @@ const ProjectInfoIntakeForm = ({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="technicalLeadEmail">Technical Lead Email *</Label>
+                  <Label htmlFor="technicalLeadEmail">Technical Lead Email</Label>
                   <Input
                     id="technicalLeadEmail"
                     type="email"

@@ -145,7 +145,7 @@ const Login = () => {
                   
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Name *</Label>
+                      <Label htmlFor="name">Name</Label>
                       <Input 
                         id="name"
                         value={formData.name}
@@ -155,7 +155,7 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email *</Label>
+                      <Label htmlFor="email">Email</Label>
                       <Input 
                         id="email"
                         type="email"
@@ -166,7 +166,7 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="organization">Organization *</Label>
+                      <Label htmlFor="organization">Organization</Label>
                       <Input 
                         id="organization"
                         value={formData.organization}
@@ -176,7 +176,7 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone number</Label>
+                      <Label htmlFor="phone">Phone number <span className="text-sm text-muted-foreground">(optional)</span></Label>
                       <Input
                         id="phone"
                         type="tel"
@@ -186,7 +186,7 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="productName">Product name *</Label>
+                      <Label htmlFor="productName">Product name</Label>
                       <Input
                         id="productName"
                         value={formData.productName}
@@ -196,7 +196,7 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="productDescription">Product description *</Label>
+                      <Label htmlFor="productDescription">Product description</Label>
                       <Textarea 
                         id="productDescription"
                         placeholder="Describe your product and integration needs..."
@@ -207,7 +207,7 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="contactPreference">Contact preference *</Label>
+                      <Label htmlFor="contactPreference">Contact preference</Label>
                       <Select value={formData.contactPreference} onValueChange={(value) => handleInputChange('contactPreference', value)}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select contact preference" />

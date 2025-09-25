@@ -203,7 +203,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
           
           <div className="space-y-4">
             <div>
-              <Label htmlFor="explanation">Explanation *</Label>
+              <Label htmlFor="explanation">Explanation</Label>
               <Textarea
                 id="explanation"
                 placeholder="Please explain why you need a different identity service..."
@@ -215,7 +215,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
             </div>
             
             <div>
-              <Label htmlFor="contactMethod">Preferred contact method</Label>
+              <Label htmlFor="contactMethod">Preferred contact method <span className="text-sm text-muted-foreground">(optional)</span></Label>
               <Select 
                 value={appealData.contactMethod} 
                 onValueChange={(value) => setAppealData({...appealData, contactMethod: value})}
@@ -231,7 +231,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
             </div>
             
             <div>
-              <Label htmlFor="bestTime">Best time to reach you</Label>
+              <Label htmlFor="bestTime">Best time to reach you <span className="text-sm text-muted-foreground">(optional)</span></Label>
               <Input
                 id="bestTime"
                 placeholder="e.g., Weekdays 9-5 PST"

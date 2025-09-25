@@ -238,7 +238,7 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
                       {key === 'production' && (
                         <>
                           <div className="space-y-2">
-                            <Label>Go-live Date (Optional)</Label>
+                            <Label>Go-live Date <span className="text-sm text-muted-foreground">(optional)</span></Label>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <Button
@@ -264,7 +264,7 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
                           </div>
 
                           <div className="space-y-2">
-                            <Label>Business Approval Contact *</Label>
+                            <Label>Business Approval Contact</Label>
                             <Input
                               value={config?.businessApprovalContact || ''}
                               onChange={(e) => updateEnvironmentConfig(provider, key, 'businessApprovalContact', e.target.value)}
@@ -288,7 +288,7 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
                       )}
 
                       <div className="space-y-2">
-                        <Label>Additional Notes (Optional)</Label>
+                        <Label>Additional Notes <span className="text-sm text-muted-foreground">(optional)</span></Label>
                         <Textarea
                           value={config?.additionalNotes || ''}
                           onChange={(e) => updateEnvironmentConfig(provider, key, 'additionalNotes', e.target.value)}

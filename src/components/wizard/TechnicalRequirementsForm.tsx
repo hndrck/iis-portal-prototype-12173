@@ -261,7 +261,7 @@ const TechnicalRequirementsForm = ({
             </div>
             
             <div className="space-y-4">
-              <Label>Select Use Case *</Label>
+              <Label>Select Use Case</Label>
               <RadioGroup
                 value={data.useCase}
                 onValueChange={(value) => onUpdate({ useCase: value })}
@@ -290,7 +290,7 @@ const TechnicalRequirementsForm = ({
             </div>
             
             <div className="space-y-4">
-              <Label>What type of information does your product handle? *</Label>
+              <Label>What type of information does your product handle?</Label>
               <p className="text-sm text-muted-foreground">This question determines identity verification requirements for individual users only</p>
               <RadioGroup
                 value={data.dataClassification}
@@ -320,7 +320,7 @@ const TechnicalRequirementsForm = ({
             {/* External Users */}
             {externalUserTypes.length > 0 && (
               <div className="space-y-4">
-                <Label>What information do you need about external users? *</Label>
+                <Label>What information do you need about external users?</Label>
                 
                 {/* Citizens */}
                 {externalUserTypes.includes("BC residents/Canadian residents/International users") && (
@@ -369,7 +369,7 @@ const TechnicalRequirementsForm = ({
             {/* Internal Users */}
             {internalUserTypes.length > 0 && (
               <div className="space-y-4">
-                <Label>What information do you need about internal users? *</Label>
+                <Label>What information do you need about internal users?</Label>
                 <div className="space-y-3">
                   {internalUserTypes.map(userType => (
                     <div key={userType} className="space-y-2">
@@ -393,7 +393,7 @@ const TechnicalRequirementsForm = ({
             )}
 
             <div className="space-y-2">
-              <Label>Custom attributes</Label>
+              <Label>Custom attributes <span className="text-sm text-muted-foreground">(optional)</span></Label>
               <Textarea
                 value={data.customAttributes}
                 onChange={(e) => onUpdate({ customAttributes: e.target.value })}
@@ -415,7 +415,7 @@ const TechnicalRequirementsForm = ({
             </div>
             
             <div className="space-y-4">
-              <Label>Which environments do you need? *</Label>
+              <Label>Which environments do you need?</Label>
               <p className="text-sm text-muted-foreground">Select all that apply</p>
               <div className="space-y-3">
                 {environmentOptions.map((env) => (

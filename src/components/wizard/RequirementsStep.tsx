@@ -36,7 +36,7 @@ const RequirementsStep = ({ data, onUpdate }: RequirementsStepProps) => {
   return (
     <div className="space-y-6">
       <div className="space-y-3">
-        <Label>Primary Purpose *</Label>
+        <Label>Primary Purpose</Label>
         <RadioGroup
           value={data.primaryPurpose}
           onValueChange={(value) => onUpdate({ primaryPurpose: value })}
@@ -57,7 +57,7 @@ const RequirementsStep = ({ data, onUpdate }: RequirementsStepProps) => {
       </div>
 
       <div className="space-y-3">
-        <Label>Expected User Base *</Label>
+        <Label>Expected User Base</Label>
         <div className="space-y-2">
           {userBaseOptions.map((option) => (
             <div key={option} className="flex items-center space-x-2">
@@ -79,7 +79,7 @@ const RequirementsStep = ({ data, onUpdate }: RequirementsStepProps) => {
       </div>
 
       <div className="space-y-3">
-        <Label>Data Sensitivity Level</Label>
+        <Label>Data Sensitivity Level <span className="text-sm text-muted-foreground">(optional)</span></Label>
         <RadioGroup
           value={data.dataSensitivity}
           onValueChange={(value) => onUpdate({ dataSensitivity: value })}
@@ -104,7 +104,7 @@ const RequirementsStep = ({ data, onUpdate }: RequirementsStepProps) => {
       </div>
 
       <div className="space-y-3">
-        <Label>Required Assurance Level</Label>
+        <Label>Required Assurance Level <span className="text-sm text-muted-foreground">(optional)</span></Label>
         <RadioGroup
           value={data.assuranceLevel}
           onValueChange={(value) => onUpdate({ assuranceLevel: value })}
@@ -125,7 +125,7 @@ const RequirementsStep = ({ data, onUpdate }: RequirementsStepProps) => {
       </div>
 
       <div className="space-y-3">
-        <Label>Special Requirements</Label>
+        <Label>Special Requirements <span className="text-sm text-muted-foreground">(optional)</span></Label>
         <div className="space-y-2">
           {specialRequirements.map((req) => (
             <div key={req} className="flex items-center space-x-2">
