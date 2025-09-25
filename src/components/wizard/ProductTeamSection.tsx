@@ -1,6 +1,5 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Crown, Wrench, Info } from "lucide-react";
+import { Info } from "lucide-react";
 import ContactCard from "./ContactCard";
 
 interface ProductTeamData {
@@ -36,13 +35,6 @@ const ProductTeamSection = ({ data, onUpdate }: ProductTeamSectionProps) => {
       <div className="space-y-6">
         {/* Product Owner */}
         <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <Badge variant="secondary" className="bg-primary/10 text-primary">
-              Required
-            </Badge>
-            <span className="text-sm text-muted-foreground">Step 1 of 2</span>
-          </div>
-          
           <ContactCard
             title="Product Owner"
             description="The person responsible for product strategy, requirements, and business decisions"
@@ -52,19 +44,11 @@ const ProductTeamSection = ({ data, onUpdate }: ProductTeamSectionProps) => {
             onEmailChange={(value) => onUpdate({ productOwnerEmail: value })}
             nameFieldId="productOwnerName"
             emailFieldId="productOwnerEmail"
-            icon={<Crown className="h-5 w-5 text-primary" />}
           />
         </div>
 
         {/* Technical Lead */}
         <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <Badge variant="secondary" className="bg-primary/10 text-primary">
-              Required
-            </Badge>
-            <span className="text-sm text-muted-foreground">Step 2 of 2</span>
-          </div>
-          
           <ContactCard
             title="Technical Lead"
             description="The person responsible for technical implementation, integration, and development oversight"
@@ -74,7 +58,6 @@ const ProductTeamSection = ({ data, onUpdate }: ProductTeamSectionProps) => {
             onEmailChange={(value) => onUpdate({ technicalLeadEmail: value })}
             nameFieldId="technicalLeadName"
             emailFieldId="technicalLeadEmail"
-            icon={<Wrench className="h-5 w-5 text-primary" />}
           />
         </div>
       </div>
