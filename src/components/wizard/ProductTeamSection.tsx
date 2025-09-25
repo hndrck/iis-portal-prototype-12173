@@ -78,15 +78,6 @@ const ProductTeamSection = ({ data, onUpdate }: ProductTeamSectionProps) => {
           />
         </div>
       </div>
-
-      <div className="p-4 bg-accent/20 rounded-lg border border-accent/30">
-        <h4 className="font-medium text-sm mb-2">What happens next?</h4>
-        <ul className="text-sm text-muted-foreground space-y-1">
-          <li>• Both contacts will receive integration documentation</li>
-          <li>• Technical lead will get development credentials and setup guides</li>
-          <li>• Product owner will receive project status updates</li>
-        </ul>
-      </div>
     </div>
   );
 };
