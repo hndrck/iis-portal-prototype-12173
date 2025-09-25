@@ -415,7 +415,7 @@ const TechnicalRequirementsForm = ({
             </div>
             
             <div className="space-y-4">
-              <Label>Which environments do you need?</Label>
+              <Label>Which of your application environments will be connecting to the identity services?</Label>
               <p className="text-sm text-muted-foreground">Select all that apply</p>
               <div className="space-y-3">
                 {environmentOptions.map((env) => (

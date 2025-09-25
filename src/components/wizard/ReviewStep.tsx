@@ -103,7 +103,7 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
                     provider = "IDIR";
                     break;
                   case "Broader public service employees":
-                  case "Business entities with government relationships":
+                  case "Business entities that have a B2B relationship with the government to deliver services on behalf or in parallel with the province":
                     provider = "Entra Guest";
                     break;
                   default:

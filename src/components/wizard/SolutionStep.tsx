@@ -68,13 +68,13 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
         case "Government contractors":
           solutions.push({
             userType,
-            provider: "IDIR",
-            description: "Secure authentication for government staff",
-            userExperience: "Users sign in with their government credentials"
+            provider: "Entra Guest",
+            description: "Enterprise authentication for external organizations",
+            userExperience: "Users sign in with their organization's Microsoft credentials"
           });
           break;
         case "Broader public service employees":
-        case "Business entities with government relationships":
+        case "Business entities that have a B2B relationship with the government to deliver services on behalf or in parallel with the province":
           solutions.push({
             userType,
             provider: "Entra Guest",

@@ -67,7 +67,7 @@ const ProjectInfoIntakeForm = ({
         "Government employees",
         "Government contractors",
         "Broader public service employees",
-        "Business entities with government relationships"
+        "Business entities that have a B2B relationship with the government to deliver services on behalf or in parallel with the province"
       ]
     },
     {

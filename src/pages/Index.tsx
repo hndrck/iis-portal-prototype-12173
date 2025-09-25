@@ -67,7 +67,7 @@ const Index = () => {
             Connect to BC government identity services
           </h1>
           <p className="text-xl text-foreground mb-8 max-w-2xl">
-            A single platform for BC government teams to integrate with identity providers. Answer questions about your needs and get the right authentication solution automatically.
+            A single platform for BC government teams to integrate with identity providers. Answer questions about your needs and get a recommendation for the authentication service that meets your requirements.
           </p>
           
           <div className="flex gap-4 mb-8">
