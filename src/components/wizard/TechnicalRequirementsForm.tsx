@@ -74,19 +74,24 @@ const TechnicalRequirementsForm = ({
 
   const dataClassificationOptions = [
     {
-      value: "low",
-      label: "Low sensitivity",
-      description: "General information, no personal data (e.g., newsletters, public information)"
+      value: "public",
+      label: "Public (No Sensitivity)",
+      description: "Information with no harm if disclosed (e.g., publicly available documents, general announcements, published reports)"
     },
     {
-      value: "medium",
-      label: "Medium sensitivity",
-      description: "Some personal information (e.g., contact details, preferences, service applications)"
+      value: "protected-a",
+      label: "Protected A (Low Sensitivity)",
+      description: "Information where disclosure could cause harm to an individual, organization or government (e.g., internal directories, draft policies, basic personal information)"
     },
     {
-      value: "high",
-      label: "High sensitivity",
-      description: "Financial, health, or confidential data requiring strong identity verification"
+      value: "protected-b",
+      label: "Protected B (Medium Sensitivity)",
+      description: "Information where disclosure could cause serious harm to an individual, organization or government (e.g., personal records, financial information, detailed service applications)"
+    },
+    {
+      value: "protected-c",
+      label: "Protected C (High Sensitivity)",
+      description: "Information where disclosure could cause extremely grave harm to an individual, organization or government (e.g., health records, law enforcement data, classified documents, security information)"
     }
   ];
 
@@ -286,12 +291,19 @@ const TechnicalRequirementsForm = ({
           <div className="space-y-6">
             <div>
               <h2 className="text-lg font-semibold mb-2">Data Classification</h2>
-              <p className="text-sm text-muted-foreground">This determines the level of identity verification required for individuals accessing your service</p>
+              <p className="text-sm text-muted-foreground">This classification determines identity verification requirements for individual users accessing your service</p>
             </div>
             
             <div className="space-y-4">
               <Label>What type of information does your product handle?</Label>
-              <p className="text-sm text-muted-foreground">This question determines identity verification requirements for individual users only</p>
+              <p className="text-sm text-muted-foreground">
+                <a href="https://www2.gov.bc.ca/assets/gov/government/services-for-government-and-broader-public-sector/information-technology-services/standards-files/618_information_security_classification_standard.pdf" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   className="text-primary hover:underline">
+                  Learn more about BC government data classification standards
+                </a>
+              </p>
               <RadioGroup
                 value={data.dataClassification}
                 onValueChange={(value) => onUpdate({ dataClassification: value })}

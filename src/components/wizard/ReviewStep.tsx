@@ -58,7 +58,7 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
               <span className="font-medium">Use Case:</span> {data.requirements.useCase}
             </div>
             <div>
-              <span className="font-medium">Data Classification:</span> {data.requirements.dataClassification} sensitivity
+              <span className="font-medium">Data Classification:</span> {data.requirements.dataClassification}
             </div>
             <div>
               <span className="font-medium">Attributes:</span>
@@ -93,7 +93,7 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
                 
                 switch (userType) {
                   case "BC residents/Canadian residents/International users":
-                    provider = dataClassification === "low" ? "BCeID Basic" : "BC Services Card";
+                    provider = (dataClassification === "public" || dataClassification === "protected-a") ? "BCeID Basic" : "BC Services Card";
                     break;
                   case "Individuals representing businesses or organizations":
                     provider = "BCeID Business";

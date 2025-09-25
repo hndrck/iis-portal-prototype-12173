@@ -40,7 +40,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
     userTypes.forEach(userType => {
       switch (userType) {
         case "BC residents/Canadian residents/International users":
-          if (dataClassification === "low") {
+          if (dataClassification === "public" || dataClassification === "protected-a") {
             solutions.push({
               userType,
               provider: "BCeID Basic",
@@ -117,7 +117,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
       components = ["BC Services Card"];
     }
 
-    reasoning = `Based on your selected user types (${data.projectInfo.userTypes?.join(", ")}) and ${data.requirements.assuranceLevel} level of assurance, this solution provides the appropriate identity verification.`;
+    reasoning = `Based on your selected user types (${data.projectInfo.userTypes?.join(", ")}) and ${data.requirements.dataClassification} data classification, this solution provides the appropriate identity verification.`;
 
     return { recommended, components, reasoning };
   }, [recommendedSolutions, data.projectInfo.userTypes, data.requirements.assuranceLevel]);
@@ -145,9 +145,9 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
       {/* Summary Section */}
       <Card className="border-primary/20">
         <CardHeader>
-          <CardTitle className="text-xl">Based on your requirements:</CardTitle>
+          <CardTitle className="text-xl">Your Requirements</CardTitle>
           <CardDescription>
-            User types: {data.projectInfo.userTypes?.join(", ")} | Level of Assurance: {data.requirements.assuranceLevel}
+            User types: {data.projectInfo.userTypes?.join(", ")} | Data Classification: {data.requirements.dataClassification}
           </CardDescription>
         </CardHeader>
         <CardContent>
