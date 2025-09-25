@@ -65,6 +65,13 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
           });
           break;
         case "Government employees":
+          solutions.push({
+            userType,
+            provider: "IDIR",
+            description: "Secure authentication for government staff",
+            userExperience: "Users sign in with their government credentials"
+          });
+          break;
         case "Government contractors":
           solutions.push({
             userType,

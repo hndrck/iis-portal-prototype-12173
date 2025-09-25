@@ -99,8 +99,10 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
                     provider = "BCeID Business";
                     break;
                   case "Government employees":
-                  case "Government contractors":
                     provider = "IDIR";
+                    break;
+                  case "Government contractors":
+                    provider = "Entra Guest";
                     break;
                   case "Broader public service employees":
                   case "Business entities that have a B2B relationship with the government to deliver services on behalf or in parallel with the province":
