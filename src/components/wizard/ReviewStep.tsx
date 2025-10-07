@@ -92,8 +92,11 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
                 let provider = "";
                 
                 switch (userType) {
-                  case "BC residents/Canadian residents/International users":
+                  case "BC residents/Canadian residents":
                     provider = (dataClassification === "public" || dataClassification === "protected-a") ? "BCeID Basic" : "BC Services Card";
+                    break;
+                  case "International users":
+                    provider = "BCeID Basic";
                     break;
                   case "Individuals representing businesses or organizations":
                     provider = "BCeID Business";
