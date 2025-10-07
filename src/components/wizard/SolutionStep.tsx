@@ -39,7 +39,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
 
     userTypes.forEach(userType => {
       switch (userType) {
-        case "BC residents/Canadian residents/International users":
+        case "BC residents/Canadian residents":
           if (dataClassification === "public" || dataClassification === "protected-a") {
             solutions.push({
               userType,
@@ -55,6 +55,14 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
               userExperience: "Users sign in with BC Services Card app or website"
             });
           }
+          break;
+        case "International users":
+          solutions.push({
+            userType,
+            provider: "BCeID Basic",
+            description: "Basic identity verification for general access",
+            userExperience: "Users create a simple account with email verification"
+          });
           break;
         case "Individuals representing businesses or organizations":
           solutions.push({

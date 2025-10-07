@@ -54,16 +54,17 @@ const ProjectInfoIntakeForm = ({
     {
       value: "external",
       label: "External Only",
-      description: "My product serves citizens, residents, or businesses accessing government services",
+      description: "My product serves the public accessing government services (e.g., citizens, residents, or business owners accessing services for their own needs)",
       userTypes: [
-        "BC residents/Canadian residents/International users",
+        "BC residents/Canadian residents",
+        "International users",
         "Individuals representing businesses or organizations"
       ]
     },
     {
       value: "internal",
       label: "Internal Only", 
-      description: "My product is only used by government employees, contractors, or authorized partners",
+      description: "My product is used to deliver or support government services (e.g., government staff, contractors, or authorized partner businesses operating on behalf of the province)",
       userTypes: [
         "Government employees",
         "Government contractors",
