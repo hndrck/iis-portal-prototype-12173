@@ -22,17 +22,13 @@ interface EnvironmentConfig {
   businessApprovalContact?: string;
 }
 
-interface ProviderEnvironments {
+interface ConfigurationData {
   development: boolean;
   test: boolean;
   production: boolean;
   developmentConfig: EnvironmentConfig;
   testConfig: EnvironmentConfig;
   productionConfig: EnvironmentConfig;
-}
-
-interface ConfigurationData {
-  providers: Record<string, ProviderEnvironments>;
   lastSaved?: Date;
 }
 
@@ -43,34 +39,27 @@ interface ConfigurationStepProps {
 
 const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
   const [configData, setConfigData] = useState<ConfigurationData>(() => {
-    const initialData: ConfigurationData = { providers: {} };
-    
-    // Initialize providers from solution data
-    if (data.solution.components) {
-      data.solution.components.forEach(provider => {
-        initialData.providers[provider] = {
-          development: true, // Pre-check development as default
-          test: false,
-          production: false,
-          developmentConfig: {
-            applicationName: `${data.projectInfo.productName || 'Product'} - Dev`,
-            redirectUris: 'http://localhost:3000/auth/callback\nhttp://localhost:8080/auth/callback',
-            additionalNotes: ''
-          },
-          testConfig: {
-            applicationName: `${data.projectInfo.productName || 'Product'} - Test`,
-            redirectUris: 'https://test.example.com/auth/callback',
-            additionalNotes: ''
-          },
-          productionConfig: {
-            applicationName: data.projectInfo.productName || 'Product',
-            redirectUris: 'https://example.com/auth/callback',
-            additionalNotes: '',
-            businessApprovalContact: ''
-          }
-        };
-      });
-    }
+    const initialData: ConfigurationData = {
+      development: true, // Pre-check development as default
+      test: false,
+      production: false,
+      developmentConfig: {
+        applicationName: `${data.projectInfo.productName || 'Product'} - Dev`,
+        redirectUris: 'http://localhost:3000/auth/callback\nhttp://localhost:8080/auth/callback',
+        additionalNotes: ''
+      },
+      testConfig: {
+        applicationName: `${data.projectInfo.productName || 'Product'} - Test`,
+        redirectUris: 'https://test.example.com/auth/callback',
+        additionalNotes: ''
+      },
+      productionConfig: {
+        applicationName: data.projectInfo.productName || 'Product',
+        redirectUris: 'https://example.com/auth/callback',
+        additionalNotes: '',
+        businessApprovalContact: ''
+      }
+    };
     
     return initialData;
   });
@@ -87,32 +76,20 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
     return () => clearTimeout(timer);
   }, [configData, onUpdate]);
 
-  const updateProviderEnvironment = (provider: string, environment: 'development' | 'test' | 'production', enabled: boolean) => {
+  const updateEnvironment = (environment: 'development' | 'test' | 'production', enabled: boolean) => {
     setConfigData(prev => ({
       ...prev,
-      providers: {
-        ...prev.providers,
-        [provider]: {
-          ...prev.providers[provider],
-          [environment]: enabled
-        }
-      }
+      [environment]: enabled
     }));
   };
 
-  const updateEnvironmentConfig = (provider: string, environment: 'development' | 'test' | 'production', field: keyof EnvironmentConfig, value: string | Date) => {
+  const updateEnvironmentConfig = (environment: 'development' | 'test' | 'production', field: keyof EnvironmentConfig, value: string | Date) => {
     const configKey = `${environment}Config` as const;
     setConfigData(prev => ({
       ...prev,
-      providers: {
-        ...prev.providers,
-        [provider]: {
-          ...prev.providers[provider],
-          [configKey]: {
-            ...prev.providers[provider][configKey],
-            [field]: value
-          }
-        }
+      [configKey]: {
+        ...prev[configKey],
+        [field]: value
       }
     }));
   };
@@ -150,26 +127,24 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-medium">Identity Provider</th>
+                  <th className="text-left py-3 px-4 font-medium">Product</th>
                   <th className="text-center py-3 px-4 font-medium">Development</th>
                   <th className="text-center py-3 px-4 font-medium">Test</th>
                   <th className="text-center py-3 px-4 font-medium">Production</th>
                 </tr>
               </thead>
               <tbody>
-                {data.solution.components.map((provider) => (
-                  <tr key={provider} className="border-b hover:bg-muted/50">
-                    <td className="py-4 px-4 font-medium">{provider}</td>
-                    {environments.map(({ key }) => (
-                      <td key={key} className="py-4 px-4 text-center">
-                        <Checkbox
-                          checked={configData.providers[provider]?.[key] || false}
-                          onCheckedChange={(checked) => updateProviderEnvironment(provider, key, !!checked)}
-                        />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+                <tr className="border-b hover:bg-muted/50">
+                  <td className="py-4 px-4 font-medium">{data.projectInfo.productName || 'Product'}</td>
+                  {environments.map(({ key }) => (
+                    <td key={key} className="py-4 px-4 text-center">
+                      <Checkbox
+                        checked={configData[key] || false}
+                        onCheckedChange={(checked) => updateEnvironment(key, !!checked)}
+                      />
+                    </td>
+                  ))}
+                </tr>
               </tbody>
             </table>
           </div>
@@ -177,133 +152,131 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
       </Card>
 
       {/* Configuration Details */}
-      {data.solution.components.map((provider) => (
-        <div key={provider} className="space-y-4">
-          {environments.map(({ key, label, description }) => {
-            const isEnabled = configData.providers[provider]?.[key];
-            const configKey = `${key}Config` as const;
-            const config = configData.providers[provider]?.[configKey];
-            
-            if (!isEnabled) return null;
+      <div className="space-y-4">
+        {environments.map(({ key, label, description }) => {
+          const isEnabled = configData[key];
+          const configKey = `${key}Config` as const;
+          const config = configData[configKey];
+          
+          if (!isEnabled) return null;
 
-            return (
-              <Card key={`${provider}-${key}`}>
-                <Collapsible defaultOpen>
-                  <CollapsibleTrigger className="w-full">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <div className="text-left">
-                          <CardTitle className="text-base">
-                            {provider} - {label} Environment
-                          </CardTitle>
-                          <p className="text-sm text-muted-foreground">{description}</p>
+          return (
+            <Card key={key}>
+              <Collapsible defaultOpen>
+                <CollapsibleTrigger className="w-full">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div className="text-left">
+                        <CardTitle className="text-base">
+                          {data.projectInfo.productName || 'Product'} - {label} Environment
+                        </CardTitle>
+                        <p className="text-sm text-muted-foreground">{description}</p>
+                      </div>
+                      <ChevronDown className="h-4 w-4" />
+                    </div>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label>Application Name</Label>
+                      <Input
+                        value={config?.applicationName || ''}
+                        onChange={(e) => updateEnvironmentConfig(key, 'applicationName', e.target.value)}
+                        placeholder={`${data.projectInfo.productName || 'Product'} - ${label}`}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Redirect URIs</Label>
+                      <Textarea
+                        value={config?.redirectUris || ''}
+                        onChange={(e) => updateEnvironmentConfig(key, 'redirectUris', e.target.value)}
+                        placeholder={
+                          key === 'development' 
+                            ? 'http://localhost:3000/auth/callback\nhttp://localhost:8080/auth/callback'
+                            : key === 'test'
+                            ? 'https://test.example.com/auth/callback'
+                            : 'https://example.com/auth/callback'
+                        }
+                        rows={3}
+                        className="font-mono text-sm"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {key === 'development' && 'Use localhost URLs for local development'}
+                        {key === 'test' && 'Use staging/test environment URLs'}
+                        {key === 'production' && 'Use live production URLs'}
+                      </p>
+                    </div>
+
+                    {key === 'production' && (
+                      <>
+                        <div className="space-y-2">
+                          <Label>Go-live Date <span className="text-sm text-muted-foreground">(optional)</span></Label>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full justify-start text-left font-normal",
+                                  !config?.goLiveDate && "text-muted-foreground"
+                                )}
+                              >
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {config?.goLiveDate ? format(config.goLiveDate, "PPP") : "Select date"}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={config?.goLiveDate}
+                                onSelect={(date) => date && updateEnvironmentConfig(key, 'goLiveDate', date)}
+                                className={cn("p-3 pointer-events-auto")}
+                              />
+                            </PopoverContent>
+                          </Popover>
                         </div>
-                        <ChevronDown className="h-4 w-4" />
-                      </div>
-                    </CardHeader>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Label>Application Name</Label>
-                        <Input
-                          value={config?.applicationName || ''}
-                          onChange={(e) => updateEnvironmentConfig(provider, key, 'applicationName', e.target.value)}
-                          placeholder={`${data.projectInfo.productName || 'Product'} - ${label}`}
-                        />
-                      </div>
 
-                      <div className="space-y-2">
-                        <Label>Redirect URIs</Label>
-                        <Textarea
-                          value={config?.redirectUris || ''}
-                          onChange={(e) => updateEnvironmentConfig(provider, key, 'redirectUris', e.target.value)}
-                          placeholder={
-                            key === 'development' 
-                              ? 'http://localhost:3000/auth/callback\nhttp://localhost:8080/auth/callback'
-                              : key === 'test'
-                              ? 'https://test.example.com/auth/callback'
-                              : 'https://example.com/auth/callback'
-                          }
-                          rows={3}
-                          className="font-mono text-sm"
-                        />
-                        <p className="text-xs text-muted-foreground">
-                          {key === 'development' && 'Use localhost URLs for local development'}
-                          {key === 'test' && 'Use staging/test environment URLs'}
-                          {key === 'production' && 'Use live production URLs'}
-                        </p>
-                      </div>
+                        <div className="space-y-2">
+                          <Label>Business Approval Contact</Label>
+                          <Input
+                            value={config?.businessApprovalContact || ''}
+                            onChange={(e) => updateEnvironmentConfig(key, 'businessApprovalContact', e.target.value)}
+                            placeholder="Name and email of business approver"
+                            required
+                          />
+                        </div>
 
-                      {key === 'production' && (
-                        <>
-                          <div className="space-y-2">
-                            <Label>Go-live Date <span className="text-sm text-muted-foreground">(optional)</span></Label>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  className={cn(
-                                    "w-full justify-start text-left font-normal",
-                                    !config?.goLiveDate && "text-muted-foreground"
-                                  )}
-                                >
-                                  <CalendarIcon className="mr-2 h-4 w-4" />
-                                  {config?.goLiveDate ? format(config.goLiveDate, "PPP") : "Select date"}
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent className="w-auto p-0" align="start">
-                                <Calendar
-                                  mode="single"
-                                  selected={config?.goLiveDate}
-                                  onSelect={(date) => date && updateEnvironmentConfig(provider, key, 'goLiveDate', date)}
-                                  className={cn("p-3 pointer-events-auto")}
-                                />
-                              </PopoverContent>
-                            </Popover>
-                          </div>
-
-                          <div className="space-y-2">
-                            <Label>Business Approval Contact</Label>
-                            <Input
-                              value={config?.businessApprovalContact || ''}
-                              onChange={(e) => updateEnvironmentConfig(provider, key, 'businessApprovalContact', e.target.value)}
-                              placeholder="Name and email of business approver"
-                              required
-                            />
-                          </div>
-
-                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <div className="flex items-start space-x-2">
-                              <Info className="h-5 w-5 text-blue-600 mt-0.5" />
-                              <div>
-                                <p className="text-sm font-medium text-blue-900">Production Environment Notice</p>
-                                <p className="text-sm text-blue-700 mt-1">
-                                  Production environments require additional approval and may take 3-5 business days to process.
-                                </p>
-                              </div>
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <div className="flex items-start space-x-2">
+                            <Info className="h-5 w-5 text-blue-600 mt-0.5" />
+                            <div>
+                              <p className="text-sm font-medium text-blue-900">Production Environment Notice</p>
+                              <p className="text-sm text-blue-700 mt-1">
+                                Production environments require additional approval and may take 3-5 business days to process.
+                              </p>
                             </div>
                           </div>
-                        </>
-                      )}
+                        </div>
+                      </>
+                    )}
 
-                      <div className="space-y-2">
-                        <Label>Additional Notes <span className="text-sm text-muted-foreground">(optional)</span></Label>
-                        <Textarea
-                          value={config?.additionalNotes || ''}
-                          onChange={(e) => updateEnvironmentConfig(provider, key, 'additionalNotes', e.target.value)}
-                          placeholder="Any additional requirements or notes..."
-                          rows={2}
-                        />
-                      </div>
-                    </CardContent>
-                  </CollapsibleContent>
-                </Collapsible>
-              </Card>
-            );
-          })}
-        </div>
-      ))}
+                    <div className="space-y-2">
+                      <Label>Additional Notes <span className="text-sm text-muted-foreground">(optional)</span></Label>
+                      <Textarea
+                        value={config?.additionalNotes || ''}
+                        onChange={(e) => updateEnvironmentConfig(key, 'additionalNotes', e.target.value)}
+                        placeholder="Any additional requirements or notes..."
+                        rows={2}
+                      />
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          );
+        })}
+      </div>
 
       {/* Help Section */}
       <Card className="bg-muted/50">

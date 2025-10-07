@@ -50,7 +50,26 @@ export interface WizardData {
     reasoning: string;
   };
   configuration: {
-    providers: Record<string, any>;
+    development: boolean;
+    test: boolean;
+    production: boolean;
+    developmentConfig: {
+      applicationName: string;
+      redirectUris: string;
+      additionalNotes: string;
+    };
+    testConfig: {
+      applicationName: string;
+      redirectUris: string;
+      additionalNotes: string;
+    };
+    productionConfig: {
+      applicationName: string;
+      redirectUris: string;
+      additionalNotes: string;
+      goLiveDate?: Date;
+      businessApprovalContact?: string;
+    };
     lastSaved?: Date;
   };
 }
@@ -96,7 +115,24 @@ const IntegrationWizard = () => {
       reasoning: ""
     },
     configuration: {
-      providers: {},
+      development: true,
+      test: false,
+      production: false,
+      developmentConfig: {
+        applicationName: "",
+        redirectUris: "",
+        additionalNotes: ""
+      },
+      testConfig: {
+        applicationName: "",
+        redirectUris: "",
+        additionalNotes: ""
+      },
+      productionConfig: {
+        applicationName: "",
+        redirectUris: "",
+        additionalNotes: ""
+      },
       lastSaved: undefined
     }
   });
@@ -171,9 +207,7 @@ const IntegrationWizard = () => {
         return data.solution.recommended;
       case 3:
         // For configuration step, we need at least one environment selected
-        return Object.values(data.configuration.providers).some((provider: any) => 
-          provider.development || provider.test || provider.production
-        );
+        return data.configuration.development || data.configuration.test || data.configuration.production;
       case 4:
         return true;
       default:

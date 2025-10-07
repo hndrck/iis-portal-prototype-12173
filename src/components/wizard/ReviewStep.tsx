@@ -145,39 +145,34 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {Object.entries(data.configuration.providers).map(([provider, config]: [string, any]) => (
-              <div key={provider} className="border rounded-lg p-3">
-                <h4 className="font-medium mb-2">{provider}</h4>
-                <div className="space-y-1 text-sm">
-                  <div>
-                    <span className="font-medium">Environments:</span>{' '}
-                    {[
-                      config.development && 'Development',
-                      config.test && 'Test', 
-                      config.production && 'Production'
-                    ].filter(Boolean).join(', ')}
-                  </div>
-                  {config.development && (
-                    <div>
-                      <span className="font-medium">Dev App:</span> {config.developmentConfig?.applicationName}
-                    </div>
-                  )}
-                  {config.test && (
-                    <div>
-                      <span className="font-medium">Test App:</span> {config.testConfig?.applicationName}
-                    </div>
-                  )}
-                  {config.production && (
-                    <div>
-                      <span className="font-medium">Prod App:</span> {config.productionConfig?.applicationName}
-                    </div>
-                  )}
+            <div className="border rounded-lg p-3">
+              <h4 className="font-medium mb-2">{data.projectInfo.productName || 'Product'}</h4>
+              <div className="space-y-1 text-sm">
+                <div>
+                  <span className="font-medium">Environments:</span>{' '}
+                  {[
+                    data.configuration.development && 'Development',
+                    data.configuration.test && 'Test', 
+                    data.configuration.production && 'Production'
+                  ].filter(Boolean).join(', ')}
                 </div>
+                {data.configuration.development && (
+                  <div>
+                    <span className="font-medium">Dev App:</span> {data.configuration.developmentConfig?.applicationName}
+                  </div>
+                )}
+                {data.configuration.test && (
+                  <div>
+                    <span className="font-medium">Test App:</span> {data.configuration.testConfig?.applicationName}
+                  </div>
+                )}
+                {data.configuration.production && (
+                  <div>
+                    <span className="font-medium">Prod App:</span> {data.configuration.productionConfig?.applicationName}
+                  </div>
+                )}
               </div>
-            ))}
-            {Object.keys(data.configuration.providers).length === 0 && (
-              <p className="text-muted-foreground">No environments configured yet.</p>
-            )}
+            </div>
           </CardContent>
         </Card>
       </div>
