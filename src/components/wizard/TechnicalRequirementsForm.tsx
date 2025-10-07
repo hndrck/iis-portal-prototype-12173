@@ -99,13 +99,22 @@ const TechnicalRequirementsForm = ({
   const getAttributeOptionsByUserType = (userType: string) => {
     const attributeOptions: string[] = [];
     
-    if (userType === "BC residents/Canadian residents/International users") {
+    if (userType === "BC residents/Canadian residents") {
       attributeOptions.push(
         "Basic Identity (Name, unique identifier)",
         "Contact Information (Email address, phone number)",
         "Demographics (Date of birth, gender)",
         "Address Information (Mailing address, postal code)",
         "BC Services Card verification status"
+      );
+    }
+    
+    if (userType === "International users") {
+      attributeOptions.push(
+        "Basic Identity (Name, unique identifier)",
+        "Contact Information (Email address, phone number)",
+        "Demographics (Date of birth, gender)",
+        "Address Information (Mailing address, postal code)"
       );
     }
     
@@ -137,7 +146,8 @@ const TechnicalRequirementsForm = ({
 
   // Get external and internal user types
   const externalUserTypes = userTypes.filter(type => 
-    type === "BC residents/Canadian residents/International users" || 
+    type === "BC residents/Canadian residents" || 
+    type === "International users" ||
     type === "Individuals representing businesses or organizations"
   );
   
@@ -334,20 +344,41 @@ const TechnicalRequirementsForm = ({
               <div className="space-y-4">
                 <Label>What information do you need about external users?</Label>
                 
-                {/* Citizens */}
-                {externalUserTypes.includes("BC residents/Canadian residents/International users") && (
+                {/* BC Residents / Canadian Residents */}
+                {externalUserTypes.includes("BC residents/Canadian residents") && (
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-muted-foreground">Citizens:</h4>
+                    <h4 className="text-sm font-medium text-muted-foreground">BC residents/Canadian residents:</h4>
                     <div className="ml-4 space-y-3">
-                      {getAttributeOptionsByUserType("BC residents/Canadian residents/International users").map((attribute) => (
+                      {getAttributeOptionsByUserType("BC residents/Canadian residents").map((attribute) => (
                         <div key={attribute} className="space-y-2">
                           <div className="flex items-center space-x-2">
                             <Checkbox
-                              id={`citizen-${attribute}`}
+                              id={`bc-residents-${attribute}`}
                               checked={data.requiredAttributes.includes(attribute)}
                               onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
                             />
-                            <Label htmlFor={`citizen-${attribute}`} className="text-sm font-normal">{attribute}</Label>
+                            <Label htmlFor={`bc-residents-${attribute}`} className="text-sm font-normal">{attribute}</Label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* International Users */}
+                {externalUserTypes.includes("International users") && (
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-muted-foreground">International users:</h4>
+                    <div className="ml-4 space-y-3">
+                      {getAttributeOptionsByUserType("International users").map((attribute) => (
+                        <div key={attribute} className="space-y-2">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`intl-${attribute}`}
+                              checked={data.requiredAttributes.includes(attribute)}
+                              onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
+                            />
+                            <Label htmlFor={`intl-${attribute}`} className="text-sm font-normal">{attribute}</Label>
                           </div>
                         </div>
                       ))}
