@@ -157,23 +157,6 @@ const TechnicalRequirementsForm = ({
     type === "Broader public service employees"
   );
 
-  const environmentOptions = [
-    {
-      value: "development",
-      label: "Development",
-      description: "For initial development and testing"
-    },
-    {
-      value: "test",
-      label: "Test",
-      description: "For user acceptance testing and staging"
-    },
-    {
-      value: "production",
-      label: "Production",
-      description: "For live service delivery"
-    }
-  ];
 
   // Auto-save functionality
   useEffect(() => {
@@ -198,16 +181,9 @@ const TechnicalRequirementsForm = ({
     }
   };
 
-  const handleEnvironmentChange = (environment: string, checked: boolean) => {
-    if (checked) {
-      onUpdate({ environments: [...data.environments, environment] });
-    } else {
-      onUpdate({ environments: data.environments.filter(env => env !== environment) });
-    }
-  };
 
   const isFormValid = () => {
-    return data.useCase && data.dataClassification && data.requiredAttributes.length > 0 && data.environments.length > 0;
+    return data.useCase && data.dataClassification && data.requiredAttributes.length > 0;
   };
 
   return (
@@ -451,44 +427,6 @@ const TechnicalRequirementsForm = ({
             </div>
           </div>
 
-          {/* Section 4: Environment Setup */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold mb-4">Environment Setup</h2>
-            </div>
-            
-            <div className="space-y-4">
-              <Label>Which of your application environments will be connecting to the identity services?</Label>
-              <p className="text-sm text-muted-foreground">Select all that apply</p>
-              <div className="space-y-3">
-                {environmentOptions.map((env) => (
-                  <div key={env.value} className="space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={env.value}
-                        checked={data.environments.includes(env.value)}
-                        onCheckedChange={(checked) => handleEnvironmentChange(env.value, !!checked)}
-                      />
-                      <Label htmlFor={env.value} className="font-medium">{env.label}</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground ml-6">{env.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="additionalRequirements">Any additional technical requirements or constraints?</Label>
-              <p className="text-sm text-muted-foreground">Describe specific hosting requirements, integration timelines, or other technical considerations</p>
-              <Textarea
-                id="additionalRequirements"
-                value={data.additionalRequirements}
-                onChange={(e) => onUpdate({ additionalRequirements: e.target.value })}
-                placeholder="Additional technical details..."
-                rows={4}
-              />
-            </div>
-          </div>
         </CardContent>
 
         {/* Footer Actions */}
