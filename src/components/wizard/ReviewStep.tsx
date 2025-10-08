@@ -50,7 +50,7 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center space-x-2 text-base">
               <Shield className="h-5 w-5 text-primary" />
-              <span>Integration Set-up</span>
+              <span>Technical Requirements</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -73,32 +73,21 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
                    data.requirements.clientType === 'public' ? 'Public Client' : 
                    data.requirements.clientType}
                 </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center space-x-2 text-base">
-              <Shield className="h-5 w-5 text-primary" />
-              <span>Data & Attributes</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div>
-              <span className="font-medium">Data Classification:</span> {data.requirements.dataClassification}
-            </div>
-            <div>
-              <span className="font-medium">Attributes:</span>
-              <div className="flex flex-wrap gap-1 mt-1">
-                {data.requirements.requiredAttributes?.length > 0 ? (
-                  data.requirements.requiredAttributes.map((attr) => (
-                    <Badge key={attr} variant="outline">{attr}</Badge>
-                  ))
-                ) : (
-                  <span className="text-muted-foreground">None specified</span>
-                )}
+                <div>
+                  <span className="font-medium">Data Classification:</span> {data.requirements.dataClassification}
+                </div>
+                <div>
+                  <span className="font-medium">Attributes:</span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {data.requirements.requiredAttributes?.length > 0 ? (
+                      data.requirements.requiredAttributes.map((attr) => (
+                        <Badge key={attr} variant="outline">{attr}</Badge>
+                      ))
+                    ) : (
+                      <span className="text-muted-foreground">None specified</span>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </CardContent>
