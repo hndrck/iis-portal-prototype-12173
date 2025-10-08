@@ -286,12 +286,12 @@ const TechnicalRequirementsForm = ({
               <RadioGroup
                 value={data.clientProtocol}
                 onValueChange={(value) => onUpdate({ clientProtocol: value })}
-                className="space-y-3"
+                className="space-y-2"
               >
                 {clientProtocolOptions.map((option) => (
-                  <div key={option.value} className="flex items-start space-x-3 p-2 rounded-lg border hover:bg-accent/50 transition-colors">
-                    <RadioGroupItem value={option.value} id={`protocol-${option.value}`} className="mt-0.5" />
-                    <Label htmlFor={`protocol-${option.value}`} className="cursor-pointer flex-1">{option.label}</Label>
+                  <div key={option.value} className="flex items-center space-x-3">
+                    <RadioGroupItem value={option.value} id={`protocol-${option.value}`} />
+                    <Label htmlFor={`protocol-${option.value}`} className="cursor-pointer font-normal">{option.label}</Label>
                   </div>
                 ))}
               </RadioGroup>
@@ -308,18 +308,16 @@ const TechnicalRequirementsForm = ({
               <RadioGroup
                 value={data.useCase}
                 onValueChange={(value) => onUpdate({ useCase: value })}
-                className="space-y-3"
+                className="space-y-2"
               >
                 {useCaseOptions.map((option) => (
-                  <div key={option.value} className="p-2 rounded-lg border hover:bg-accent/50 transition-colors">
-                    <div className="flex items-start space-x-3">
-                      <RadioGroupItem value={option.value} id={`usecase-${option.value}`} className="mt-0.5" />
-                      <div className="flex-1 space-y-0.5">
-                        <Label htmlFor={`usecase-${option.value}`} className="cursor-pointer">{option.label}</Label>
-                        {option.description && (
-                          <p className="text-sm text-muted-foreground">{option.description}</p>
-                        )}
-                      </div>
+                  <div key={option.value} className="flex items-start space-x-3">
+                    <RadioGroupItem value={option.value} id={`usecase-${option.value}`} className="mt-0.5" />
+                    <div className="flex-1">
+                      <Label htmlFor={`usecase-${option.value}`} className="cursor-pointer font-normal">{option.label}</Label>
+                      {option.description && (
+                        <p className="text-sm text-muted-foreground mt-0.5">{option.description}</p>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -337,18 +335,16 @@ const TechnicalRequirementsForm = ({
               <RadioGroup
                 value={data.clientType}
                 onValueChange={(value) => onUpdate({ clientType: value })}
-                className="space-y-3"
+                className="space-y-2"
               >
                 {clientTypeOptions.map((option) => (
-                  <div key={option.value} className="p-2 rounded-lg border hover:bg-accent/50 transition-colors">
-                    <div className="flex items-start space-x-3">
-                      <RadioGroupItem value={option.value} id={`clienttype-${option.value}`} className="mt-0.5" />
-                      <div className="flex-1 space-y-0.5">
-                        <Label htmlFor={`clienttype-${option.value}`} className="cursor-pointer">{option.label}</Label>
-                        {option.description && (
-                          <p className="text-sm text-muted-foreground">{option.description}</p>
-                        )}
-                      </div>
+                  <div key={option.value} className="flex items-start space-x-3">
+                    <RadioGroupItem value={option.value} id={`clienttype-${option.value}`} className="mt-0.5" />
+                    <div className="flex-1">
+                      <Label htmlFor={`clienttype-${option.value}`} className="cursor-pointer font-normal">{option.label}</Label>
+                      {option.description && (
+                        <p className="text-sm text-muted-foreground mt-0.5">{option.description}</p>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -386,16 +382,14 @@ const TechnicalRequirementsForm = ({
             <RadioGroup
               value={data.dataClassification}
               onValueChange={(value) => onUpdate({ dataClassification: value })}
-              className="space-y-3"
+              className="space-y-2"
             >
               {dataClassificationOptions.map((option) => (
-                <div key={option.value} className="p-2 rounded-lg border hover:bg-accent/50 transition-colors">
-                  <div className="flex items-start space-x-3">
-                    <RadioGroupItem value={option.value} id={option.value} className="mt-0.5" />
-                    <div className="flex-1 space-y-0.5">
-                      <Label htmlFor={option.value} className="cursor-pointer">{option.label}</Label>
-                      <p className="text-sm text-muted-foreground">{option.description}</p>
-                    </div>
+                <div key={option.value} className="flex items-start space-x-3">
+                  <RadioGroupItem value={option.value} id={option.value} className="mt-0.5" />
+                  <div className="flex-1">
+                    <Label htmlFor={option.value} className="cursor-pointer font-normal">{option.label}</Label>
+                    <p className="text-sm text-muted-foreground mt-0.5">{option.description}</p>
                   </div>
                 </div>
               ))}
