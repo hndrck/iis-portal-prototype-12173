@@ -266,21 +266,21 @@ const TechnicalRequirementsForm = ({
         )}
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-4">
         {/* Section 1: Integration Set-up */}
-        <Card className="border-2">
-          <CardHeader>
+        <Card>
+          <CardHeader className="pb-3">
             <div className="flex items-center space-x-2">
-              <Settings className="h-5 w-5 text-primary" />
-              <CardTitle>Integration Set-up</CardTitle>
+              <Settings className="h-4 w-4 text-primary" />
+              <CardTitle className="text-base">Integration Set-up</CardTitle>
             </div>
-            <CardDescription>Configure the technical details of your integration</CardDescription>
+            <CardDescription className="text-sm">Configure the technical details of your integration</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-8">
+          <CardContent className="space-y-6">
             {/* Client Protocol */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div>
-                <Label className="text-base">Select Client Protocol</Label>
+                <Label>Select Client Protocol</Label>
                 <p className="text-sm text-muted-foreground mt-1">Choose the protocol your application will use to communicate with the identity service.</p>
               </div>
               <RadioGroup
@@ -289,9 +289,9 @@ const TechnicalRequirementsForm = ({
                 className="space-y-3"
               >
                 {clientProtocolOptions.map((option) => (
-                  <div key={option.value} className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-accent/50 transition-colors">
+                  <div key={option.value} className="flex items-start space-x-3 p-2 rounded-lg border hover:bg-accent/50 transition-colors">
                     <RadioGroupItem value={option.value} id={`protocol-${option.value}`} className="mt-0.5" />
-                    <Label htmlFor={`protocol-${option.value}`} className="font-medium cursor-pointer flex-1">{option.label}</Label>
+                    <Label htmlFor={`protocol-${option.value}`} className="cursor-pointer flex-1">{option.label}</Label>
                   </div>
                 ))}
               </RadioGroup>
@@ -300,9 +300,9 @@ const TechnicalRequirementsForm = ({
             <Separator />
 
             {/* Use Case */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div>
-                <Label className="text-base">Select Use Case</Label>
+                <Label>Select Use Case</Label>
                 <p className="text-sm text-muted-foreground mt-1">Choose how users will interact with your product.</p>
               </div>
               <RadioGroup
@@ -311,11 +311,11 @@ const TechnicalRequirementsForm = ({
                 className="space-y-3"
               >
                 {useCaseOptions.map((option) => (
-                  <div key={option.value} className="p-3 rounded-lg border hover:bg-accent/50 transition-colors">
+                  <div key={option.value} className="p-2 rounded-lg border hover:bg-accent/50 transition-colors">
                     <div className="flex items-start space-x-3">
                       <RadioGroupItem value={option.value} id={`usecase-${option.value}`} className="mt-0.5" />
-                      <div className="flex-1 space-y-1">
-                        <Label htmlFor={`usecase-${option.value}`} className="font-medium cursor-pointer">{option.label}</Label>
+                      <div className="flex-1 space-y-0.5">
+                        <Label htmlFor={`usecase-${option.value}`} className="cursor-pointer">{option.label}</Label>
                         {option.description && (
                           <p className="text-sm text-muted-foreground">{option.description}</p>
                         )}
@@ -329,9 +329,9 @@ const TechnicalRequirementsForm = ({
             <Separator />
 
             {/* Client Type */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div>
-                <Label className="text-base">Select Client Type</Label>
+                <Label>Select Client Type</Label>
                 <p className="text-sm text-muted-foreground mt-1">Choose the configuration based on your application architecture.</p>
               </div>
               <RadioGroup
@@ -340,11 +340,11 @@ const TechnicalRequirementsForm = ({
                 className="space-y-3"
               >
                 {clientTypeOptions.map((option) => (
-                  <div key={option.value} className="p-3 rounded-lg border hover:bg-accent/50 transition-colors">
+                  <div key={option.value} className="p-2 rounded-lg border hover:bg-accent/50 transition-colors">
                     <div className="flex items-start space-x-3">
                       <RadioGroupItem value={option.value} id={`clienttype-${option.value}`} className="mt-0.5" />
-                      <div className="flex-1 space-y-1">
-                        <Label htmlFor={`clienttype-${option.value}`} className="font-medium cursor-pointer">{option.label}</Label>
+                      <div className="flex-1 space-y-0.5">
+                        <Label htmlFor={`clienttype-${option.value}`} className="cursor-pointer">{option.label}</Label>
                         {option.description && (
                           <p className="text-sm text-muted-foreground">{option.description}</p>
                         )}
@@ -363,17 +363,17 @@ const TechnicalRequirementsForm = ({
         </Card>
 
         {/* Section 2: Data Classification */}
-        <Card className="border-2">
-          <CardHeader>
+        <Card>
+          <CardHeader className="pb-3">
             <div className="flex items-center space-x-2">
-              <Shield className="h-5 w-5 text-primary" />
-              <CardTitle>Data Classification</CardTitle>
+              <Shield className="h-4 w-4 text-primary" />
+              <CardTitle className="text-base">Data Classification</CardTitle>
             </div>
-            <CardDescription>This classification determines identity verification requirements for individual users accessing your service</CardDescription>
+            <CardDescription className="text-sm">This classification determines identity verification requirements for individual users accessing your service</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             <div>
-              <Label className="text-base">What type of information does your product handle?</Label>
+              <Label>What type of information does your product handle?</Label>
               <p className="text-sm text-muted-foreground mt-1">
                 <a href="https://www2.gov.bc.ca/assets/gov/government/services-for-government-and-broader-public-sector/information-technology-services/standards-files/618_information_security_classification_standard.pdf" 
                    target="_blank" 
@@ -389,11 +389,11 @@ const TechnicalRequirementsForm = ({
               className="space-y-3"
             >
               {dataClassificationOptions.map((option) => (
-                <div key={option.value} className="p-3 rounded-lg border hover:bg-accent/50 transition-colors">
+                <div key={option.value} className="p-2 rounded-lg border hover:bg-accent/50 transition-colors">
                   <div className="flex items-start space-x-3">
                     <RadioGroupItem value={option.value} id={option.value} className="mt-0.5" />
-                    <div className="flex-1 space-y-1">
-                      <Label htmlFor={option.value} className="font-medium cursor-pointer">{option.label}</Label>
+                    <div className="flex-1 space-y-0.5">
+                      <Label htmlFor={option.value} className="cursor-pointer">{option.label}</Label>
                       <p className="text-sm text-muted-foreground">{option.description}</p>
                     </div>
                   </div>
@@ -404,28 +404,28 @@ const TechnicalRequirementsForm = ({
         </Card>
 
         {/* Section 3: User Information Requirements */}
-        <Card className="border-2">
-          <CardHeader>
+        <Card>
+          <CardHeader className="pb-3">
             <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-primary" />
-              <CardTitle>User Information Requirements</CardTitle>
+              <Users className="h-4 w-4 text-primary" />
+              <CardTitle className="text-base">User Information Requirements</CardTitle>
             </div>
-            <CardDescription>Only request information that's essential for your service to function</CardDescription>
+            <CardDescription className="text-sm">Only request information that's essential for your service to function</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4">
             {/* External Users */}
             {externalUserTypes.length > 0 && (
-              <div className="space-y-4">
-                <div className="p-4 bg-muted/50 rounded-lg">
-                  <Label className="text-base">What information do you need about external users?</Label>
+              <div className="space-y-3">
+                <div className="p-3 bg-muted/50 rounded-lg">
+                  <Label>What information do you need about external users?</Label>
                 </div>
                 
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {/* BC Residents / Canadian Residents */}
                   {externalUserTypes.includes("BC residents/Canadian residents") && (
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-semibold">BC residents/Canadian residents</h4>
-                      <div className="pl-2 space-y-2 border-l-2 border-primary/20">
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">BC residents/Canadian residents</h4>
+                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
                         {getAttributeOptionsByUserType("BC residents/Canadian residents").map((attribute) => (
                           <div key={attribute} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
                             <Checkbox
@@ -443,9 +443,9 @@ const TechnicalRequirementsForm = ({
 
                   {/* International Users */}
                   {externalUserTypes.includes("International users") && (
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-semibold">International users</h4>
-                      <div className="pl-2 space-y-2 border-l-2 border-primary/20">
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">International users</h4>
+                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
                         {getAttributeOptionsByUserType("International users").map((attribute) => (
                           <div key={attribute} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
                             <Checkbox
@@ -463,9 +463,9 @@ const TechnicalRequirementsForm = ({
 
                   {/* Business Representatives */}
                   {externalUserTypes.includes("Individuals representing businesses or organizations") && (
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-semibold">Business representatives</h4>
-                      <div className="pl-2 space-y-2 border-l-2 border-primary/20">
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">Business representatives</h4>
+                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
                         {getAttributeOptionsByUserType("Individuals representing businesses or organizations").map((attribute) => (
                           <div key={attribute} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
                             <Checkbox
@@ -486,16 +486,16 @@ const TechnicalRequirementsForm = ({
 
             {/* Internal Users */}
             {internalUserTypes.length > 0 && (
-              <div className="space-y-4">
-                <div className="p-4 bg-muted/50 rounded-lg">
-                  <Label className="text-base">What information do you need about internal users?</Label>
+              <div className="space-y-3">
+                <div className="p-3 bg-muted/50 rounded-lg">
+                  <Label>What information do you need about internal users?</Label>
                 </div>
                 
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {internalUserTypes.map(userType => (
-                    <div key={userType} className="space-y-3">
-                      <h4 className="text-sm font-semibold">{userType}</h4>
-                      <div className="pl-2 space-y-2 border-l-2 border-primary/20">
+                    <div key={userType} className="space-y-2">
+                      <h4 className="text-sm font-medium">{userType}</h4>
+                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
                         {getAttributeOptionsByUserType(userType).map((attribute) => (
                           <div key={`${userType}-${attribute}`} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
                             <Checkbox
@@ -516,8 +516,8 @@ const TechnicalRequirementsForm = ({
 
             <Separator />
 
-            <div className="space-y-3">
-              <Label className="text-base">Custom attributes <span className="text-sm font-normal text-muted-foreground">(optional)</span></Label>
+            <div className="space-y-2">
+              <Label>Custom attributes <span className="text-sm font-normal text-muted-foreground">(optional)</span></Label>
               <Textarea
                 value={data.customAttributes}
                 onChange={(e) => onUpdate({ customAttributes: e.target.value })}
@@ -527,7 +527,7 @@ const TechnicalRequirementsForm = ({
               />
             </div>
             
-            <div className="p-4 bg-muted/30 rounded-lg border">
+            <div className="p-3 bg-muted/30 rounded-lg border">
               <p className="text-sm text-muted-foreground">
                 Don't see an attribute you need? <Button variant="link" className="p-0 h-auto text-sm" onClick={onBack}>Go back to modify your user types</Button> or contact support for assistance.
               </p>
@@ -537,8 +537,8 @@ const TechnicalRequirementsForm = ({
       </div>
 
       {/* Footer Actions */}
-      <Card className="border-t-2">
-        <CardContent className="p-6">
+      <Card>
+        <CardContent className="p-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
               {lastSaved && (
