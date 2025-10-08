@@ -11,7 +11,9 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Check, Save, ArrowLeft } from "lucide-react";
 
 interface TechnicalRequirementsData {
+  clientProtocol: string;
   useCase: string;
+  clientType: string;
   dataClassification: string;
   requiredAttributes: string[];
   customAttributes: string;
@@ -49,28 +51,49 @@ const TechnicalRequirementsForm = ({
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isAutoSaving, setIsAutoSaving] = useState(false);
 
-  const allUseCaseOptions = [
+  const clientProtocolOptions = [
     {
-      value: "browser-login",
-      label: "Browser Login",
-      description: "Users sign in to your web application or website to access their account and use your service"
+      value: "oidc",
+      label: "OpenID Connect (Recommended)",
+      description: ""
     },
     {
-      value: "service-account",
-      label: "Service Account",
-      description: "Your application needs to access government data or services automatically in the background, without requiring individual user login each time"
-    },
-    {
-      value: "browser-and-service",
-      label: "Browser Login and Service Account",
-      description: "Users sign in to access your service, and your application also needs to automatically access government data or services on their behalf"
+      value: "saml",
+      label: "SAML",
+      description: ""
     }
   ];
 
-  // Filter use case options based on user category
-  const useCaseOptions = userCategory === "external" 
-    ? allUseCaseOptions.filter(option => option.value !== "service-account")
-    : allUseCaseOptions;
+  const useCaseOptions = [
+    {
+      value: "browser-login",
+      label: "Browser Login",
+      description: "Users sign in through a web browser interface"
+    },
+    {
+      value: "service-principal",
+      label: "Service Principal",
+      description: "Machine-to-machine authentication without user interaction (e.g., API calls, background processes, automated services)"
+    },
+    {
+      value: "browser-and-service",
+      label: "Browser Login and Service Principal",
+      description: "Your product requires both user sign-in and automated system access"
+    }
+  ];
+
+  const clientTypeOptions = [
+    {
+      value: "confidential",
+      label: "Confidential Client",
+      description: "Your application has a secure back-end component that can safely store secrets to communicate with the authentication server"
+    },
+    {
+      value: "public",
+      label: "Public Client",
+      description: "Your application runs entirely in the browser or on user devices and uses PKCE (Proof Key for Code Exchange) for secure authentication without storing secrets"
+    }
+  ];
 
   const dataClassificationOptions = [
     {
@@ -183,7 +206,7 @@ const TechnicalRequirementsForm = ({
 
 
   const isFormValid = () => {
-    return data.useCase && data.dataClassification && data.requiredAttributes.length > 0;
+    return data.clientProtocol && data.useCase && data.clientType && data.dataClassification && data.requiredAttributes.length > 0;
   };
 
   return (
@@ -244,15 +267,35 @@ const TechnicalRequirementsForm = ({
 
       <Card>
         <CardContent className="p-8 space-y-8">
-          {/* Section 1: Use Case */}
+          {/* Section 1: Integration Set-up */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-semibold mb-2">Select Use Case</h2>
-              <p className="text-sm text-muted-foreground">Choose the authentication pattern that best describes how users will interact with your service</p>
+              <h2 className="text-lg font-semibold mb-2">Integration Set-up</h2>
+              <p className="text-sm text-muted-foreground">Configure the technical details of your integration</p>
             </div>
             
+            {/* Client Protocol */}
+            <div className="space-y-4">
+              <Label>Select Client Protocol</Label>
+              <p className="text-sm text-muted-foreground">Choose the protocol your application will use to communicate with the identity service.</p>
+              <RadioGroup
+                value={data.clientProtocol}
+                onValueChange={(value) => onUpdate({ clientProtocol: value })}
+                className="space-y-4"
+              >
+                {clientProtocolOptions.map((option) => (
+                  <div key={option.value} className="flex items-center space-x-2">
+                    <RadioGroupItem value={option.value} id={`protocol-${option.value}`} />
+                    <Label htmlFor={`protocol-${option.value}`} className="font-medium">{option.label}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
+
+            {/* Use Case */}
             <div className="space-y-4">
               <Label>Select Use Case</Label>
+              <p className="text-sm text-muted-foreground">Choose how users will interact with your product.</p>
               <RadioGroup
                 value={data.useCase}
                 onValueChange={(value) => onUpdate({ useCase: value })}
@@ -261,8 +304,8 @@ const TechnicalRequirementsForm = ({
                 {useCaseOptions.map((option) => (
                   <div key={option.value} className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value={option.value} id={option.value} />
-                      <Label htmlFor={option.value} className="font-medium">{option.label}</Label>
+                      <RadioGroupItem value={option.value} id={`usecase-${option.value}`} />
+                      <Label htmlFor={`usecase-${option.value}`} className="font-medium">{option.label}</Label>
                     </div>
                     {option.description && (
                       <p className="text-sm text-muted-foreground ml-6">{option.description}</p>
@@ -270,6 +313,34 @@ const TechnicalRequirementsForm = ({
                   </div>
                 ))}
               </RadioGroup>
+            </div>
+
+            {/* Client Type */}
+            <div className="space-y-4">
+              <Label>Select Client Type</Label>
+              <p className="text-sm text-muted-foreground">Choose the configuration based on your application architecture.</p>
+              <RadioGroup
+                value={data.clientType}
+                onValueChange={(value) => onUpdate({ clientType: value })}
+                className="space-y-4"
+              >
+                {clientTypeOptions.map((option) => (
+                  <div key={option.value} className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value={option.value} id={`clienttype-${option.value}`} />
+                      <Label htmlFor={`clienttype-${option.value}`} className="font-medium">{option.label}</Label>
+                    </div>
+                    {option.description && (
+                      <p className="text-sm text-muted-foreground ml-6">{option.description}</p>
+                    )}
+                  </div>
+                ))}
+              </RadioGroup>
+              <p className="text-sm">
+                <a href="#" className="text-primary hover:underline">
+                  Click here to get help deciding which client type to use.
+                </a>
+              </p>
             </div>
           </div>
 

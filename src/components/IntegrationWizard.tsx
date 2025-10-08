@@ -31,7 +31,9 @@ export interface WizardData {
     environments: string[];
   };
   requirements: {
+    clientProtocol: string;
     useCase: string;
+    clientType: string;
     dataClassification: string;
     requiredAttributes: string[];
     customAttributes: string;
@@ -96,7 +98,9 @@ const IntegrationWizard = () => {
       environments: []
     },
     requirements: {
+      clientProtocol: "",
       useCase: "",
+      clientType: "",
       dataClassification: "",
       requiredAttributes: [],
       customAttributes: "",
@@ -202,7 +206,7 @@ const IntegrationWizard = () => {
                data.projectInfo.technicalLeadName && 
                data.projectInfo.technicalLeadEmail;
       case 1:
-        return data.requirements.useCase && data.requirements.assuranceLevel && data.requirements.requiredAttributes.length > 0 && data.requirements.environments.length > 0;
+        return data.requirements.clientProtocol && data.requirements.useCase && data.requirements.clientType && data.requirements.dataClassification && data.requirements.requiredAttributes.length > 0;
       case 2:
         return data.solution.recommended;
       case 3:
