@@ -50,13 +50,42 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center space-x-2 text-base">
               <Shield className="h-5 w-5 text-primary" />
-              <span>Requirements</span>
+              <span>Integration Set-up</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="border rounded-lg p-3">
+              <div className="space-y-2 text-sm">
+                <div>
+                  <span className="font-medium">Client Protocol:</span>{' '}
+                  {data.requirements.clientProtocol === 'oidc' ? 'OpenID Connect' : data.requirements.clientProtocol === 'saml' ? 'SAML' : data.requirements.clientProtocol}
+                </div>
+                <div>
+                  <span className="font-medium">Use Case:</span>{' '}
+                  {data.requirements.useCase === 'browser-login' ? 'Browser Login' : 
+                   data.requirements.useCase === 'service-principal' ? 'Service Principal' :
+                   data.requirements.useCase === 'browser-and-service' ? 'Browser Login and Service Principal' : 
+                   data.requirements.useCase}
+                </div>
+                <div>
+                  <span className="font-medium">Client Type:</span>{' '}
+                  {data.requirements.clientType === 'confidential' ? 'Confidential Client' : 
+                   data.requirements.clientType === 'public' ? 'Public Client' : 
+                   data.requirements.clientType}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center space-x-2 text-base">
+              <Shield className="h-5 w-5 text-primary" />
+              <span>Data & Attributes</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div>
-              <span className="font-medium">Use Case:</span> {data.requirements.useCase}
-            </div>
             <div>
               <span className="font-medium">Data Classification:</span> {data.requirements.dataClassification}
             </div>
