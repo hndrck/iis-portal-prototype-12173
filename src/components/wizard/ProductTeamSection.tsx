@@ -18,7 +18,6 @@ const ProductTeamSection = ({ data, onUpdate }: ProductTeamSectionProps) => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold mb-4">Product Team</h2>
         <p className="text-sm text-muted-foreground mb-4">
           All specified contacts will receive updates about this integration request
         </p>
@@ -61,6 +60,13 @@ const ProductTeamSection = ({ data, onUpdate }: ProductTeamSectionProps) => {
           />
         </div>
       </div>
+
+      <Alert>
+        <Info className="h-4 w-4" />
+        <AlertDescription>
+          <strong>Your Information:</strong> You are submitting this request on behalf of the product team above
+        </AlertDescription>
+      </Alert>
     </div>
   );
 };

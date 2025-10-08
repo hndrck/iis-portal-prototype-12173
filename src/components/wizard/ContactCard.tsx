@@ -29,8 +29,8 @@ const ContactCard = ({
   return (
     <Card className="border-l-4 border-l-primary">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center space-x-2 text-lg">
-          {icon || <User className="h-5 w-5 text-primary" />}
+        <CardTitle className="flex items-center space-x-2 text-base font-medium">
+          {icon || <User className="h-4 w-4 text-primary" />}
           <span>{title}</span>
         </CardTitle>
         <p className="text-sm text-muted-foreground">{description}</p>
