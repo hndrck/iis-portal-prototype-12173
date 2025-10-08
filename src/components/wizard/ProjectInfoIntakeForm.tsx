@@ -6,11 +6,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import { Check, Save, Package, Users, UserCheck } from "lucide-react";
+import { Check, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ProductTeamSection from "./ProductTeamSection";
 
@@ -200,17 +199,14 @@ const ProjectInfoIntakeForm = ({
         )}
       </div>
 
-      <div className="space-y-4">
-        {/* Section 1: Product Details */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-2">
-              <Package className="h-4 w-4 text-primary" />
-              <CardTitle className="text-base">Product Details</CardTitle>
+      <Card>
+        <CardContent className="p-8 space-y-8">
+          {/* Section 1: Product Details */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Product Details</h2>
             </div>
-            <CardDescription className="text-sm">Tell us about your product or application</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
+            
             <div className="space-y-2">
               <Label htmlFor="productName">What is the name of your product or application?</Label>
               <p className="text-sm text-muted-foreground">This is what users will see (e.g., 'BC Health Gateway', 'Internal HR Portal'). Please avoid using abbreviations in your product name.</p>
@@ -251,34 +247,31 @@ const ProjectInfoIntakeForm = ({
                 </SelectContent>
               </Select>
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Section 2: Users & Access */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-2">
-              <Users className="h-4 w-4 text-primary" />
-              <CardTitle className="text-base">Users & Access</CardTitle>
+          {/* Section 2: Users & Access */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-lg font-semibold mb-2">Users & Access</h2>
             </div>
-            <CardDescription className="text-sm">Define who will be using your product</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-3">
+            
+            <div className="space-y-4">
               <Label>Who will use this product?</Label>
               <RadioGroup
                 value={data.userCategory}
                 onValueChange={(value) => {
                   onUpdate({ userCategory: value, userTypes: [] });
                 }}
-                className="space-y-2"
+                className="space-y-4"
               >
                 {userCategoryOptions.map((category) => (
-                  <div key={category.value} className="flex items-start space-x-3">
-                    <RadioGroupItem value={category.value} id={category.value} className="mt-0.5" />
-                    <div className="flex-1">
-                      <Label htmlFor={category.value} className="cursor-pointer font-normal">{category.label}</Label>
-                      <p className="text-sm text-muted-foreground mt-0.5">{category.description}</p>
+                  <div key={category.value} className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <RadioGroupItem value={category.value} id={category.value} className="mt-1" />
+                      <div className="space-y-1">
+                        <Label htmlFor={category.value} className="font-medium">{category.label}</Label>
+                        <p className="text-sm text-muted-foreground">{category.description}</p>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -287,138 +280,121 @@ const ProjectInfoIntakeForm = ({
 
             {/* Conditional User Groups */}
             {data.userCategory === "both" ? (
-              <div className="space-y-4">
-                <Separator />
-                
+              <div className="space-y-6">
                 {/* External User Groups */}
-                <div className="space-y-3">
-                  <div className="p-3 bg-muted/50 rounded-lg">
-                    <Label>Select specific external user groups:</Label>
-                  </div>
-                  <div className="space-y-1.5 pl-2 border-l-2 border-primary/20">
+                <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
+                  <Label>Select specific external user groups:</Label>
+                  <div className="grid grid-cols-1 gap-3">
                     {userCategoryOptions
                       .find(cat => cat.value === "external")
                       ?.userTypes.map((userType) => (
-                        <div key={userType} className="flex items-center space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
+                        <div key={userType} className="flex items-center space-x-2">
                           <Checkbox
                             id={`external-${userType}`}
                             checked={data.userTypes.includes(userType)}
                             onCheckedChange={(checked) => handleUserTypeChange(userType, !!checked)}
                           />
-                          <Label htmlFor={`external-${userType}`} className="text-sm font-normal cursor-pointer">{userType}</Label>
+                          <Label htmlFor={`external-${userType}`} className="text-sm font-normal">{userType}</Label>
                         </div>
                       ))}
                   </div>
                 </div>
 
                 {/* Internal User Groups */}
-                <div className="space-y-3">
-                  <div className="p-3 bg-muted/50 rounded-lg">
-                    <Label>Select specific internal user groups:</Label>
-                  </div>
-                  <div className="space-y-1.5 pl-2 border-l-2 border-primary/20">
+                <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
+                  <Label>Select specific internal user groups:</Label>
+                  <div className="grid grid-cols-1 gap-3">
                     {userCategoryOptions
                       .find(cat => cat.value === "internal")
                       ?.userTypes.map((userType) => (
-                        <div key={userType} className="flex items-center space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
+                        <div key={userType} className="flex items-center space-x-2">
                           <Checkbox
                             id={`internal-${userType}`}
                             checked={data.userTypes.includes(userType)}
                             onCheckedChange={(checked) => handleUserTypeChange(userType, !!checked)}
                           />
-                          <Label htmlFor={`internal-${userType}`} className="text-sm font-normal cursor-pointer">{userType}</Label>
+                          <Label htmlFor={`internal-${userType}`} className="text-sm font-normal">{userType}</Label>
                         </div>
                       ))}
                   </div>
                 </div>
               </div>
             ) : data.userCategory && (
-              <>
-                <Separator />
-                <div className="space-y-3">
-                  <div className="p-3 bg-muted/50 rounded-lg">
-                    <Label>Select specific user groups:</Label>
-                  </div>
-                  <div className="space-y-1.5 pl-2 border-l-2 border-primary/20">
-                    {userCategoryOptions
-                      .find(cat => cat.value === data.userCategory)
-                      ?.userTypes.map((userType) => (
-                        <div key={userType} className="flex items-center space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
-                          <Checkbox
-                            id={userType}
-                            checked={data.userTypes.includes(userType)}
-                            onCheckedChange={(checked) => handleUserTypeChange(userType, !!checked)}
-                          />
-                          <Label htmlFor={userType} className="text-sm font-normal cursor-pointer">{userType}</Label>
-                        </div>
-                      ))}
-                  </div>
+              <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
+                <Label>Select specific user groups:</Label>
+                <div className="grid grid-cols-1 gap-3">
+                  {userCategoryOptions
+                    .find(cat => cat.value === data.userCategory)
+                    ?.userTypes.map((userType) => (
+                      <div key={userType} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={userType}
+                          checked={data.userTypes.includes(userType)}
+                          onCheckedChange={(checked) => handleUserTypeChange(userType, !!checked)}
+                        />
+                        <Label htmlFor={userType} className="text-sm font-normal">{userType}</Label>
+                      </div>
+                    ))}
                 </div>
-              </>
+              </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Section 3: Product Team */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-2">
-              <UserCheck className="h-4 w-4 text-primary" />
-              <CardTitle className="text-base">Product Team</CardTitle>
+          {/* Section 3: Product Team */}
+          <ProductTeamSection 
+            data={{
+              productOwnerName: data.productOwnerName,
+              productOwnerEmail: data.productOwnerEmail,
+              technicalLeadName: data.technicalLeadName,
+              technicalLeadEmail: data.technicalLeadEmail
+            }}
+            onUpdate={onUpdate}
+          />
+
+          {/* Section 4: Your Information */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Your Information</h2>
+              <p className="text-sm text-muted-foreground">You are submitting this request on behalf of the product team above</p>
             </div>
-            <CardDescription className="text-sm">Who should we contact about this integration?</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ProductTeamSection 
-              data={{
-                productOwnerName: data.productOwnerName,
-                productOwnerEmail: data.productOwnerEmail,
-                technicalLeadName: data.technicalLeadName,
-                technicalLeadEmail: data.technicalLeadEmail
-              }}
-              onUpdate={onUpdate}
-            />
-          </CardContent>
-        </Card>
+          </div>
+
+        </CardContent>
 
         {/* Footer Actions */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                {lastSaved && (
-                  <>
-                    <Check className="h-4 w-4 text-green-600" />
-                    <span>Last saved at {lastSaved.toLocaleTimeString()}</span>
-                  </>
-                )}
-                {isAutoSaving && (
-                  <>
-                    <Save className="h-4 w-4 animate-pulse" />
-                    <span>Saving...</span>
-                  </>
-                )}
-              </div>
-              
-              <div className="flex space-x-3">
-                <Button
-                  variant="outline"
-                  onClick={onSaveAndClose}
-                >
-                  Save and Close
-                </Button>
-                <Button
-                  onClick={handleSubmit}
-                  disabled={!isFormValid()}
-                  className="bg-primary hover:bg-primary/90"
-                >
-                  Next
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+        <div className="flex justify-between items-center p-6 border-t bg-muted/30">
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            {lastSaved && (
+              <>
+                <Check className="h-4 w-4 text-green-600" />
+                <span>Last saved at {lastSaved.toLocaleTimeString()}</span>
+              </>
+            )}
+            {isAutoSaving && (
+              <>
+                <Save className="h-4 w-4 animate-pulse" />
+                <span>Saving...</span>
+              </>
+            )}
+          </div>
+          
+          <div className="flex space-x-3">
+            <Button
+              variant="outline"
+              onClick={onSaveAndClose}
+            >
+              Save and Close
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={!isFormValid()}
+              className="bg-primary hover:bg-primary/90"
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      </Card>
     </div>
   );
 };
