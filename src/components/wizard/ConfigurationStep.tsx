@@ -247,17 +247,28 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
                           />
                         </div>
 
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <div className="flex items-start space-x-2">
-                            <Info className="h-5 w-5 text-blue-600 mt-0.5" />
-                            <div>
-                              <p className="text-sm font-medium text-blue-900">Production Environment Notice</p>
-                              <p className="text-sm text-blue-700 mt-1">
-                                Production environments require additional approval and may take 3-5 business days to process.
-                              </p>
+                        {(() => {
+                          // Check if BC Services Card or BCeID are in recommended solutions
+                          const hasBCServicesOrBCeID = data.solution.components.some(
+                            provider => provider === "BC Services Card" || provider.includes("BCeID")
+                          );
+                          
+                          if (!hasBCServicesOrBCeID) return null;
+                          
+                          return (
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                              <div className="flex items-start space-x-2">
+                                <Info className="h-5 w-5 text-blue-600 mt-0.5" />
+                                <div>
+                                  <p className="text-sm font-medium text-blue-900">Production Environment Notice</p>
+                                  <p className="text-sm text-blue-700 mt-1">
+                                    BC Services Card and BCeID production environments require additional approvals. Our team will guide you through this approval process.
+                                  </p>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
+                          );
+                        })()}
                       </>
                     )}
 

@@ -197,67 +197,6 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
 
       <Separator />
 
-      {(() => {
-        // Check if BC Services Card or BCeID are in recommended solutions
-        const providerGroups: Record<string, string[]> = {};
-        const dataClassification = data.requirements.dataClassification || "";
-        
-        data.projectInfo.userTypes.forEach((userType) => {
-          let provider = "";
-          
-          switch (userType) {
-            case "BC residents/Canadian residents":
-              provider = (dataClassification === "public" || dataClassification === "protected-a") ? "BCeID Basic" : "BC Services Card";
-              break;
-            case "International users":
-              provider = "BCeID Basic";
-              break;
-            case "Individuals representing businesses or organizations":
-              provider = "BCeID Business";
-              break;
-            case "Government employees":
-              provider = "IDIR";
-              break;
-            case "Government contractors":
-              provider = "Entra Guest";
-              break;
-            case "Broader public service employees":
-            case "Business entities that have a B2B relationship with the government to deliver services on behalf or in parallel with the province":
-              provider = "Entra Guest";
-              break;
-            default:
-              provider = "To be determined";
-          }
-          
-          if (!providerGroups[provider]) {
-            providerGroups[provider] = [];
-          }
-          providerGroups[provider].push(userType);
-        });
-        
-        const hasBCServicesOrBCeID = Object.keys(providerGroups).some(
-          provider => provider === "BC Services Card" || provider === "BCeID Basic" || provider === "BCeID Business"
-        );
-        
-        if (!hasBCServicesOrBCeID) return null;
-        
-        return (
-          <>
-            <Card className="border-amber-500/30 bg-amber-500/5">
-              <CardHeader>
-                <CardTitle className="text-amber-700 dark:text-amber-500">Production Environment Notice</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-foreground">
-                  BC Services Card and BCeID production environments require additional approvals. Our team will guide you through this approval process.
-                </p>
-              </CardContent>
-            </Card>
-            <Separator />
-          </>
-        );
-      })()}
-
       <Card className="border-accent/20 bg-accent/5">
         <CardHeader>
           <CardTitle className="text-primary">Next Steps</CardTitle>
