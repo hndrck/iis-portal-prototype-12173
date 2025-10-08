@@ -5,10 +5,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Check, Save, ArrowLeft } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Check, Save, ArrowLeft, Settings, Shield, Users } from "lucide-react";
 
 interface TechnicalRequirementsData {
   clientProtocol: string;
@@ -265,95 +266,111 @@ const TechnicalRequirementsForm = ({
         )}
       </div>
 
-      <Card>
-        <CardContent className="p-8 space-y-8">
-          {/* Section 1: Integration Set-up */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold mb-2">Integration Set-up</h2>
-              <p className="text-sm text-muted-foreground">Configure the technical details of your integration</p>
+      <div className="space-y-4">
+        {/* Section 1: Integration Set-up */}
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center space-x-2">
+              <Settings className="h-4 w-4 text-primary" />
+              <CardTitle className="text-base">Integration Set-up</CardTitle>
             </div>
-            
+            <CardDescription className="text-sm">Configure the technical details of your integration</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
             {/* Client Protocol */}
-            <div className="space-y-4">
-              <Label>Select Client Protocol</Label>
-              <p className="text-sm text-muted-foreground">Choose the protocol your application will use to communicate with the identity service.</p>
+            <div className="space-y-3">
+              <div>
+                <Label>Select Client Protocol</Label>
+                <p className="text-sm text-muted-foreground mt-1">Choose the protocol your application will use to communicate with the identity service.</p>
+              </div>
               <RadioGroup
                 value={data.clientProtocol}
                 onValueChange={(value) => onUpdate({ clientProtocol: value })}
-                className="space-y-4"
+                className="space-y-2"
               >
                 {clientProtocolOptions.map((option) => (
-                  <div key={option.value} className="flex items-center space-x-2">
+                  <div key={option.value} className="flex items-center space-x-3">
                     <RadioGroupItem value={option.value} id={`protocol-${option.value}`} />
-                    <Label htmlFor={`protocol-${option.value}`} className="font-medium">{option.label}</Label>
+                    <Label htmlFor={`protocol-${option.value}`} className="cursor-pointer font-normal">{option.label}</Label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
+            <Separator />
+
             {/* Use Case */}
-            <div className="space-y-4">
-              <Label>Select Use Case</Label>
-              <p className="text-sm text-muted-foreground">Choose how users will interact with your product.</p>
+            <div className="space-y-3">
+              <div>
+                <Label>Select Use Case</Label>
+                <p className="text-sm text-muted-foreground mt-1">Choose how users will interact with your product.</p>
+              </div>
               <RadioGroup
                 value={data.useCase}
                 onValueChange={(value) => onUpdate({ useCase: value })}
-                className="space-y-4"
+                className="space-y-2"
               >
                 {useCaseOptions.map((option) => (
-                  <div key={option.value} className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value={option.value} id={`usecase-${option.value}`} />
-                      <Label htmlFor={`usecase-${option.value}`} className="font-medium">{option.label}</Label>
+                  <div key={option.value} className="flex items-start space-x-3">
+                    <RadioGroupItem value={option.value} id={`usecase-${option.value}`} className="mt-0.5" />
+                    <div className="flex-1">
+                      <Label htmlFor={`usecase-${option.value}`} className="cursor-pointer font-normal">{option.label}</Label>
+                      {option.description && (
+                        <p className="text-sm text-muted-foreground mt-0.5">{option.description}</p>
+                      )}
                     </div>
-                    {option.description && (
-                      <p className="text-sm text-muted-foreground ml-6">{option.description}</p>
-                    )}
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
+            <Separator />
+
             {/* Client Type */}
-            <div className="space-y-4">
-              <Label>Select Client Type</Label>
-              <p className="text-sm text-muted-foreground">Choose the configuration based on your application architecture.</p>
+            <div className="space-y-3">
+              <div>
+                <Label>Select Client Type</Label>
+                <p className="text-sm text-muted-foreground mt-1">Choose the configuration based on your application architecture.</p>
+              </div>
               <RadioGroup
                 value={data.clientType}
                 onValueChange={(value) => onUpdate({ clientType: value })}
-                className="space-y-4"
+                className="space-y-2"
               >
                 {clientTypeOptions.map((option) => (
-                  <div key={option.value} className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value={option.value} id={`clienttype-${option.value}`} />
-                      <Label htmlFor={`clienttype-${option.value}`} className="font-medium">{option.label}</Label>
+                  <div key={option.value} className="flex items-start space-x-3">
+                    <RadioGroupItem value={option.value} id={`clienttype-${option.value}`} className="mt-0.5" />
+                    <div className="flex-1">
+                      <Label htmlFor={`clienttype-${option.value}`} className="cursor-pointer font-normal">{option.label}</Label>
+                      {option.description && (
+                        <p className="text-sm text-muted-foreground mt-0.5">{option.description}</p>
+                      )}
                     </div>
-                    {option.description && (
-                      <p className="text-sm text-muted-foreground ml-6">{option.description}</p>
-                    )}
                   </div>
                 ))}
               </RadioGroup>
               <p className="text-sm">
-                <a href="#" className="text-primary hover:underline">
+                <a href="#" className="text-primary hover:underline inline-flex items-center">
                   Click here to get help deciding which client type to use.
                 </a>
               </p>
             </div>
-          </div>
+          </CardContent>
+        </Card>
 
-          {/* Section 2: Data Classification */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold mb-2">Data Classification</h2>
-              <p className="text-sm text-muted-foreground">This classification determines identity verification requirements for individual users accessing your service</p>
+        {/* Section 2: Data Classification */}
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center space-x-2">
+              <Shield className="h-4 w-4 text-primary" />
+              <CardTitle className="text-base">Data Classification</CardTitle>
             </div>
-            
-            <div className="space-y-4">
+            <CardDescription className="text-sm">This classification determines identity verification requirements for individual users accessing your service</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div>
               <Label>What type of information does your product handle?</Label>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground mt-1">
                 <a href="https://www2.gov.bc.ca/assets/gov/government/services-for-government-and-broader-public-sector/information-technology-services/standards-files/618_information_security_classification_standard.pdf" 
                    target="_blank" 
                    rel="noopener noreferrer" 
@@ -361,185 +378,201 @@ const TechnicalRequirementsForm = ({
                   Learn more about BC government data classification standards
                 </a>
               </p>
-              <RadioGroup
-                value={data.dataClassification}
-                onValueChange={(value) => onUpdate({ dataClassification: value })}
-                className="space-y-4"
-              >
-                {dataClassificationOptions.map((option) => (
-                  <div key={option.value} className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value={option.value} id={option.value} />
-                      <Label htmlFor={option.value} className="font-medium">{option.label}</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground ml-6">{option.description}</p>
+            </div>
+            <RadioGroup
+              value={data.dataClassification}
+              onValueChange={(value) => onUpdate({ dataClassification: value })}
+              className="space-y-2"
+            >
+              {dataClassificationOptions.map((option) => (
+                <div key={option.value} className="flex items-start space-x-3">
+                  <RadioGroupItem value={option.value} id={option.value} className="mt-0.5" />
+                  <div className="flex-1">
+                    <Label htmlFor={option.value} className="cursor-pointer font-normal">{option.label}</Label>
+                    <p className="text-sm text-muted-foreground mt-0.5">{option.description}</p>
                   </div>
-                ))}
-              </RadioGroup>
-            </div>
-          </div>
+                </div>
+              ))}
+            </RadioGroup>
+          </CardContent>
+        </Card>
 
-          {/* Section 3: User Information Requirements */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold mb-2">User Information Requirements</h2>
-              <p className="text-sm text-muted-foreground">Only request information that's essential for your service to function</p>
+        {/* Section 3: User Information Requirements */}
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center space-x-2">
+              <Users className="h-4 w-4 text-primary" />
+              <CardTitle className="text-base">User Information Requirements</CardTitle>
             </div>
-            
+            <CardDescription className="text-sm">Only request information that's essential for your service to function</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
             {/* External Users */}
             {externalUserTypes.length > 0 && (
-              <div className="space-y-4">
-                <Label>What information do you need about external users?</Label>
+              <div className="space-y-3">
+                <div className="p-3 bg-muted/50 rounded-lg">
+                  <Label>What information do you need about external users?</Label>
+                </div>
                 
-                {/* BC Residents / Canadian Residents */}
-                {externalUserTypes.includes("BC residents/Canadian residents") && (
-                  <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-muted-foreground">BC residents/Canadian residents:</h4>
-                    <div className="ml-4 space-y-3">
-                      {getAttributeOptionsByUserType("BC residents/Canadian residents").map((attribute) => (
-                        <div key={attribute} className="space-y-2">
-                          <div className="flex items-center space-x-2">
+                <div className="space-y-4">
+                  {/* BC Residents / Canadian Residents */}
+                  {externalUserTypes.includes("BC residents/Canadian residents") && (
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">BC residents/Canadian residents</h4>
+                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
+                        {getAttributeOptionsByUserType("BC residents/Canadian residents").map((attribute) => (
+                          <div key={attribute} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
                             <Checkbox
                               id={`bc-residents-${attribute}`}
                               checked={data.requiredAttributes.includes(attribute)}
                               onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
+                              className="mt-0.5"
                             />
-                            <Label htmlFor={`bc-residents-${attribute}`} className="text-sm font-normal">{attribute}</Label>
+                            <Label htmlFor={`bc-residents-${attribute}`} className="text-sm font-normal cursor-pointer flex-1">{attribute}</Label>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* International Users */}
-                {externalUserTypes.includes("International users") && (
-                  <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-muted-foreground">International users:</h4>
-                    <div className="ml-4 space-y-3">
-                      {getAttributeOptionsByUserType("International users").map((attribute) => (
-                        <div key={attribute} className="space-y-2">
-                          <div className="flex items-center space-x-2">
+                  {/* International Users */}
+                  {externalUserTypes.includes("International users") && (
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">International users</h4>
+                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
+                        {getAttributeOptionsByUserType("International users").map((attribute) => (
+                          <div key={attribute} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
                             <Checkbox
                               id={`intl-${attribute}`}
                               checked={data.requiredAttributes.includes(attribute)}
                               onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
+                              className="mt-0.5"
                             />
-                            <Label htmlFor={`intl-${attribute}`} className="text-sm font-normal">{attribute}</Label>
+                            <Label htmlFor={`intl-${attribute}`} className="text-sm font-normal cursor-pointer flex-1">{attribute}</Label>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Business Representatives */}
-                {externalUserTypes.includes("Individuals representing businesses or organizations") && (
-                  <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-muted-foreground">Business representatives:</h4>
-                    <div className="ml-4 space-y-3">
-                      {getAttributeOptionsByUserType("Individuals representing businesses or organizations").map((attribute) => (
-                        <div key={attribute} className="space-y-2">
-                          <div className="flex items-center space-x-2">
+                  {/* Business Representatives */}
+                  {externalUserTypes.includes("Individuals representing businesses or organizations") && (
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">Business representatives</h4>
+                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
+                        {getAttributeOptionsByUserType("Individuals representing businesses or organizations").map((attribute) => (
+                          <div key={attribute} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
                             <Checkbox
                               id={`business-${attribute}`}
                               checked={data.requiredAttributes.includes(attribute)}
                               onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
+                              className="mt-0.5"
                             />
-                            <Label htmlFor={`business-${attribute}`} className="text-sm font-normal">{attribute}</Label>
+                            <Label htmlFor={`business-${attribute}`} className="text-sm font-normal cursor-pointer flex-1">{attribute}</Label>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             )}
 
             {/* Internal Users */}
             {internalUserTypes.length > 0 && (
-              <div className="space-y-4">
-                <Label>What information do you need about internal users?</Label>
-                <div className="space-y-3">
+              <div className="space-y-3">
+                <div className="p-3 bg-muted/50 rounded-lg">
+                  <Label>What information do you need about internal users?</Label>
+                </div>
+                
+                <div className="space-y-4">
                   {internalUserTypes.map(userType => (
                     <div key={userType} className="space-y-2">
-                      <h4 className="text-sm font-medium text-muted-foreground">{userType}:</h4>
-                      {getAttributeOptionsByUserType(userType).map((attribute) => (
-                        <div key={`${userType}-${attribute}`} className="ml-4 space-y-2">
-                          <div className="flex items-center space-x-2">
+                      <h4 className="text-sm font-medium">{userType}</h4>
+                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
+                        {getAttributeOptionsByUserType(userType).map((attribute) => (
+                          <div key={`${userType}-${attribute}`} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
                             <Checkbox
                               id={`${userType}-${attribute}`}
                               checked={data.requiredAttributes.includes(attribute)}
                               onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
+                              className="mt-0.5"
                             />
-                            <Label htmlFor={`${userType}-${attribute}`} className="text-sm font-normal">{attribute}</Label>
+                            <Label htmlFor={`${userType}-${attribute}`} className="text-sm font-normal cursor-pointer flex-1">{attribute}</Label>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
+            <Separator />
+
             <div className="space-y-2">
-              <Label>Custom attributes <span className="text-sm text-muted-foreground">(optional)</span></Label>
+              <Label>Custom attributes <span className="text-sm font-normal text-muted-foreground">(optional)</span></Label>
               <Textarea
                 value={data.customAttributes}
                 onChange={(e) => onUpdate({ customAttributes: e.target.value })}
                 placeholder="Don't see an attribute you need? Describe custom attributes here..."
-                rows={2}
+                rows={3}
+                className="resize-none"
               />
             </div>
-            <div className="p-3 bg-muted/30 rounded-lg">
+            
+            <div className="p-3 bg-muted/30 rounded-lg border">
               <p className="text-sm text-muted-foreground">
                 Don't see an attribute you need? <Button variant="link" className="p-0 h-auto text-sm" onClick={onBack}>Go back to modify your user types</Button> or contact support for assistance.
               </p>
             </div>
-          </div>
+          </CardContent>
+        </Card>
+      </div>
 
+      {/* Footer Actions */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+              {lastSaved && (
+                <>
+                  <Check className="h-4 w-4 text-green-600" />
+                  <span>Last saved at {lastSaved.toLocaleTimeString()}</span>
+                </>
+              )}
+              {isAutoSaving && (
+                <>
+                  <Save className="h-4 w-4 animate-pulse" />
+                  <span>Saving...</span>
+                </>
+              )}
+            </div>
+            
+            <div className="flex space-x-3">
+              <Button
+                variant="outline"
+                onClick={onBack}
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+              </Button>
+              <Button
+                variant="outline"
+                onClick={onSaveAndClose}
+              >
+                Save and Close
+              </Button>
+              <Button
+                onClick={onNext}
+                disabled={!isFormValid()}
+                className="bg-primary hover:bg-primary/90"
+              >
+                Next
+              </Button>
+            </div>
+          </div>
         </CardContent>
-
-        {/* Footer Actions */}
-        <div className="flex justify-between items-center p-6 border-t bg-muted/30">
-          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-            {lastSaved && (
-              <>
-                <Check className="h-4 w-4 text-green-600" />
-                <span>Last saved at {lastSaved.toLocaleTimeString()}</span>
-              </>
-            )}
-            {isAutoSaving && (
-              <>
-                <Save className="h-4 w-4 animate-pulse" />
-                <span>Saving...</span>
-              </>
-            )}
-          </div>
-          
-          <div className="flex space-x-3">
-            <Button
-              variant="outline"
-              onClick={onBack}
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back
-            </Button>
-            <Button
-              variant="outline"
-              onClick={onSaveAndClose}
-            >
-              Save and Close
-            </Button>
-            <Button
-              onClick={onNext}
-              disabled={!isFormValid()}
-              className="bg-primary hover:bg-primary/90"
-            >
-              Next
-            </Button>
-          </div>
-        </div>
       </Card>
     </div>
   );
