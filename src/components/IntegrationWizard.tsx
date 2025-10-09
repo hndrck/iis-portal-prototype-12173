@@ -303,7 +303,7 @@ const IntegrationWizard = ({ isEditMode = false, initialData, integrationId }: I
         );
       case 4:
         return (
-          <ReviewStep data={data} />
+          <ReviewStep data={data} onEditStep={setCurrentStep} />
         );
       case 5:
         return (
@@ -348,17 +348,18 @@ const IntegrationWizard = ({ isEditMode = false, initialData, integrationId }: I
             <div className="flex justify-between mt-4">
               {steps.map((step, index) => (
                 <div key={index} className="flex flex-col items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium mb-2 ${
+                  <button
+                    onClick={() => setCurrentStep(index)}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium mb-2 transition-colors ${
                       index < currentStep
-                        ? 'bg-primary text-primary-foreground'
+                        ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                         : index === currentStep
                         ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
                     }`}
                   >
                     {index + 1}
-                  </div>
+                  </button>
                   <div
                     className={`text-xs text-center max-w-20 ${
                       index <= currentStep ? 'text-primary font-medium' : 'text-muted-foreground'

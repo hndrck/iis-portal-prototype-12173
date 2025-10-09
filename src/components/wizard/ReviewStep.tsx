@@ -2,14 +2,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle, User, Shield, Settings, Globe } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, User, Shield, Settings, Globe, Pencil, Users } from "lucide-react";
 import { WizardData } from "../IntegrationWizard";
 
 interface ReviewStepProps {
   data: WizardData;
+  onEditStep?: (step: number) => void;
 }
 
-const ReviewStep = ({ data }: ReviewStepProps) => {
+const ReviewStep = ({ data, onEditStep }: ReviewStepProps) => {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
@@ -23,10 +25,18 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center space-x-2 text-base">
-              <User className="h-5 w-5 text-primary" />
-              <span>Project Information</span>
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2 text-base">
+                <User className="h-5 w-5 text-primary" />
+                <span>Project Information</span>
+              </CardTitle>
+              {onEditStep && (
+                <Button variant="ghost" size="sm" onClick={() => onEditStep(0)}>
+                  <Pencil className="h-4 w-4 mr-1" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-2">
             <div>
@@ -49,9 +59,42 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center space-x-2 text-base">
-              <Shield className="h-5 w-5 text-primary" />
-              <span>Technical Requirements</span>
+              <Users className="h-5 w-5 text-primary" />
+              <span>Product Team</span>
             </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="border rounded-lg p-3">
+              <div className="font-medium mb-1">Product Owner</div>
+              <div className="text-sm space-y-1">
+                <div>{data.projectInfo.productOwnerName}</div>
+                <div className="text-muted-foreground">{data.projectInfo.productOwnerEmail}</div>
+              </div>
+            </div>
+            <div className="border rounded-lg p-3">
+              <div className="font-medium mb-1">Technical Lead</div>
+              <div className="text-sm space-y-1">
+                <div>{data.projectInfo.technicalLeadName}</div>
+                <div className="text-muted-foreground">{data.projectInfo.technicalLeadEmail}</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2 text-base">
+                <Shield className="h-5 w-5 text-primary" />
+                <span>Technical Requirements</span>
+              </CardTitle>
+              {onEditStep && (
+                <Button variant="ghost" size="sm" onClick={() => onEditStep(1)}>
+                  <Pencil className="h-4 w-4 mr-1" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="border rounded-lg p-3">
@@ -95,10 +138,18 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center space-x-2 text-base">
-              <Globe className="h-5 w-5 text-primary" />
-              <span>Recommended Solutions</span>
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2 text-base">
+                <Globe className="h-5 w-5 text-primary" />
+                <span>Recommended Solutions</span>
+              </CardTitle>
+              {onEditStep && (
+                <Button variant="ghost" size="sm" onClick={() => onEditStep(2)}>
+                  <Pencil className="h-4 w-4 mr-1" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             {(() => {
@@ -157,10 +208,18 @@ const ReviewStep = ({ data }: ReviewStepProps) => {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center space-x-2 text-base">
-              <Settings className="h-5 w-5 text-primary" />
-              <span>Configuration</span>
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2 text-base">
+                <Settings className="h-5 w-5 text-primary" />
+                <span>Configuration</span>
+              </CardTitle>
+              {onEditStep && (
+                <Button variant="ghost" size="sm" onClick={() => onEditStep(3)}>
+                  <Pencil className="h-4 w-4 mr-1" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="border rounded-lg p-3">
