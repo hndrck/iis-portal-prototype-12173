@@ -221,165 +221,160 @@ const ClientDashboard = () => {
           </Card>
         </div>
 
-        {/* Main Content Area */}
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left Column - My Integrations */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>My Integrations</CardTitle>
-                <CardDescription>Manage and monitor your identity services</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Request ID</TableHead>
-                        <TableHead>Product Name</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Identity Services</TableHead>
-                        <TableHead>Environment</TableHead>
-                        <TableHead>Last Activity</TableHead>
-                        <TableHead className="w-[100px]">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {integrations.map((integration) => (
-                        <TableRow 
-                          key={integration.id} 
-                          className="hover:bg-muted/50 transition-colors"
-                        >
-                          <TableCell 
-                            className="font-medium text-primary hover:underline cursor-pointer"
-                            onClick={() => navigate(`/client/integrations/${integration.id}`)}
+        {/* My Integrations Table - Full Width */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>My Integrations</CardTitle>
+            <CardDescription>Manage and monitor your identity services</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Request ID</TableHead>
+                    <TableHead>Product Name</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Identity Services</TableHead>
+                    <TableHead>Environment</TableHead>
+                    <TableHead>Last Activity</TableHead>
+                    <TableHead className="w-[100px]">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {integrations.map((integration) => (
+                    <TableRow 
+                      key={integration.id} 
+                      className="hover:bg-muted/50 transition-colors"
+                    >
+                      <TableCell 
+                        className="font-medium text-primary hover:underline cursor-pointer"
+                        onClick={() => navigate(`/client/integrations/${integration.id}`)}
+                      >
+                        {integration.requestId}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {integration.name}
+                      </TableCell>
+                      <TableCell>
+                        {getStatusBadge(integration.status)}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {integration.identityServices.join(", ")}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {integration.environments.length > 0 
+                          ? integration.environments.join(", ") 
+                          : "-"
+                        }
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {integration.lastActivity}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-1">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            className="hover:bg-muted"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/client/integrations/${integration.id}`);
+                            }}
+                            aria-label="Edit integration"
                           >
-                            {integration.requestId}
-                          </TableCell>
-                          <TableCell className="font-medium">
-                            {integration.name}
-                          </TableCell>
-                          <TableCell>
-                            {getStatusBadge(integration.status)}
-                          </TableCell>
-                          <TableCell className="text-sm">
-                            {integration.identityServices.join(", ")}
-                          </TableCell>
-                          <TableCell className="text-sm">
-                            {integration.environments.length > 0 
-                              ? integration.environments.join(", ") 
-                              : "-"
-                            }
-                          </TableCell>
-                          <TableCell className="text-sm text-muted-foreground">
-                            {integration.lastActivity}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center space-x-1">
-                              <Button 
-                                variant="ghost" 
-                                size="sm"
-                                className="hover:bg-muted"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  navigate(`/client/integrations/${integration.id}`);
-                                }}
-                                aria-label="Edit integration"
-                              >
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button 
-                                variant="ghost" 
-                                size="sm"
-                                className="hover:bg-destructive/10 hover:text-destructive"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  console.log('Delete integration', integration.id);
-                                }}
-                                aria-label="Delete integration"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            className="hover:bg-destructive/10 hover:text-destructive"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              console.log('Delete integration', integration.id);
+                            }}
+                            aria-label="Delete integration"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            
+            {/* Pagination - shown if more than 10 integrations */}
+            {integrations.length > 10 && (
+              <div className="mt-4 flex justify-center">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#" isActive>1</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">2</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext href="#" />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Quick Actions & Recent Activity - Below Table */}
+        <div className="grid lg:grid-cols-2 gap-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Actions</CardTitle>
+              <CardDescription>Common developer resources</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {quickActions.map((action, index) => (
+                <button
+                  key={index}
+                  onClick={action.action}
+                  className="w-full text-left p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                >
+                  <div className="flex items-start space-x-3">
+                    <action.icon className="h-5 w-5 text-primary mt-0.5" />
+                    <div>
+                      <h4 className="font-medium">{action.title}</h4>
+                      <p className="text-sm text-muted-foreground">{action.description}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Activity</CardTitle>
+              <CardDescription>Latest updates to your integrations</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {recentActivity.map((activity, index) => (
+                <div key={index} className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="space-y-1">
+                    <p className="text-sm">{activity.action}</p>
+                    <p className="text-xs text-muted-foreground">{activity.time}</p>
+                  </div>
                 </div>
-                
-                {/* Pagination - shown if more than 10 integrations */}
-                {integrations.length > 10 && (
-                  <div className="mt-4 flex justify-center">
-                    <Pagination>
-                      <PaginationContent>
-                        <PaginationItem>
-                          <PaginationPrevious href="#" />
-                        </PaginationItem>
-                        <PaginationItem>
-                          <PaginationLink href="#" isActive>1</PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem>
-                          <PaginationLink href="#">2</PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem>
-                          <PaginationEllipsis />
-                        </PaginationItem>
-                        <PaginationItem>
-                          <PaginationNext href="#" />
-                        </PaginationItem>
-                      </PaginationContent>
-                    </Pagination>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right Column - Quick Actions & Activity */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-                <CardDescription>Common developer resources</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {quickActions.map((action, index) => (
-                  <button
-                    key={index}
-                    onClick={action.action}
-                    className="w-full text-left p-3 rounded-lg border hover:bg-muted/50 transition-colors"
-                  >
-                    <div className="flex items-start space-x-3">
-                      <action.icon className="h-5 w-5 text-primary mt-0.5" />
-                      <div>
-                        <h4 className="font-medium">{action.title}</h4>
-                        <p className="text-sm text-muted-foreground">{action.description}</p>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Latest updates to your integrations</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <div className="space-y-1">
-                      <p className="text-sm">{activity.action}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
+              ))}
+            </CardContent>
+          </Card>
         </div>
       </main>
     </div>
