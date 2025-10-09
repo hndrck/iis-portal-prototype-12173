@@ -38,7 +38,7 @@ const ReviewStep = ({ data, onEditStep }: ReviewStepProps) => {
               )}
             </div>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-3">
             <div>
               <span className="font-medium">Product Name:</span> {data.projectInfo.productName}
             </div>
@@ -53,29 +53,27 @@ const ReviewStep = ({ data, onEditStep }: ReviewStepProps) => {
                 ))}
               </div>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center space-x-2 text-base">
-              <Users className="h-5 w-5 text-primary" />
-              <span>Product Team</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="border rounded-lg p-3">
-              <div className="font-medium mb-1">Product Owner</div>
-              <div className="text-sm space-y-1">
-                <div>{data.projectInfo.productOwnerName}</div>
-                <div className="text-muted-foreground">{data.projectInfo.productOwnerEmail}</div>
+            
+            <Separator className="my-3" />
+            
+            <div className="space-y-3">
+              <div className="font-medium flex items-center space-x-2">
+                <Users className="h-4 w-4" />
+                <span>Product Team</span>
               </div>
-            </div>
-            <div className="border rounded-lg p-3">
-              <div className="font-medium mb-1">Technical Lead</div>
-              <div className="text-sm space-y-1">
-                <div>{data.projectInfo.technicalLeadName}</div>
-                <div className="text-muted-foreground">{data.projectInfo.technicalLeadEmail}</div>
+              <div className="border rounded-lg p-3">
+                <div className="font-medium mb-1">Product Owner</div>
+                <div className="text-sm space-y-1">
+                  <div>{data.projectInfo.productOwnerName}</div>
+                  <div className="text-muted-foreground">{data.projectInfo.productOwnerEmail}</div>
+                </div>
+              </div>
+              <div className="border rounded-lg p-3">
+                <div className="font-medium mb-1">Technical Lead</div>
+                <div className="text-sm space-y-1">
+                  <div>{data.projectInfo.technicalLeadName}</div>
+                  <div className="text-muted-foreground">{data.projectInfo.technicalLeadEmail}</div>
+                </div>
               </div>
             </div>
           </CardContent>
