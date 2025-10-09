@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
 import { Plus, Activity, Shield, Clock, ArrowRight, BookOpen, Code, Users, Edit, Trash2, TrendingUp, AlertCircle, CheckCircle } from "lucide-react";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
@@ -15,9 +16,9 @@ const ClientDashboard = () => {
       id: "1",
       requestId: "00006124",
       name: "Citizen Services Portal",
-      status: "active",
-      environment: "Production",
-      identityProvider: "BC Services Card + BCeID",
+      status: "completed",
+      environments: ["Production", "Test"],
+      identityServices: ["BC Services Card", "BCeID"],
       lastActivity: "2 hours ago",
       monthlyUsers: "12.5K"
     },
@@ -25,9 +26,9 @@ const ClientDashboard = () => {
       id: "2",
       requestId: "00006125",
       name: "Internal HR System",
-      status: "development",
-      environment: "Development",
-      identityProvider: "IDIR",
+      status: "draft",
+      environments: ["Development"],
+      identityServices: ["IDIR"],
       lastActivity: "1 day ago",
       monthlyUsers: "0"
     },
@@ -36,9 +37,29 @@ const ClientDashboard = () => {
       requestId: "00006126",
       name: "Public Inquiry System",
       status: "in-review",
-      environment: "-",
-      identityProvider: "BC Services Card",
+      environments: [],
+      identityServices: ["BC Services Card"],
       lastActivity: "3 days ago",
+      monthlyUsers: "0"
+    },
+    {
+      id: "4",
+      requestId: "00006127",
+      name: "Education Portal",
+      status: "completed",
+      environments: ["Production", "Development", "Test"],
+      identityServices: ["BC Services Card", "BCeID", "IDIR"],
+      lastActivity: "5 hours ago",
+      monthlyUsers: "8.2K"
+    },
+    {
+      id: "5",
+      requestId: "00006128",
+      name: "License Application System",
+      status: "in-review",
+      environments: ["Test"],
+      identityServices: ["BC Services Card"],
+      lastActivity: "2 days ago",
       monthlyUsers: "0"
     }
   ];
@@ -90,16 +111,12 @@ const ClientDashboard = () => {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'active':
-        return <Badge className="bg-green-100 text-green-800">Active</Badge>;
-      case 'development':
-        return <Badge className="bg-blue-100 text-blue-800">Development</Badge>;
+      case 'completed':
+        return <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Completed</Badge>;
       case 'in-review':
-        return <Badge className="bg-yellow-100 text-yellow-800">In Review</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">In Review</Badge>;
       case 'draft':
-        return <Badge className="bg-gray-100 text-gray-800">Draft</Badge>;
-      case 'production':
-        return <Badge className="bg-green-100 text-green-800">Production</Badge>;
+        return <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-200">In Draft</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -209,70 +226,112 @@ const ClientDashboard = () => {
           {/* Left Column - My Integrations */}
           <div className="lg:col-span-2">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle>My Integrations</CardTitle>
-                  <CardDescription>Manage and monitor your identity services</CardDescription>
-                </div>
-                <Button 
-                  variant="outline" 
-                  onClick={() => navigate('/client/integrations')}
-                >
-                  View All <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+              <CardHeader>
+                <CardTitle>My Integrations</CardTitle>
+                <CardDescription>Manage and monitor your identity services</CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Request ID</TableHead>
-                      <TableHead>Project Name</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Identity Providers</TableHead>
-                      <TableHead>Environment</TableHead>
-                      <TableHead>Last Activity</TableHead>
-                      <TableHead className="w-[100px]">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {integrations.map((integration, index) => (
-                      <TableRow 
-                        key={index} 
-                        className="cursor-pointer hover:bg-muted/50"
-                        onClick={() => navigate(`/client/integrations/${integration.id}`)}
-                      >
-                        <TableCell className="font-medium text-blue-600">
-                          {integration.requestId}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {integration.name}
-                        </TableCell>
-                        <TableCell>
-                          {getStatusBadge(integration.status)}
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {integration.identityProvider}
-                        </TableCell>
-                        <TableCell>
-                          {integration.environment}
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {integration.lastActivity}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
-                            <Button variant="ghost" size="sm">
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="sm">
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Request ID</TableHead>
+                        <TableHead>Product Name</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Identity Services</TableHead>
+                        <TableHead>Environment</TableHead>
+                        <TableHead>Last Activity</TableHead>
+                        <TableHead className="w-[100px]">Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {integrations.map((integration) => (
+                        <TableRow 
+                          key={integration.id} 
+                          className="hover:bg-muted/50 transition-colors"
+                        >
+                          <TableCell 
+                            className="font-medium text-primary hover:underline cursor-pointer"
+                            onClick={() => navigate(`/client/integrations/${integration.id}`)}
+                          >
+                            {integration.requestId}
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {integration.name}
+                          </TableCell>
+                          <TableCell>
+                            {getStatusBadge(integration.status)}
+                          </TableCell>
+                          <TableCell className="text-sm">
+                            {integration.identityServices.join(", ")}
+                          </TableCell>
+                          <TableCell className="text-sm">
+                            {integration.environments.length > 0 
+                              ? integration.environments.join(", ") 
+                              : "-"
+                            }
+                          </TableCell>
+                          <TableCell className="text-sm text-muted-foreground">
+                            {integration.lastActivity}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center space-x-1">
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                className="hover:bg-muted"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/client/integrations/${integration.id}`);
+                                }}
+                                aria-label="Edit integration"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                className="hover:bg-destructive/10 hover:text-destructive"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  console.log('Delete integration', integration.id);
+                                }}
+                                aria-label="Delete integration"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                
+                {/* Pagination - shown if more than 10 integrations */}
+                {integrations.length > 10 && (
+                  <div className="mt-4 flex justify-center">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious href="#" />
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#" isActive>1</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">2</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationNext href="#" />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>

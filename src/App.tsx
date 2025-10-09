@@ -9,7 +9,6 @@ import Login from "./pages/Login";
 import ClientDashboard from "./pages/ClientDashboard";
 import NewIntegration from "./pages/NewIntegration";
 import AdminDashboard from "./pages/AdminDashboard";
-import IntegrationManagement from "./pages/IntegrationManagement";
 import IntegrationDetails from "./pages/IntegrationDetails";
 import NotFound from "./pages/NotFound";
 
@@ -26,7 +25,6 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/client" element={<ClientDashboard />} />
           <Route path="/client/new-integration" element={<NewIntegration />} />
-          <Route path="/client/integrations" element={<IntegrationManagement />} />
           <Route path="/client/integrations/:id" element={<IntegrationDetails />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
