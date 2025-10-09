@@ -53,9 +53,7 @@ const IntegrationManagement = () => {
   };
 
   const handleViewDetails = (integrationId: string) => {
-    console.log(`Viewing details for integration ${integrationId}`);
-    // For now, just show an alert - in a real app this would navigate to a details page
-    alert(`Integration Details for ID: ${integrationId}\n\nThis would normally open a detailed view of the integration configuration, usage statistics, and management options.`);
+    navigate(`/client/integrations/${integrationId}`);
   };
 
   const handleSettings = (integrationId: string) => {
