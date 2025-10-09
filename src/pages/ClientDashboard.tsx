@@ -12,6 +12,7 @@ const ClientDashboard = () => {
 
   const integrations = [
     {
+      id: "1",
       requestId: "00006124",
       name: "Citizen Services Portal",
       status: "active",
@@ -21,6 +22,7 @@ const ClientDashboard = () => {
       monthlyUsers: "12.5K"
     },
     {
+      id: "2",
       requestId: "00006125",
       name: "Internal HR System",
       status: "development",
@@ -30,6 +32,7 @@ const ClientDashboard = () => {
       monthlyUsers: "0"
     },
     {
+      id: "3",
       requestId: "00006126",
       name: "Public Inquiry System",
       status: "in-review",
@@ -233,7 +236,11 @@ const ClientDashboard = () => {
                   </TableHeader>
                   <TableBody>
                     {integrations.map((integration, index) => (
-                      <TableRow key={index} className="cursor-pointer hover:bg-muted/50">
+                      <TableRow 
+                        key={index} 
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => navigate(`/client/integrations/${integration.id}`)}
+                      >
                         <TableCell className="font-medium text-blue-600">
                           {integration.requestId}
                         </TableCell>
@@ -253,7 +260,7 @@ const ClientDashboard = () => {
                           {integration.lastActivity}
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                             <Button variant="ghost" size="sm">
                               <Edit className="h-4 w-4" />
                             </Button>
