@@ -8,6 +8,7 @@ import { ArrowLeft, Download, Copy, CheckCircle, Info } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import RoleManagementTab from "@/components/wizard/RoleManagementTab";
+import AssignUsersTab from "@/components/wizard/AssignUsersTab";
 
 const IntegrationDetails = () => {
   const { id } = useParams();
@@ -226,9 +227,7 @@ const IntegrationDetails = () => {
               </TabsContent>
 
               <TabsContent value="assign" className="p-6">
-                <div className="text-center py-12 text-muted-foreground">
-                  Assign Users to Roles functionality coming soon
-                </div>
+                <AssignUsersTab />
               </TabsContent>
 
               <TabsContent value="history" className="p-6">
