@@ -81,12 +81,13 @@ interface IntegrationWizardProps {
   isEditMode?: boolean;
   initialData?: WizardData;
   integrationId?: string;
+  initialStep?: number;
 }
 
-const IntegrationWizard = ({ isEditMode = false, initialData, integrationId }: IntegrationWizardProps = {}) => {
+const IntegrationWizard = ({ isEditMode = false, initialData, integrationId, initialStep = 0 }: IntegrationWizardProps = {}) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(initialStep);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [data, setData] = useState<WizardData>(initialData || {
     projectInfo: {
