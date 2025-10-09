@@ -283,8 +283,13 @@ const ClientDashboard = () => {
                       key={integration.id} 
                       className="hover:bg-muted/50 transition-colors"
                     >
-                      <TableCell className="font-medium text-muted-foreground">
-                        {integration.requestId}
+                      <TableCell className="font-medium">
+                        <button
+                          onClick={() => navigate(`/client/integrations/${integration.id}`)}
+                          className="text-primary hover:underline cursor-pointer transition-colors"
+                        >
+                          {integration.requestId}
+                        </button>
                       </TableCell>
                       <TableCell className="font-medium">
                         {integration.name}
