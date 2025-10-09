@@ -9,6 +9,9 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import RoleManagementTab from "@/components/wizard/RoleManagementTab";
 import AssignUsersTab from "@/components/wizard/AssignUsersTab";
+import MetricsTab from "@/components/wizard/MetricsTab";
+import LogsTab from "@/components/wizard/LogsTab";
+import ChangeHistoryTab from "@/components/wizard/ChangeHistoryTab";
 
 const IntegrationDetails = () => {
   const { id } = useParams();
@@ -231,21 +234,15 @@ const IntegrationDetails = () => {
               </TabsContent>
 
               <TabsContent value="history" className="p-6">
-                <div className="text-center py-12 text-muted-foreground">
-                  Change History functionality coming soon
-                </div>
+                <ChangeHistoryTab />
               </TabsContent>
 
               <TabsContent value="metrics" className="p-6">
-                <div className="text-center py-12 text-muted-foreground">
-                  Metrics functionality coming soon
-                </div>
+                <MetricsTab />
               </TabsContent>
 
               <TabsContent value="logs" className="p-6">
-                <div className="text-center py-12 text-muted-foreground">
-                  Logs functionality coming soon
-                </div>
+                <LogsTab />
               </TabsContent>
             </Tabs>
           </CardContent>
