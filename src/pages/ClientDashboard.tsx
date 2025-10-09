@@ -5,13 +5,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
-import { Plus, Activity, Shield, Clock, ArrowRight, BookOpen, Code, Users, Edit, Trash2, TrendingUp, AlertCircle, CheckCircle } from "lucide-react";
+import { Plus, Activity, BookOpen, Code, Users, Edit, Trash2, TrendingUp, AlertCircle, CheckCircle, Eye } from "lucide-react";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [integrationToDelete, setIntegrationToDelete] = useState<{
+    id: string;
+    requestId: string;
+    name: string;
+    status: string;
+    environments: string[];
+    identityServices: string[];
+    lastActivity: string;
+    monthlyUsers: string;
+  } | null>(null);
+  const [integrationsList, setIntegrationsList] = useState([
 
-  const integrations = [
     {
       id: "1",
       requestId: "00006124",
@@ -62,7 +77,7 @@ const ClientDashboard = () => {
       lastActivity: "2 days ago",
       monthlyUsers: "0"
     }
-  ];
+  ]);
 
   const recentActivity = [
     {
@@ -120,6 +135,27 @@ const ClientDashboard = () => {
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
+  };
+
+  const handleDeleteClick = (integration: typeof integrationsList[0]) => {
+    setIntegrationToDelete(integration);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (integrationToDelete) {
+      setIntegrationsList(integrationsList.filter(i => i.id !== integrationToDelete.id));
+      toast({
+        title: "Integration deleted",
+        description: `Integration "${integrationToDelete.name}" has been deleted.`,
+      });
+      setDeleteDialogOpen(false);
+      setIntegrationToDelete(null);
+    }
+  };
+
+  const handleEdit = (integrationId: string) => {
+    navigate(`/client/integrations/${integrationId}/edit`);
   };
 
   return (
@@ -242,15 +278,12 @@ const ClientDashboard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {integrations.map((integration) => (
+                  {integrationsList.map((integration) => (
                     <TableRow 
                       key={integration.id} 
                       className="hover:bg-muted/50 transition-colors"
                     >
-                      <TableCell 
-                        className="font-medium text-primary hover:underline cursor-pointer"
-                        onClick={() => navigate(`/client/integrations/${integration.id}`)}
-                      >
+                      <TableCell className="font-medium text-muted-foreground">
                         {integration.requestId}
                       </TableCell>
                       <TableCell className="font-medium">
@@ -272,15 +305,21 @@ const ClientDashboard = () => {
                         {integration.lastActivity}
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center space-x-1">
+                        <div className="flex items-center gap-1">
                           <Button 
                             variant="ghost" 
                             size="sm"
                             className="hover:bg-muted"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/client/integrations/${integration.id}`);
-                            }}
+                            onClick={() => navigate(`/client/integrations/${integration.id}`)}
+                            aria-label="View integration details"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            className="hover:bg-muted"
+                            onClick={() => handleEdit(integration.id)}
                             aria-label="Edit integration"
                           >
                             <Edit className="h-4 w-4" />
@@ -289,10 +328,7 @@ const ClientDashboard = () => {
                             variant="ghost" 
                             size="sm"
                             className="hover:bg-destructive/10 hover:text-destructive"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              console.log('Delete integration', integration.id);
-                            }}
+                            onClick={() => handleDeleteClick(integration)}
                             aria-label="Delete integration"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -306,7 +342,7 @@ const ClientDashboard = () => {
             </div>
             
             {/* Pagination - shown if more than 10 integrations */}
-            {integrations.length > 10 && (
+            {integrationsList.length > 10 && (
               <div className="mt-4 flex justify-center">
                 <Pagination>
                   <PaginationContent>
@@ -331,6 +367,29 @@ const ClientDashboard = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* Delete Confirmation Dialog */}
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Integration?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete <strong>{integrationToDelete?.name}</strong>? 
+                This action cannot be undone and will remove all associated configurations, 
+                roles, and user assignments.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteConfirm}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Delete Integration
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* Quick Actions & Recent Activity - Below Table */}
         <div className="grid lg:grid-cols-2 gap-8">

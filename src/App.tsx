@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import ClientDashboard from "./pages/ClientDashboard";
 import NewIntegration from "./pages/NewIntegration";
+import EditIntegration from "./pages/EditIntegration";
 import AdminDashboard from "./pages/AdminDashboard";
 import IntegrationDetails from "./pages/IntegrationDetails";
 import NotFound from "./pages/NotFound";
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/client" element={<ClientDashboard />} />
           <Route path="/client/new-integration" element={<NewIntegration />} />
           <Route path="/client/integrations/:id" element={<IntegrationDetails />} />
+          <Route path="/client/integrations/:id/edit" element={<EditIntegration />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

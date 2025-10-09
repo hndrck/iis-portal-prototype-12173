@@ -1,10 +1,11 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import ProjectInfoIntakeForm from "./wizard/ProjectInfoIntakeForm";
 import TechnicalRequirementsForm from "./wizard/TechnicalRequirementsForm";
 import SolutionStep from "./wizard/SolutionStep";
@@ -76,10 +77,18 @@ export interface WizardData {
   };
 }
 
-const IntegrationWizard = () => {
+interface IntegrationWizardProps {
+  isEditMode?: boolean;
+  initialData?: WizardData;
+  integrationId?: string;
+}
+
+const IntegrationWizard = ({ isEditMode = false, initialData, integrationId }: IntegrationWizardProps = {}) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
-  const [data, setData] = useState<WizardData>({
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [data, setData] = useState<WizardData>(initialData || {
     projectInfo: {
       productName: "",
       productDescription: "",
@@ -164,6 +173,19 @@ const IntegrationWizard = () => {
     }
   ];
 
+  // Warn user about unsaved changes before leaving
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges]);
+
   const getProgressValue = () => {
     return (currentStep / (steps.length - 1)) * 100;
   };
@@ -173,6 +195,7 @@ const IntegrationWizard = () => {
       ...prev,
       [section]: { ...prev[section], ...updates }
     }));
+    setHasUnsavedChanges(true);
   };
 
   const nextStep = () => {
@@ -220,7 +243,16 @@ const IntegrationWizard = () => {
   };
 
   const handleSubmit = () => {
-    console.log("Integration submitted:", data);
+    console.log(isEditMode ? "Integration updated:" : "Integration submitted:", data);
+    setHasUnsavedChanges(false);
+    
+    toast({
+      title: isEditMode ? "Changes saved" : "Integration submitted",
+      description: isEditMode 
+        ? "Your integration has been updated successfully." 
+        : "Your integration request has been submitted for review.",
+    });
+    
     navigate('/client');
   };
 
@@ -300,7 +332,9 @@ const IntegrationWizard = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-2xl">New Integration</CardTitle>
+              <CardTitle className="text-2xl">
+                {isEditMode ? "Edit Integration" : "New Integration"}
+              </CardTitle>
               <CardDescription>
                 Step {currentStep + 1} of {steps.length}: {steps[currentStep].description}
               </CardDescription>
@@ -352,7 +386,7 @@ const IntegrationWizard = () => {
           
           {currentStep === steps.length - 1 ? (
             <Button onClick={handleSubmit} className="bg-primary hover:bg-primary/90">
-              Submit Integration
+              {isEditMode ? "Save Changes" : "Submit Integration"}
             </Button>
           ) : (
             <Button
