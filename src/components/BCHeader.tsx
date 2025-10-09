@@ -61,13 +61,6 @@ const BCHeader = () => {
                   Dashboard
                 </Button>
                 <Button 
-                  variant="ghost" 
-                  className="text-white hover:bg-white/10"
-                  onClick={() => navigate('/client/integrations')}
-                >
-                  My Integrations
-                </Button>
-                <Button 
                   variant="outline" 
                   className="border-white text-white hover:bg-white hover:text-primary"
                   onClick={() => navigate('/admin')}

@@ -100,11 +100,11 @@ const IntegrationDetails = () => {
       <main className="container mx-auto px-4 py-8">
         <Button
           variant="ghost"
-          onClick={() => navigate('/client/integrations')}
+          onClick={() => navigate('/client')}
           className="mb-4"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Integrations
+          Back to Dashboard
         </Button>
 
         <div className="mb-6">
