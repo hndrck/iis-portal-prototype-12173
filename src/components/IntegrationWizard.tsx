@@ -20,6 +20,7 @@ export interface WizardData {
     ministry: string;
     userCategory: string;
     userTypes: string[];
+    privacyZone?: string;
     productOwnerName: string;
     productOwnerEmail: string;
     technicalLeadName: string;

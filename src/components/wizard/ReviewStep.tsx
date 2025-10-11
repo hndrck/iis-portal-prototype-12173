@@ -45,6 +45,11 @@ const ReviewStep = ({ data, onEditStep }: ReviewStepProps) => {
             <div>
               <span className="font-medium">Ministry:</span> {data.projectInfo.ministry}
             </div>
+            {data.projectInfo.privacyZone && (
+              <div>
+                <span className="font-medium">Privacy Zone:</span> {data.projectInfo.privacyZone}
+              </div>
+            )}
             <div>
               <span className="font-medium">User Types:</span>
               <div className="flex flex-wrap gap-1 mt-1">
@@ -56,23 +61,18 @@ const ReviewStep = ({ data, onEditStep }: ReviewStepProps) => {
             
             <Separator className="my-3" />
             
-            <div className="space-y-3">
-              <div className="font-medium flex items-center space-x-2">
-                <Users className="h-4 w-4" />
-                <span>Product Team</span>
-              </div>
-              <div className="border rounded-lg p-3">
-                <div className="font-medium mb-1">Product Owner</div>
-                <div className="text-sm space-y-1">
-                  <div>{data.projectInfo.productOwnerName}</div>
-                  <div className="text-muted-foreground">{data.projectInfo.productOwnerEmail}</div>
+            <div className="space-y-2">
+              <div className="font-medium text-sm">Product Team</div>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="border rounded-md p-2">
+                  <div className="font-medium text-xs text-muted-foreground mb-1">Product Owner</div>
+                  <div className="font-medium">{data.projectInfo.productOwnerName}</div>
+                  <div className="text-muted-foreground text-xs">{data.projectInfo.productOwnerEmail}</div>
                 </div>
-              </div>
-              <div className="border rounded-lg p-3">
-                <div className="font-medium mb-1">Technical Lead</div>
-                <div className="text-sm space-y-1">
-                  <div>{data.projectInfo.technicalLeadName}</div>
-                  <div className="text-muted-foreground">{data.projectInfo.technicalLeadEmail}</div>
+                <div className="border rounded-md p-2">
+                  <div className="font-medium text-xs text-muted-foreground mb-1">Technical Lead</div>
+                  <div className="font-medium">{data.projectInfo.technicalLeadName}</div>
+                  <div className="text-muted-foreground text-xs">{data.projectInfo.technicalLeadEmail}</div>
                 </div>
               </div>
             </div>
