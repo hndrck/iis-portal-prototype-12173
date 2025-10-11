@@ -73,12 +73,12 @@ const TechnicalRequirementsForm = ({
     },
     {
       value: "service-principal",
-      label: "Service Principal",
+      label: "Service Account",
       description: "Machine-to-machine authentication without user interaction (e.g., API calls, background processes, automated services)"
     },
     {
       value: "browser-and-service",
-      label: "Browser Login and Service Principal",
+      label: "Browser Login and Service Account",
       description: "Your product requires both user sign-in and automated system access"
     }
   ];

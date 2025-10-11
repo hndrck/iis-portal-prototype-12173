@@ -104,8 +104,8 @@ const ReviewStep = ({ data, onEditStep }: ReviewStepProps) => {
                 <div>
                   <span className="font-medium">Use Case:</span>{' '}
                   {data.requirements.useCase === 'browser-login' ? 'Browser Login' : 
-                   data.requirements.useCase === 'service-principal' ? 'Service Principal' :
-                   data.requirements.useCase === 'browser-and-service' ? 'Browser Login and Service Principal' : 
+                   data.requirements.useCase === 'service-principal' ? 'Service Account' :
+                   data.requirements.useCase === 'browser-and-service' ? 'Browser Login and Service Account' : 
                    data.requirements.useCase}
                 </div>
                 <div>
