@@ -20,6 +20,7 @@ interface ProjectInfoIntakeData {
   ministry: string;
   userCategory: string;
   userTypes: string[];
+  privacyZone?: string;
   productOwnerName: string;
   productOwnerEmail: string;
   technicalLeadName: string;
@@ -108,6 +109,25 @@ const ProjectInfoIntakeForm = ({
     "Other"
   ];
 
+  const privacyZoneOptions = [
+    "BC Public Service Agency (Citizen)",
+    "Business and Economy (Citizen)",
+    "Citizens' Services (Citizen)",
+    "Citizens' Services (Professional)",
+    "Education (Citizen)",
+    "Education (Professional)",
+    "Finance (Citizen)",
+    "Health (Citizen)",
+    "Health (Provider)",
+    "Justice (Citizen)",
+    "Justice (Professional)",
+    "Natural Resources (Citizen)",
+    "Natural Resources (Professional)",
+    "Social (Citizen)",
+    "Social (Professional)",
+    "Transportation (Professional)"
+  ];
+
   // Auto-save functionality
   useEffect(() => {
     const timer = setInterval(() => {
@@ -133,7 +153,7 @@ const ProjectInfoIntakeForm = ({
   };
 
   const isFormValid = () => {
-    return data.productName && 
+    const baseValid = data.productName && 
            data.productDescription && 
            data.ministry && 
            data.userCategory &&
@@ -142,6 +162,14 @@ const ProjectInfoIntakeForm = ({
            data.productOwnerEmail && 
            data.technicalLeadName && 
            data.technicalLeadEmail;
+    
+    // If external or both is selected, privacy zone is required
+    const needsPrivacyZone = data.userCategory === "external" || data.userCategory === "both";
+    if (needsPrivacyZone && !data.privacyZone) {
+      return false;
+    }
+    
+    return baseValid;
   };
 
   const handleSubmit = () => {
@@ -353,6 +381,44 @@ const ProjectInfoIntakeForm = ({
                         </div>
                       ))}
                   </div>
+                </div>
+              </>
+            )}
+
+            {/* Privacy Zone - Only show for external or both */}
+            {(data.userCategory === "external" || data.userCategory === "both") && (
+              <>
+                <Separator />
+                <div className="space-y-3">
+                  <Label htmlFor="privacyZone">Select Privacy Zone</Label>
+                  <p className="text-sm text-muted-foreground">
+                    A privacy zone is a logical grouping of services that share the same user identifiers. Choose the government sector you are in or supporting (Health, Justice, Natural Resources, etc.) and the type of user logging in (member of the public vs a professional in that sector).
+                  </p>
+                  <Select 
+                    value={data.privacyZone} 
+                    onValueChange={(value) => onUpdate({ privacyZone: value })}
+                  >
+                    <SelectTrigger id="privacyZone" className="bg-background">
+                      <SelectValue placeholder="Select privacy zone" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-popover z-50">
+                      {privacyZoneOptions.map((zone) => (
+                        <SelectItem key={zone} value={zone}>
+                          {zone}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-sm">
+                    <a 
+                      href="https://developer.gov.bc.ca/docs/default/component/bc-services-card-onboarding/developer-guide/#privacy-zones" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline"
+                    >
+                      Learn more about privacy zones
+                    </a>
+                  </p>
                 </div>
               </>
             )}
