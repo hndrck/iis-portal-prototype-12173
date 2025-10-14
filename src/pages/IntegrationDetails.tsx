@@ -149,131 +149,125 @@ const IntegrationDetails = () => {
 
         {/* Summary Card */}
         <Card className="mb-6 shadow-sm">
-          <CardHeader className="pb-4">
+          <CardHeader className="pb-3">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-2xl font-bold text-foreground">
+                <div className="flex items-center gap-2 mb-1">
+                  <h1 className="text-xl font-bold text-foreground">
                     {integration.name}
                   </h1>
                   <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                     {integration.status}
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">Request ID: {integration.requestId}</p>
+                <p className="text-xs text-muted-foreground">Request ID: {integration.requestId}</p>
               </div>
               <div className="flex gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={handleEdit}
-                  className="gap-2"
+                  className="gap-1.5"
                 >
-                  <Pencil className="h-4 w-4" />
+                  <Pencil className="h-3.5 w-3.5" />
                   Edit
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowDeleteDialog(true)}
-                  className="gap-2 text-destructive hover:text-destructive"
+                  className="gap-1.5 text-destructive hover:text-destructive"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-3.5 w-3.5" />
                   Delete
                 </Button>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 pt-0">
             {/* Basic Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div>
-                <span className="text-sm font-medium text-muted-foreground">Ministry</span>
-                <p className="text-sm mt-1">{integration.ministry}</p>
+                <span className="text-xs font-medium text-muted-foreground">Ministry</span>
+                <p className="text-sm mt-0.5">{integration.ministry}</p>
               </div>
               <div>
-                <span className="text-sm font-medium text-muted-foreground">Environment</span>
-                <p className="text-sm mt-1">
+                <span className="text-xs font-medium text-muted-foreground">Environment</span>
+                <p className="text-sm mt-0.5">
                   {integration.environments.map(env => env.name).join(', ')}
                 </p>
               </div>
+              <div>
+                <span className="text-xs font-medium text-muted-foreground">Product Owner</span>
+                <p className="text-sm mt-0.5 font-medium">{integration.productOwner.name}</p>
+                <p className="text-xs text-muted-foreground">{integration.productOwner.email}</p>
+              </div>
+              <div>
+                <span className="text-xs font-medium text-muted-foreground">Technical Lead</span>
+                <p className="text-sm mt-0.5 font-medium">{integration.technicalLead.name}</p>
+                <p className="text-xs text-muted-foreground">{integration.technicalLead.email}</p>
+              </div>
             </div>
 
-            {/* User Types */}
-            <div>
-              <span className="text-sm font-medium text-muted-foreground">User Types</span>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {integration.userTypes.map((type) => (
-                  <Badge key={type} variant="outline">{type}</Badge>
-                ))}
+            {/* User Types & Identity Providers */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <span className="text-xs font-medium text-muted-foreground">User Types</span>
+                <div className="flex flex-wrap gap-1.5 mt-0.5">
+                  {integration.userTypes.map((type) => (
+                    <Badge key={type} variant="outline" className="text-xs py-0">{type}</Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <span className="text-xs font-medium text-muted-foreground">Identity Providers</span>
+                <div className="flex flex-wrap gap-1.5 mt-0.5">
+                  {integration.identityProviders.map((idp) => (
+                    <Badge key={idp} variant="secondary" className="text-xs py-0">{idp}</Badge>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Privacy Zone - only if applicable */}
             {integration.privacyZone && (
               <div>
-                <span className="text-sm font-medium text-muted-foreground">Privacy Zone</span>
-                <p className="text-sm mt-1">{integration.privacyZone}</p>
+                <span className="text-xs font-medium text-muted-foreground">Privacy Zone</span>
+                <p className="text-sm mt-0.5">{integration.privacyZone}</p>
               </div>
             )}
 
-            {/* Identity Providers */}
-            <div>
-              <span className="text-sm font-medium text-muted-foreground">Identity Providers</span>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {integration.identityProviders.map((idp) => (
-                  <Badge key={idp} variant="secondary">{idp}</Badge>
-                ))}
-              </div>
-            </div>
-
-            <Separator />
-
-            {/* Product Team */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <span className="text-sm font-medium text-muted-foreground">Product Owner</span>
-                <p className="text-sm mt-1 font-medium">{integration.productOwner.name}</p>
-                <p className="text-sm text-muted-foreground">{integration.productOwner.email}</p>
-              </div>
-              <div>
-                <span className="text-sm font-medium text-muted-foreground">Technical Lead</span>
-                <p className="text-sm mt-1 font-medium">{integration.technicalLead.name}</p>
-                <p className="text-sm text-muted-foreground">{integration.technicalLead.email}</p>
-              </div>
-            </div>
-
-            <Separator />
+            <Separator className="my-2" />
 
             {/* Technical Configuration - Collapsible */}
             <Collapsible open={isTechConfigOpen} onOpenChange={setIsTechConfigOpen}>
               <CollapsibleTrigger asChild>
                 <Button variant="ghost" className="w-full justify-between p-0 h-auto hover:bg-transparent">
-                  <span className="text-sm font-medium">Technical Configuration</span>
+                  <span className="text-xs font-medium">Technical Configuration</span>
                   {isTechConfigOpen ? (
-                    <ChevronUp className="h-4 w-4" />
+                    <ChevronUp className="h-3.5 w-3.5" />
                   ) : (
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className="h-3.5 w-3.5" />
                   )}
                 </Button>
               </CollapsibleTrigger>
-              <CollapsibleContent className="mt-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-lg">
+              <CollapsibleContent className="mt-2">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-3 bg-muted/30 rounded-lg">
                   <div>
-                    <span className="text-sm font-medium text-muted-foreground">Client Type</span>
-                    <p className="text-sm mt-1">{integration.clientType}</p>
+                    <span className="text-xs font-medium text-muted-foreground">Client Type</span>
+                    <p className="text-sm mt-0.5">{integration.clientType}</p>
                   </div>
                   <div>
-                    <span className="text-sm font-medium text-muted-foreground">Client Protocol</span>
-                    <p className="text-sm mt-1">{integration.clientProtocol}</p>
+                    <span className="text-xs font-medium text-muted-foreground">Client Protocol</span>
+                    <p className="text-sm mt-0.5">{integration.clientProtocol}</p>
                   </div>
                   <div>
-                    <span className="text-sm font-medium text-muted-foreground">Use Case</span>
-                    <p className="text-sm mt-1">{integration.useCase}</p>
+                    <span className="text-xs font-medium text-muted-foreground">Use Case</span>
+                    <p className="text-sm mt-0.5">{integration.useCase}</p>
                   </div>
                   <div>
-                    <span className="text-sm font-medium text-muted-foreground">Data Classification</span>
-                    <p className="text-sm mt-1">{integration.dataClassification}</p>
+                    <span className="text-xs font-medium text-muted-foreground">Data Classification</span>
+                    <p className="text-sm mt-0.5">{integration.dataClassification}</p>
                   </div>
                 </div>
               </CollapsibleContent>
