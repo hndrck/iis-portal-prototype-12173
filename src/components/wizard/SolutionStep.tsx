@@ -100,12 +100,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
       }
     });
 
-    // Remove duplicates
-    const uniqueSolutions = solutions.filter((solution, index, self) => 
-      index === self.findIndex(s => s.provider === solution.provider)
-    );
-
-    return uniqueSolutions;
+    return solutions;
   }, [data.projectInfo.userTypes, data.requirements.assuranceLevel]);
 
   const solutionSummary = useMemo(() => {
