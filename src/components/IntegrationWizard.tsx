@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import ProjectInfoIntakeForm from "./wizard/ProjectInfoIntakeForm";
 import TechnicalRequirementsForm from "./wizard/TechnicalRequirementsForm";
 import SolutionStep from "./wizard/SolutionStep";
+import ConfigureAttributesStep from "./wizard/ConfigureAttributesStep";
 import ConfigurationStep from "./wizard/ConfigurationStep";
 import ReviewStep from "./wizard/ReviewStep";
 import InternalOnlyOffRamp from "./wizard/InternalOnlyOffRamp";
@@ -166,6 +167,10 @@ const IntegrationWizard = ({ isEditMode = false, initialData, integrationId, ini
       description: "Review our recommendation"
     },
     {
+      title: "Attributes",
+      description: "Configure user attributes"
+    },
+    {
       title: "Configuration",
       description: "Set up your integration"
     },
@@ -203,7 +208,7 @@ const IntegrationWizard = ({ isEditMode = false, initialData, integrationId, ini
   const nextStep = () => {
     // Check if user selected "Internal Only" and redirect to off-ramp
     if (currentStep === 0 && data.projectInfo.userCategory === "internal") {
-      setCurrentStep(5); // Jump to off-ramp step
+      setCurrentStep(6); // Jump to off-ramp step (now step 6)
       return;
     }
     
@@ -231,13 +236,15 @@ const IntegrationWizard = ({ isEditMode = false, initialData, integrationId, ini
                data.projectInfo.technicalLeadName && 
                data.projectInfo.technicalLeadEmail;
       case 1:
-        return data.requirements.clientProtocol && data.requirements.useCase && data.requirements.clientType && data.requirements.dataClassification && data.requirements.requiredAttributes.length > 0;
+        return data.requirements.clientProtocol && data.requirements.useCase && data.requirements.clientType && data.requirements.dataClassification;
       case 2:
         return data.solution.recommended;
       case 3:
+        return true; // Configure Attributes - always can proceed
+      case 4:
         // For configuration step, we need at least one environment selected
         return data.configuration.development || data.configuration.test || data.configuration.production;
-      case 4:
+      case 5:
         return true;
       default:
         return true;
@@ -298,24 +305,31 @@ const IntegrationWizard = ({ isEditMode = false, initialData, integrationId, ini
         );
       case 3:
         return (
+          <ConfigureAttributesStep
+            data={data}
+            onUpdate={(updates) => updateData('requirements', updates)}
+          />
+        );
+      case 4:
+        return (
           <ConfigurationStep
             data={data}
             onUpdate={(updates) => updateData('configuration', updates)}
           />
         );
-      case 4:
+      case 5:
         return (
           <ReviewStep data={data} onEditStep={setCurrentStep} />
         );
-      case 5:
+      case 6:
         return (
           <InternalOnlyOffRamp
             data={data.projectInfo}
             onBack={() => setCurrentStep(0)}
             onSubmit={handleSubmit}
             progressValue={100}
-            currentStep={5}
-            totalSteps={5}
+            currentStep={6}
+            totalSteps={6}
           />
         );
       default:
@@ -323,8 +337,8 @@ const IntegrationWizard = ({ isEditMode = false, initialData, integrationId, ini
     }
   };
 
-  // For steps 0, 1, and 5 (off-ramp), render the forms directly without the card wrapper
-  if (currentStep === 0 || currentStep === 1 || currentStep === 5) {
+  // For steps 0, 1, and 6 (off-ramp), render the forms directly without the card wrapper
+  if (currentStep === 0 || currentStep === 1 || currentStep === 6) {
     return renderStep();
   }
 
