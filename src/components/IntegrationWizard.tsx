@@ -302,6 +302,7 @@ const IntegrationWizard = ({ isEditMode = false, initialData, integrationId, ini
           <ConfigurationStep
             data={data}
             onUpdate={(updates) => updateData('configuration', updates)}
+            onUpdateRequirements={(updates) => updateData('requirements', updates)}
           />
         );
       case 4:

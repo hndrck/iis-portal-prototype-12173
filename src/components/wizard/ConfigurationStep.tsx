@@ -36,16 +36,23 @@ interface ConfigurationData {
 interface ConfigurationStepProps {
   data: WizardData;
   onUpdate: (data: Partial<ConfigurationData>) => void;
+  onUpdateRequirements?: (data: { requiredAttributes: string[] }) => void;
 }
 
-const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
-  // Attribute state
+const ConfigurationStep = ({ data, onUpdate, onUpdateRequirements }: ConfigurationStepProps) => {
+  // Initialize attribute state from data
   const [bcscOpen, setBcscOpen] = useState(true);
   const [bceidOpen, setBceidOpen] = useState(true);
   const [entraOpen, setEntraOpen] = useState(false);
-  const [addressChecked, setAddressChecked] = useState(false);
-  const [contactChecked, setContactChecked] = useState(false);
-  const [demographicsChecked, setDemographicsChecked] = useState(false);
+  const [addressChecked, setAddressChecked] = useState(
+    data.requirements.requiredAttributes?.includes('Address information') || false
+  );
+  const [contactChecked, setContactChecked] = useState(
+    data.requirements.requiredAttributes?.includes('Contact information') || false
+  );
+  const [demographicsChecked, setDemographicsChecked] = useState(
+    data.requirements.requiredAttributes?.includes('Demographics') || false
+  );
 
   // Determine which IDPs were recommended
   const recommendedIDPs = data.solution.components || [];
@@ -162,7 +169,15 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
                         <div className="flex items-start gap-3">
                           <Checkbox 
                             checked={addressChecked} 
-                            onCheckedChange={(checked) => setAddressChecked(checked === true)}
+                            onCheckedChange={(checked) => {
+                              setAddressChecked(checked === true);
+                              if (onUpdateRequirements) {
+                                const newAttrs = checked 
+                                  ? [...(data.requirements.requiredAttributes || []).filter(a => a !== 'Address information'), 'Address information']
+                                  : (data.requirements.requiredAttributes || []).filter(a => a !== 'Address information');
+                                onUpdateRequirements({ requiredAttributes: newAttrs });
+                              }
+                            }}
                             className="mt-1" 
                           />
                           <div className="flex-1">
@@ -188,7 +203,15 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
                       <div className="flex items-start gap-3">
                         <Checkbox 
                           checked={contactChecked} 
-                          onCheckedChange={(checked) => setContactChecked(checked === true)}
+                          onCheckedChange={(checked) => {
+                            setContactChecked(checked === true);
+                            if (onUpdateRequirements) {
+                              const newAttrs = checked 
+                                ? [...(data.requirements.requiredAttributes || []).filter(a => a !== 'Contact information'), 'Contact information']
+                                : (data.requirements.requiredAttributes || []).filter(a => a !== 'Contact information');
+                              onUpdateRequirements({ requiredAttributes: newAttrs });
+                            }
+                          }}
                           className="mt-1" 
                         />
                         <div className="flex-1">
@@ -199,7 +222,15 @@ const ConfigurationStep = ({ data, onUpdate }: ConfigurationStepProps) => {
                       <div className="flex items-start gap-3">
                         <Checkbox 
                           checked={demographicsChecked} 
-                          onCheckedChange={(checked) => setDemographicsChecked(checked === true)}
+                          onCheckedChange={(checked) => {
+                            setDemographicsChecked(checked === true);
+                            if (onUpdateRequirements) {
+                              const newAttrs = checked 
+                                ? [...(data.requirements.requiredAttributes || []).filter(a => a !== 'Demographics'), 'Demographics']
+                                : (data.requirements.requiredAttributes || []).filter(a => a !== 'Demographics');
+                              onUpdateRequirements({ requiredAttributes: newAttrs });
+                            }
+                          }}
                           className="mt-1" 
                         />
                         <div className="flex-1">
