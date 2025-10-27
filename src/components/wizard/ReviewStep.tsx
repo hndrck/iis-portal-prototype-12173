@@ -117,18 +117,6 @@ const ReviewStep = ({ data, onEditStep }: ReviewStepProps) => {
                 <div>
                   <span className="font-medium">Data Classification:</span> {data.requirements.dataClassification}
                 </div>
-                <div>
-                  <span className="font-medium">Attributes:</span>
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {data.requirements.requiredAttributes?.length > 0 ? (
-                      data.requirements.requiredAttributes.map((attr) => (
-                        <Badge key={attr} variant="outline">{attr}</Badge>
-                      ))
-                    ) : (
-                      <span className="text-muted-foreground">None specified</span>
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
           </CardContent>
@@ -248,6 +236,21 @@ const ReviewStep = ({ data, onEditStep }: ReviewStepProps) => {
                 )}
               </div>
             </div>
+            
+            {data.requirements.requiredAttributes && data.requirements.requiredAttributes.length > 0 && (
+              <>
+                <Separator className="my-3" />
+                
+                <div className="space-y-2">
+                  <div className="font-medium text-sm">Attributes</div>
+                  <div className="flex flex-wrap gap-1">
+                    {data.requirements.requiredAttributes.map((attr) => (
+                      <Badge key={attr} variant="outline">{attr}</Badge>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
