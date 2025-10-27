@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CheckCircle, Shield, Users, Globe, AlertCircle, ExternalLink, Info } from "lucide-react";
+import { CheckCircle, Shield, Users, Globe, AlertCircle } from "lucide-react";
 import { WizardData } from "../IntegrationWizard";
 
 interface SolutionStepProps {
@@ -23,35 +23,6 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
     contactMethod: "",
     bestTime: ""
   });
-
-  // Get documentation link for each IDP
-  const getIdpDocLink = (provider: string): string => {
-    const docLinks: Record<string, string> = {
-      "BC Services Card": "https://github.com/bcgov/sso-docs/wiki/BC-Services-Card",
-      "BCeID Basic": "https://github.com/bcgov/sso-docs/wiki/BCeID",
-      "BCeID Business": "https://github.com/bcgov/sso-docs/wiki/BCeID",
-      "IDIR": "https://github.com/bcgov/sso-docs/wiki/IDIR",
-      "Entra Guest": "https://github.com/bcgov/sso-docs/wiki/Azure-IDIR"
-    };
-    return docLinks[provider] || "#";
-  };
-
-  // Get recommendation reasoning for each IDP
-  const getRecommendationReason = (provider: string, userType: string, dataClassification: string): string => {
-    if (provider === "BC Services Card") {
-      return "Recommended because you need BC residents with Protected B/C data classification";
-    } else if (provider === "BCeID Basic" || provider === "BCeID Business") {
-      if (userType === "International users") {
-        return "Recommended because you need international users";
-      } else if (userType === "Individuals representing businesses or organizations") {
-        return "Recommended because you need business representatives";
-      }
-      return "Recommended because you need international users or business representatives";
-    } else if (provider === "IDIR" || provider === "Entra Guest") {
-      return "Recommended because you selected internal government users only";
-    }
-    return "";
-  };
 
   // Decision logic based on user types and Level of Assurance
   const recommendedSolutions = useMemo(() => {
@@ -202,19 +173,7 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
                         <Badge variant="secondary" className="bg-primary text-primary-foreground">
                           {solution.provider}
                         </Badge>
-                        <a 
-                          href={getIdpDocLink(solution.provider)} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-primary hover:text-primary/80 transition-colors"
-                          title="View documentation"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {getRecommendationReason(solution.provider, solution.userType, data.requirements.dataClassification || "")}
-                      </p>
                       <p className="text-muted-foreground mb-2">{solution.description}</p>
                       <p className="text-sm text-muted-foreground italic">{solution.userExperience}</p>
                     </div>
@@ -222,20 +181,6 @@ const SolutionStep = ({ data, onUpdate }: SolutionStepProps) => {
                 </CardContent>
               </Card>
             ))}
-          </div>
-
-          {/* General Documentation Link */}
-          <div className="mt-6 pt-6 border-t">
-            <a 
-              href="https://github.com/bcgov/sso-docs/wiki" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              <Info className="h-4 w-4" />
-              Want to learn more about all available identity providers? View complete IDP guide
-              <ExternalLink className="h-3 w-3" />
-            </a>
           </div>
         </CardContent>
       </Card>
