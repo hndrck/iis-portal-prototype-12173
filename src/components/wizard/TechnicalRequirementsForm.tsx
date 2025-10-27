@@ -207,7 +207,7 @@ const TechnicalRequirementsForm = ({
 
 
   const isFormValid = () => {
-    return data.clientProtocol && data.useCase && data.clientType && data.dataClassification && data.requiredAttributes.length > 0;
+    return data.clientProtocol && data.useCase && data.clientType && data.dataClassification;
   };
 
   return (
@@ -397,137 +397,6 @@ const TechnicalRequirementsForm = ({
           </CardContent>
         </Card>
 
-        {/* Section 3: User Information Requirements */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-2">
-              <Users className="h-4 w-4 text-primary" />
-              <CardTitle className="text-base">User Information Requirements</CardTitle>
-            </div>
-            <CardDescription className="text-sm">Only request information that's essential for your service to function</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* External Users */}
-            {externalUserTypes.length > 0 && (
-              <div className="space-y-3">
-                <div className="p-3 bg-muted/50 rounded-lg">
-                  <Label>What information do you need about external users?</Label>
-                </div>
-                
-                <div className="space-y-4">
-                  {/* BC Residents / Canadian Residents */}
-                  {externalUserTypes.includes("BC residents/Canadian residents") && (
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium">BC residents/Canadian residents</h4>
-                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
-                        {getAttributeOptionsByUserType("BC residents/Canadian residents").map((attribute) => (
-                          <div key={attribute} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
-                            <Checkbox
-                              id={`bc-residents-${attribute}`}
-                              checked={data.requiredAttributes.includes(attribute)}
-                              onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
-                              className="mt-0.5"
-                            />
-                            <Label htmlFor={`bc-residents-${attribute}`} className="text-sm font-normal cursor-pointer flex-1">{attribute}</Label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* International Users */}
-                  {externalUserTypes.includes("International users") && (
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium">International users</h4>
-                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
-                        {getAttributeOptionsByUserType("International users").map((attribute) => (
-                          <div key={attribute} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
-                            <Checkbox
-                              id={`intl-${attribute}`}
-                              checked={data.requiredAttributes.includes(attribute)}
-                              onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
-                              className="mt-0.5"
-                            />
-                            <Label htmlFor={`intl-${attribute}`} className="text-sm font-normal cursor-pointer flex-1">{attribute}</Label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Business Representatives */}
-                  {externalUserTypes.includes("Individuals representing businesses or organizations") && (
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium">Business representatives</h4>
-                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
-                        {getAttributeOptionsByUserType("Individuals representing businesses or organizations").map((attribute) => (
-                          <div key={attribute} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
-                            <Checkbox
-                              id={`business-${attribute}`}
-                              checked={data.requiredAttributes.includes(attribute)}
-                              onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
-                              className="mt-0.5"
-                            />
-                            <Label htmlFor={`business-${attribute}`} className="text-sm font-normal cursor-pointer flex-1">{attribute}</Label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Internal Users */}
-            {internalUserTypes.length > 0 && (
-              <div className="space-y-3">
-                <div className="p-3 bg-muted/50 rounded-lg">
-                  <Label>What information do you need about internal users?</Label>
-                </div>
-                
-                <div className="space-y-4">
-                  {internalUserTypes.map(userType => (
-                    <div key={userType} className="space-y-2">
-                      <h4 className="text-sm font-medium">{userType}</h4>
-                      <div className="pl-2 space-y-1.5 border-l-2 border-primary/20">
-                        {getAttributeOptionsByUserType(userType).map((attribute) => (
-                          <div key={`${userType}-${attribute}`} className="flex items-start space-x-3 p-2 rounded hover:bg-accent/30 transition-colors">
-                            <Checkbox
-                              id={`${userType}-${attribute}`}
-                              checked={data.requiredAttributes.includes(attribute)}
-                              onCheckedChange={(checked) => handleAttributeChange(attribute, !!checked)}
-                              className="mt-0.5"
-                            />
-                            <Label htmlFor={`${userType}-${attribute}`} className="text-sm font-normal cursor-pointer flex-1">{attribute}</Label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <Separator />
-
-            <div className="space-y-2">
-              <Label>Custom attributes <span className="text-sm font-normal text-muted-foreground">(optional)</span></Label>
-              <Textarea
-                value={data.customAttributes}
-                onChange={(e) => onUpdate({ customAttributes: e.target.value })}
-                placeholder="Don't see an attribute you need? Describe custom attributes here..."
-                rows={3}
-                className="resize-none"
-              />
-            </div>
-            
-            <div className="p-3 bg-muted/30 rounded-lg border">
-              <p className="text-sm text-muted-foreground">
-                Don't see an attribute you need? <Button variant="link" className="p-0 h-auto text-sm" onClick={onBack}>Go back to modify your user types</Button> or contact support for assistance.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Footer Actions */}
