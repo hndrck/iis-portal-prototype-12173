@@ -212,7 +212,7 @@ const ReviewStep = ({ data, onEditStep }: ReviewStepProps) => {
                 <span>Configuration</span>
               </CardTitle>
               {onEditStep && (
-                <Button variant="ghost" size="sm" onClick={() => onEditStep(4)}>
+                <Button variant="ghost" size="sm" onClick={() => onEditStep(3)}>
                   <Pencil className="h-4 w-4 mr-1" />
                   Edit
                 </Button>
