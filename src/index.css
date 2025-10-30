@@ -1,82 +1,84 @@
+/* BC Government Design System - imports must come first */
+@import '@bcgov/bc-sans/css/BCSans.css';
+@import '@bcgov/design-tokens/css/variables.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* BC Government Design System */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* BC Design System - Surface Colors */
+    --background: 0 0% 98.2%; /* maps to surface-color-background-light-gray #FAF9F8 */
+    --foreground: 0 0% 17.6%; /* maps to typography-color-primary #2D2D2D */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%; /* maps to surface-color-background-white */
+    --card-foreground: 0 0% 17.6%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 17.6%;
 
-    /* BC Government Primary Colors */
-    --primary: 213 100% 20%; /* BC Blue #003366 */
+    /* BC Government Primary Colors - from design tokens */
+    --primary: 210 100% 20%; /* BC Blue #013366 - surface-color-primary-default */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 100%; /* maps to surface-color-secondary-default */
+    --secondary-foreground: 0 0% 17.6%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 24 9% 93%; /* maps to surface-color-primary-button-disabled #EDEBE9 */
+    --muted-foreground: 24 4% 60%;
 
-    --accent: 47 100% 55%; /* BC Gold #FCBA19 */
-    --accent-foreground: 213 100% 20%;
+    --accent: 45 96% 62%; /* BC Gold - similar to #FCBA19 */
+    --accent-foreground: 210 100% 20%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 4 55% 52%; /* maps to surface-color-primary-danger-button-default #CE3E39 */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 213 100% 20%;
+    --border: 0 0% 84.7%; /* maps to surface-color-border-default #D8D8D8 */
+    --input: 0 0% 84.7%;
+    --ring: 210 100% 20%; /* matches primary */
 
-    --radius: 0.5rem;
+    --radius: 0.25rem; /* BC Design System uses more subtle radii */
 
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 213 100% 20%;
+    --sidebar-foreground: 0 0% 17.6%;
+    --sidebar-primary: 210 100% 20%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 24 9% 93%;
+    --sidebar-accent-foreground: 0 0% 17.6%;
+    --sidebar-border: 0 0% 84.7%;
+    --sidebar-ring: 210 100% 20%;
   }
 
   .dark {
-    --background: 213 100% 8%;
-    --foreground: 210 40% 98%;
+    /* BC Design System Dark Mode */
+    --background: 210 100% 11%; /* surface-color-background-dark-blue #053662 */
+    --foreground: 0 0% 100%;
 
-    --card: 213 100% 12%;
-    --card-foreground: 210 40% 98%;
+    --card: 210 100% 15%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 213 100% 12%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 210 100% 15%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 47 100% 55%;
-    --primary-foreground: 213 100% 20%;
+    --primary: 45 96% 62%; /* BC Gold accent in dark mode */
+    --primary-foreground: 210 100% 20%;
 
-    --secondary: 213 50% 16%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 210 100% 20%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 213 50% 16%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 210 100% 20%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 47 100% 55%;
-    --accent-foreground: 213 100% 20%;
+    --accent: 45 96% 62%;
+    --accent-foreground: 210 100% 20%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 4 55% 52%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 213 50% 16%;
-    --input: 213 50% 16%;
-    --ring: 47 100% 55%;
+    --border: 0 0% 42%; /* surface-color-border-medium #898785 */
+    --input: 0 0% 42%;
+    --ring: 45 96% 62%;
   }
 }
 
@@ -87,18 +89,60 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-family: 'BCSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   }
 
+  /* BC Design System Components */
   .bc-header {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(213 100% 25%) 100%);
+    background: linear-gradient(135deg, var(--surface-color-primary-default) 0%, var(--surface-color-background-dark-blue) 100%);
   }
 
   .bc-card {
-    @apply bg-card border border-border rounded-lg shadow-sm;
+    @apply bg-card border border-border rounded shadow-sm;
+    box-shadow: var(--surface-shadow-medium);
   }
 
   .bc-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(213 100% 30%) 100%);
+    background: linear-gradient(135deg, var(--surface-color-primary-default) 0%, var(--surface-color-primary-hover) 100%);
+  }
+
+  /* BC Design System Alert Components */
+  .bc-alert-info {
+    background-color: var(--support-surface-color-info);
+    border-left: 4px solid var(--support-border-color-info);
+    padding: var(--layout-padding-medium);
+  }
+
+  .bc-alert-success {
+    background-color: var(--support-surface-color-success);
+    border-left: 4px solid var(--support-border-color-success);
+    padding: var(--layout-padding-medium);
+  }
+
+  .bc-alert-warning {
+    background-color: var(--support-surface-color-warning);
+    border-left: 4px solid var(--support-border-color-warning);
+    padding: var(--layout-padding-medium);
+  }
+
+  .bc-alert-danger {
+    background-color: var(--support-surface-color-danger);
+    border-left: 4px solid var(--support-border-color-danger);
+    padding: var(--layout-padding-medium);
+  }
+
+  /* BC Design System Typography */
+  .bc-heading {
+    font-family: 'BCSans', sans-serif;
+    font-weight: 700;
+    color: var(--typography-color-primary);
+  }
+
+  .bc-body {
+    font-family: 'BCSans', sans-serif;
+    font-weight: 400;
+    font-size: var(--typography-font-size-body);
+    line-height: var(--typography-line-heights-regular);
+    color: var(--typography-color-primary);
   }
 }
