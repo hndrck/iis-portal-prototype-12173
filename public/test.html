@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages Test - IIS Portal</title>
+    <style>
+        body {
+            font-family: 'BC Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #faf9f8;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #013366;
+            margin-top: 0;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #f6fff8;
+            border-left: 4px solid #42814a;
+            color: #2d5234;
+        }
+        .info {
+            background: #f7f9fc;
+            border-left: 4px solid #053662;
+            color: #053662;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        ul {
+            line-height: 1.8;
+        }
+        .link {
+            color: #255a90;
+            text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>✅ GitHub Pages Deployment Test</h1>
+
+        <div class="status success">
+            <strong>Success!</strong> This test page loaded successfully, which means:
+            <ul>
+                <li>GitHub Pages is properly configured</li>
+                <li>Static assets are being served</li>
+                <li>The deployment workflow completed</li>
+            </ul>
+        </div>
+
+        <div class="status info">
+            <strong>Current URL:</strong><br>
+            <code id="current-url">Loading...</code>
+        </div>
+
+        <h2>Next Steps</h2>
+        <ul>
+            <li>Visit <a href="./" class="link">the main app (index.html)</a></li>
+            <li>Check browser console for any errors (F12)</li>
+            <li>Ensure JavaScript files are loading</li>
+            <li>Verify fonts and CSS are applied</li>
+        </ul>
+
+        <h2>Troubleshooting</h2>
+        <p>If the main app shows a blank page:</p>
+        <ul>
+            <li><strong>Check Console:</strong> Press F12 and look for red errors</li>
+            <li><strong>Check Network:</strong> In F12 → Network tab, verify all JS/CSS files load (status 200)</li>
+            <li><strong>Hard Refresh:</strong> Try Ctrl+Shift+R (Windows/Linux) or Cmd+Shift+R (Mac)</li>
+            <li><strong>Clear Cache:</strong> Clear browser cache and reload</li>
+        </ul>
+
+        <h2>Links</h2>
+        <ul>
+            <li><a href="./" class="link">Main Application</a></li>
+            <li><a href="./login" class="link">Login Page (tests routing)</a></li>
+            <li><a href="https://github.com/hndrck/iis-portal-prototype-12173" class="link">GitHub Repository</a></li>
+            <li><a href="https://github.com/hndrck/iis-portal-prototype-12173/actions" class="link">Deployment Actions</a></li>
+        </ul>
+    </div>
+
+    <script>
+        document.getElementById('current-url').textContent = window.location.href;
+
+        console.log('Test page loaded successfully!');
+        console.log('Current URL:', window.location.href);
+        console.log('Pathname:', window.location.pathname);
+        console.log('If you see this in the console, JavaScript is working correctly.');
+    </script>
+</body>
+</html>

@@ -42,6 +42,29 @@ After the workflow completes (2-3 minutes):
 
 ## Troubleshooting
 
+### Issue: Blank Page (Most Common from Loveable Migration)
+
+This was the primary issue when migrating from Loveable to GitHub Pages.
+
+**Symptoms:**
+- White/blank page loads
+- No content visible
+- Loading spinner might show but never completes
+
+**Solutions Applied:**
+1. ✅ Fixed Vite config to exclude lovable-tagger from production
+2. ✅ Updated basename detection to use BASE_URL instead of MODE
+3. ✅ Added debugging console logs
+4. ✅ Created proper 404.html for SPA routing
+
+**To Debug:**
+1. Open browser console (F12)
+2. Look for these console messages:
+   - "Main.tsx - Current location: ..."
+   - "App basename: ..."
+3. Check for red error messages
+4. Visit the test page: https://hndrck.github.io/iis-portal-prototype-12173/test.html
+
 ### Issue: 404 Page Not Found
 - **Solution**: Make sure GitHub Pages is set to "GitHub Actions" as the source
 - Go to Settings → Pages → Build and deployment → Source → GitHub Actions
@@ -60,11 +83,12 @@ After the workflow completes (2-3 minutes):
 - **Solution**: The base path is already configured correctly
 - Verify the workflow completed successfully
 - Check browser console for specific errors
+- Ensure .nojekyll file exists in deployment
 
-### Issue: Blank Page
-- **Solution**: Check browser console for JavaScript errors
-- Ensure all files were uploaded in the workflow artifacts
-- Try a hard refresh (Ctrl+Shift+R or Cmd+Shift+R)
+### Issue: Routes Don't Work (404 on direct access)
+- **Solution**: The 404.html redirect is configured
+- If routes still don't work, check browser console
+- Try accessing from root first, then navigate to other routes
 
 ## Configuration Details
 
