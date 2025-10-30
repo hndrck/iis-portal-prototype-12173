@@ -16,9 +16,12 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 // GitHub Pages basename configuration
-const basename = import.meta.env.MODE === 'production'
-  ? '/iis-portal-prototype-12173'
+// Use BASE_URL from Vite which includes the base path
+const basename = import.meta.env.BASE_URL !== '/'
+  ? import.meta.env.BASE_URL.replace(/\/$/, '')
   : '';
+
+console.log('App basename:', basename, 'BASE_URL:', import.meta.env.BASE_URL, 'MODE:', import.meta.env.MODE);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

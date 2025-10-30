@@ -4,21 +4,35 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  // GitHub Pages deployment configuration
-  base: mode === 'production' ? '/iis-portal-prototype-12173/' : '/',
-  server: {
-    host: "::",
-    port: 8080,
-  },
-  plugins: [
-    react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+export default defineConfig(({ mode }) => {
+  const isProduction = mode === 'production';
+
+  return {
+    // GitHub Pages deployment configuration
+    base: isProduction ? '/iis-portal-prototype-12173/' : '/',
+    server: {
+      host: "::",
+      port: 8080,
     },
-  },
-}));
+    plugins: [
+      react(),
+      // Only use componentTagger in development
+      !isProduction && componentTagger(),
+    ].filter(Boolean),
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
+    },
+    build: {
+      // Ensure proper output for GitHub Pages
+      outDir: 'dist',
+      assetsDir: 'assets',
+      rollupOptions: {
+        output: {
+          manualChunks: undefined,
+        },
+      },
+    },
+  };
+});
