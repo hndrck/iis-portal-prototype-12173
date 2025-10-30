@@ -9,8 +9,8 @@ export default defineConfig(({ mode }) => {
 
   return {
     // GitHub Pages deployment configuration
-    // Use root path for custom domain, subdirectory for github.io domain
-    base: isProduction ? '/' : '/',
+    // For github.io subdirectory deployment
+    base: isProduction ? '/iis-portal-prototype-12173/' : '/',
     server: {
       host: "::",
       port: 8080,
